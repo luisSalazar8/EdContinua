@@ -31,8 +31,8 @@ class ReporteContacto(models.Model):
 	cargo=models.CharField(max_length=100)
 	correo_electronico=models.EmailField(max_length=100)
 	asistentes=models.CharField(max_length=100)
-	situacion_actual=models.CharField(max_length=500)
-	situacion_deseada=models.CharField(max_length=500)
+	situacion_actual=models.CharField(max_length=850)
+	situacion_deseada=models.CharField(max_length=850)
 	servicios_requeridos=MultiSelectField(choices=SERVICIOS_CHOICES,
                                             blank=True,
                                             null=True)

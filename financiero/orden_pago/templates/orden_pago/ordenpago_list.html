@@ -1,0 +1,168 @@
+{% extends "base_financiero.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load staticfiles %}
+{% block title %}{{ "EC - Orden de pago" }}{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/odenpago.css' %}">
+<div class="row mb-2 d-flex white-bg">
+	<div class="col-9 col-xl-9 v-align">
+		<h2 class="text-uppercase">consultas <span class="darkgreen-text">Orden de Pago</span></h2>
+	</div>
+	<div class="col-3 col-xl-3 v-align">
+		<a class="btn btn-secondary green-bg float-right" href="{% url 'orden_pago_nuevo' %}"><i class="fas fa-plus"></i> Agregar
+			nuevo</a>
+	</div>
+</div>
+<div class="row darkwhite-bg py-2">
+	<div class="col-12 col-xl-12">
+		<form method="GET">
+			{% csrf_token %}
+			<div class="form-row">
+				<div class="col-3">
+					{{ filter.form.cod_ord_pago|as_crispy_field }}
+				</div>
+				<div class="col-3">
+					{{ filter.form.estado|as_crispy_field }}
+				</div>
+				<div class="col-3">
+					{{ filter.form.proveedor|as_crispy_field }}
+				</div>
+				<div class="col-3">
+					{{ filter.form.fecha|as_crispy_field }}
+				</div>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-secondary green-bg float-right">
+					<span class="fas fa-search"></span> Buscar</button>
+			</div>
+		</form>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-12 col-xl-12">
+		<div class="table-container">
+			<a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
+					data-placement="top" title="Exportar a pdf"></i></a>
+			<a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
+					data-placement="top" title="Exportar a excel"></i></a>
+			<table id="dtBasicExample" class="table table-responsive-md border-bottom">
+				<thead class="white-text darkgreen-bg">
+					<tr>
+						<th scope="col">Acciones</th>
+						<th scope="col">Código</th>
+						<th scope="col">Fecha</th>
+						<th scope="col">Estado</th>
+						<th scope="col">Proveedor</th>
+						<th scope="col">Centro de costos</th>
+						<th scope="col">Egreso</th>
+						<th scope="col">N° comprobante</th>
+						<th scope="col">Forma de pago</th>
+						<th scope="col">Anexos</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				{% if ordenes_pago %}
+
+				<tbody>
+					{% for orden in filter.qs %}
+						<tr class="text-center">
+							<td scope="row">
+								{% if orden.estado != 'ANLD' %}
+									{% if orden.estado == 'ENVD' %}
+										<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'orden_pago_editarAUTR_analista' orden.id %}"><i class="fas fa-edit"></i></a>
+									{% elif orden.estado == 'AUTR'%}
+										<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'orden_pago_editarPOST_AUTR' orden.id %}"><i class="fas fa-edit"></i></a>
+									{% elif orden.estado == 'PGDO'%}
+										<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'orden_pago_editarPGDO' orden.id %}"><i class="fas fa-edit"></i></a>
+									{% else %}
+										<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'orden_pago_editar' orden.id %}"><i class="fas fa-edit"></i></a>
+									{% endif %}
+								{% endif %}
+								{% if orden.estado == "GRBD" %}
+								<a href='javascript:;' onclick='anular({{ orden.id }});' class="btn btn-light darkgreen-text btn-sm"><i class="fas fa-trash"></i></a>
+								{% endif %}
+	                		</td>
+							<td scope="row">{{ orden.cod_ord_pago }}</td>
+							<td scope="row">{{ orden.fecha }}</td>
+							<td scope="row">{{ orden.get_estado_display }}</td>
+							<td scope="row">{{ orden.proveedor }}</td>
+							<td scope="row">{{ orden.centro_costos }}</td>
+							<td scope="row">{{ orden.egreso }}</td>
+							<td scope="row">{{ orden.n_comprobante }}</td>
+							<td scope="row">{{ orden.get_forma_pago_display }}</td>
+							<td scope="row">
+								{% if ordenIngreso.anexo %}
+				                    <a class="btn btn-secondary" href="#" target="_blank"> Descargar</a>
+				                {% else %}
+				                    No anexo
+				                {% endif %}
+							</td>
+							<td>
+								<a class="btn darkgreen-text btn-light btn-sm" href="#" data-toggle="tooltip" data-placement="top" title="Imprimir">
+									<i class="fas fa-print"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				{% else %}
+		<h2>No hay elementos que mostrar</h2>
+		{% endif %}
+			</table>
+		</div>
+		
+	</div>
+</div>
+
+<div id="myModal" class="modal">
+  	<div class="modal-content">
+	    <span class="close">&times;</span>
+	    <div id="modal-form">
+	    </div>
+  	</div>
+</div>
+
+{% endblock %}
+
+{% block extrafooter %}
+<script>
+  	function anular(id){
+  		var modal = document.getElementById("myModal");
+  		modal.style.display = "block";
+
+		var span = document.getElementsByClassName("close")[0];
+
+
+		span.onclick = function() {
+			modal.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+
+		$.ajax({
+			url: "{% url 'orden_pago_anular' %}",  
+			data:{
+				"pk": id
+			}, 
+			success: function (data) {   
+				$("#modal-form").html(data);  
+			}
+		});
+	}
+
+	function cerrar(e){
+		var modal = document.getElementById("myModal");
+  		modal.style.display = "block";
+		modal.style.display = "none";
+	}
+
+</script>
+<script src="{% static 'js/table.js' %}"></script>
+{% endblock %}

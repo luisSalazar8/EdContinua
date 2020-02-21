@@ -1,0 +1,94 @@
+{% extends "base_ventas.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="row mb-2 d-flex white-bg">
+    <div class="col-9 v-align">
+        <h2>CONSULTAS <span class="darkgreen-text">PROPUESTA CORPORATIVA</span></h2>
+    </div>
+    <div class="col-3 col-xl-3 v-align">
+        <a class="btn btn-secondary green-bg float-right" href="{% url 'propuesta_nuevo' %}"><i class="fas fa-plus"></i>
+            Agregar
+            nuevo</a>
+    </div>
+</div>
+
+
+<div class="row darkwhite-bg py-2">
+    <div class="col-12">
+        <form action="" method="get">
+            <div class="form-row ">
+                <div class="col-6">
+                    {{ filter.form.empresa|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ filter.form.cod_propuesta|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ filter.form.estado|as_crispy_field }}
+                </div>
+                <div class="col-6 align-self-end">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary green-bg float-right"><i class="fas fa-search"></i>
+                            Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+
+        <table id="dtBasicExample" class="table table-responsive-md border-bottom">
+            <thead class="white-text darkgreen-bg">
+                <tr>
+                    <td>Código propuesta</td>
+                    <td>Empresa</td>
+                    <td>Estado</td>
+                    <td>Anexo</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            {% if filter.qs %}
+
+            <tbody>
+                {% for propuesta in filter.qs %}
+                <tr>
+                    <td>{{propuesta.cod_propuesta}}</td>
+                    <td>{{propuesta.empresa}}</td>
+                    <td>{{propuesta.get_estado_display}}</td>
+                    <td>
+                        {% if propuesta.anexo %}
+                        <a class="btn btn-secondary" href="{{propuesta.anexo.url}}" target="_blank">
+                            Descargar
+                        </a>
+                        {% else %}
+                        No anexo
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'propuesta_editar' propuesta.pk %}"><i
+                                class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'propuesta_eliminar' propuesta.pk %}"><i
+                                class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+
+            </tbody>
+            {% else %}
+            <h2>No hay elementos que mostrar</h2>
+            {% endif %}
+        </table>
+
+    </div>
+</div>
+{% endblock content %}
+{% block extrafooter%}
+<script src="{% static 'js/table.js' %}"></script>
+{% endblock extrafooter %}

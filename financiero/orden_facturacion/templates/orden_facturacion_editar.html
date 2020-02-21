@@ -1,0 +1,246 @@
+{% extends "orden_facturacion_nuevo.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block editar%}
+{% load my_tags %}
+<div class="row mb-2">
+    <div class="col-12">
+        <h2 class="darkgreen-text text-uppercase">edición Orden de Facturación {{form.cod_orden_fact.value}} </h2>
+    </div>
+</div>
+{% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}
+<div class="row darkwhite-bg py-2">
+    <div class="col-6 mb-0">
+        <div id="div_id_n_tramite" class="form-group">
+            <label for="id_n_tramite" class="col-form-label requiredField">
+                N° de trámite<span class="asteriskField">*</span>
+            </label>
+            <div class="">
+                {{form.n_tramite}}
+            </div>
+        </div>
+    </div>
+    <div class="col-6 mb-0">
+        <div id="div_id_n_factura" class="form-group">
+
+            <label for="id_n_factura" class="col-form-label requiredField">
+                N° de factura<span class="asteriskField">*</span>
+            </label>
+            <div class="">
+                {{form.n_factura}}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mb-0">
+        <div id="div_id_anexo_factura" class="form-group">
+            <label for="id_anexo_factura" class="col-form-label requiredField">
+                Anexo de factura<span class="asteriskField">*</span>
+            </label>
+            <div class="">
+                {% if form.anexo_factura.value %}
+                <a class="btn btn-secondary btn-sm" href="{{form.anexo_factura.value.url}}" target="_blank">
+                    Descargar
+                </a>
+                {% else %}
+                {{form.anexo_factura}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+{% endif %}
+
+<input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
+<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
+{% endblock editar%}
+
+{% block tablas %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="row mb-3">
+            <div class="mt-2 campo p-2 pl-3 col-12">
+                <h5 class="black-text text-uppercase mb-0">Participantes</h5>
+            </div>
+        </div>
+        {% if form.estado.value == "ACTV" %}
+        <div class="row mb-2">
+            <div class="col-12">
+                <a id="add" class="btn btn-secondary green-bg btn-sm" href="{% url 'participante_nuevo' orden_id %}"><i
+                        class="fas fa-plus"></i>Agregar Participante</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div id="tabla" class="col-12">
+                <table id="participantes-table" class="table table-responsive-md border-bottom">
+                    <thead class="darkgreen-bg white-text">
+                        <tr>
+                            <th>Participante</th>
+                            <th>Nombre del evento</th>
+                            <th>Código del evento</th>
+                            <th>Valor Evento</th>
+                            <th>Descuento</th>
+                            <th>Valor total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {% if participantes %}
+
+                    <tbody>
+
+                        {% for p in participantes %}
+                        <tr class="text-center">
+                            <td>{{ p.participante }}</td>
+                            <td>{{ p.nombre_evento }}</td>
+                            <td>{{ p.cod_evento }}</td>
+                            <td class="sum">{{ p.valor_evento|currency}}</td>
+                            <td>{{ p.descuento|porcentaje }}</td>
+                            <td class="sum">{{ p.valor|currency }}</td>
+                            <td>
+                                {% if form.estado.value == "ACTV" %}
+
+                                <a class="btn btn-light btn-sm" href="{% url 'participante_editar' p.id orden_id %}"><i
+                                        class="fas fa-edit darkgreen-text"></i></a>
+                                <a onclick='eliminar({{ p.id }});' class="btn btn-light btn-sm" data-toggle='modal'
+                                    data-target="#ordenEliminarCenter" href='#'><i
+                                        class="fas fa-trash darkgreen-text"></i></a>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                    {% endif %}
+                </table>
+
+            </div>
+        </div>
+
+        <div id="summary" class="form-row">
+            <div class="col-6 col-md-3">
+                {{ form.subtotal|as_crispy_field }}
+                <label for="subtotal">Subtotal</label>
+                <input type="text" id="subtotal" class="form-control-plaintext form-control" readonly>
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.descuento_fact|as_crispy_field }}
+                <label for="descuento_fact">% Descuentos</label>
+                <input type="text" id="descuento_fact" class="form-control-plaintext form-control" readonly>
+
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.descuento_total|as_crispy_field }}
+                <label for="descuento_total">$ Descuento total</label>
+                <input type="text" id="descuento_total" class="form-control-plaintext form-control" readonly>
+
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.valor_total|as_crispy_field }}
+                <label for="valor_total">$ Valor total</label>
+                <input type="text" id="valor_total" class="form-control-plaintext form-control" readonly>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                {% if form.estado.value == "ANLD" %}
+                <hr>
+                {{form.motivo_anular|as_crispy_field}}
+                {% else %}
+                <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#ordenAgregarCenter" href='#'
+                    id="confirmar_guardar">Guardar</a>
+                <a class="btn btn-secondary" href="{% url 'orden_facturacion' %}" id="cancelar">Cancelar</a>
+                {% endif %}
+
+                {% if form.estado.value == "ACTV" %}
+                <button id="env-sol" class="btn btn-success darkgreen-bg float-right">Enviar
+                    solicitud</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ordenAgregarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ordenTitle">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-confirmacion">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock tablas %}
+
+{% block confirmar%}
+
+<div class="modal fade" id="ordenEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="participante-confirmacion">
+        </div>
+    </div>
+</div>
+{% endblock confirmar%}
+
+{% block n_par %}
+{% if form.estado.value != "ACTV" %}
+<div class="col-6 col-md-4">{{ form.n_participantes|as_crispy_field}}</div>
+{%else%}
+{{block.super}}
+{% endif %}
+{% endblock n_par %}
+
+{% block anexos %}
+<script>
+
+    function eliminar(id) {
+        $.ajax({
+            url: "{% url 'participante_confirmar_eliminar' %}",
+            data: {
+                'pk': id,
+                'fk': "{{orden_id}}"
+            },
+            success: function (data) {
+                $("#participante-confirmacion").html(data)
+            }
+        });
+    };
+
+    $(document).click('#cancelar',function(e){
+        $('form').submit();
+        e.preventDefault();
+    })
+</script>
+<script src="{% static 'js/calcular_valores_tabla.js' %}"></script>
+<script>
+
+    $("#confirmar_guardar").click(function (e) {
+        $.ajax({
+            url: $('#form-fact').attr("data-confirmacion-url"),
+            success: function (data) {
+                $("#modal-confirmacion").html(data);
+            }
+        })
+    });
+</script>
+
+{% if form.estado.value == "ACPF" %}
+<script src="{% static 'js/verificar_tramite_fact_doc.js' %}"></script>
+{% endif %}
+{% endblock anexos%}

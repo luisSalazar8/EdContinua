@@ -1,0 +1,94 @@
+{% extends "base_ventas.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="row mb-2 d-flex white-bg">
+    <div class="col-9 v-align">
+        <h2>CONSULTAS <span class="darkgreen-text">PROFORMAS</span></h2>
+    </div>
+    <div class="col-3 col-xl-3 v-align">
+        <a class="btn btn-secondary green-bg float-right" href="{% url 'proforma_nuevo' %}"><i class="fas fa-plus"></i>
+            Agregar
+            nuevo</a>
+    </div>
+</div>
+<div class="row darkwhite-bg py-2">
+    <div class="col-12">
+        <form action="" method="get">
+            {% csrf_token %}
+            <div class="form-row ">
+                <div class="col-4">
+                    {{ filter.form.codigo|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.nombreProforma|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.fechaSolicitud|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.fechaEnvio|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.estado|as_crispy_field }}
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-secondary green-bg float-right">
+                    <span class="fas fa-search"></span> Buscar</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <table id="dtBasicExample" class="table table-responsive-md border-bottom">
+            <thead class="white-text darkgreen-bg">
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Fecha Solicitud</th>
+                    <th>Fecha Envío</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            {% if filter.qs %}
+
+            <tbody>
+
+
+                {% for proforma in filter.qs %}
+                <tr class="text-center">
+                    <td>{{proforma.codigo}}</td>
+                    <td>{{proforma.nombreProforma}}</td>
+                    <td>{{proforma.empresa}}</td>
+                    <td>{{proforma.fechaSolicitud}}</td>
+                    <td>{{proforma.fechaEnvio}}</td>
+                    <td>{{proforma.montoProforma}}</td>
+                    <td>{{proforma.estado}}</td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'proforma_editar' proforma.id%}"><i
+                                class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'proforma_eliminar' proforma.id%}"><i
+                                class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% else %}
+            <h2>No hay elementos que mostrar</h2>
+            {% endif %}
+        </table>
+
+    </div>
+</div>
+{% endblock content %}
+{% block extrafooter%}
+<script src="{% static 'js/table.js' %}"></script>
+{% endblock extrafooter %}

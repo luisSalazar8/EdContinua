@@ -1,6 +1,8 @@
 from django import forms
 from .models import ReporteContacto, Capacitacion,Asesoria
+from ventas.validaciones import validate_horarios
 from dal import autocomplete
+
 
 
 class ReporteContactoForm(forms.ModelForm):
@@ -63,6 +65,11 @@ class ReporteContactoForm(forms.ModelForm):
             'tipo_empresa': forms.HiddenInput(),
             'sector': forms.HiddenInput(),
         }
+    def clean_hora_fin(self):
+        hora_inicio = self.cleaned_data["hora_inicio"]
+        hora_fin = self.cleaned_data["hora_fin"]
+        return validate_horarios(hora_inicio,hora_fin)
+    
 
 class CapacitacionForm(forms.ModelForm):
     class Meta:
@@ -115,6 +122,14 @@ class CapacitacionForm(forms.ModelForm):
             'horario_evento_inicio':forms.TimeInput(attrs={'type':'time'}),
             'horario_evento_fin':forms.TimeInput(attrs={'type':'time'})
         }
+    def clean_horario_evento_fin(self):
+        hora_inicio = self.cleaned_data["horario_evento_inicio"]
+        hora_fin = self.cleaned_data["horario_evento_fin"]
+        return validate_horarios(hora_inicio,hora_fin)
+            
+    
+  
+        
 
 class AsesoriaForm(forms.ModelForm):
     class Meta:
@@ -156,3 +171,4 @@ class AsesoriaForm(forms.ModelForm):
             'fecha_fin':forms.DateInput(attrs={'type':'date'}),
 
         }
+   

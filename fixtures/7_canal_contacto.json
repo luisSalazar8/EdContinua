@@ -17,7 +17,49 @@
 		"model":"interesados.CanalContacto",
 		"pk": 3,
 		"fields": {
-			"nombre": "Sitio web"
+			"nombre": "Linkedin"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 4,
+		"fields": {
+			"nombre": "Celular"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 5,
+		"fields": {
+			"nombre": "WhatsApp"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 6,
+		"fields": {
+			"nombre": "Correo Electrónico"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 7,
+		"fields": {
+			"nombre": "Video Conferencia"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 8,
+		"fields": {
+			"nombre": "Visita Cliente"
+		}
+	},
+	{
+		"model":"interesados.CanalContacto",
+		"pk": 9,
+		"fields": {
+			"nombre": "Pagina Web"
 		}
 	}
 ]

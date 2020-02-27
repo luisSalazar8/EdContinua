@@ -30,7 +30,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                 <div class="col-6 col-md-2 mb-0 " id="field-ruc-ci">
                     <div id="div_id_ruc_ci" class="form-group">
                       <label for="{{ form.ruc_ci.id_for_label}}" class="col-form-label requiredField"
-                        id="ruc_ci">RUC/CI</label><span class="asteriskField">*</span>
+                        id="ruc_ci">RUC</label><span class="asteriskField">*</span>
                       <div>
                         {{ form.ruc_ci}}
                         {% if form.ruc_ci.errors %}
@@ -48,7 +48,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                   <div class="col-6 col-md-2 mb-0 " id="field-razon">
                     <div id="div_id_razon_nombres" class="form-group">
                       <label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Razón
-                        Social/Nombres</label><span class="asteriskField">*</span>
+                        Social</label><span class="asteriskField">*</span>
                       <div>
                         {{ form.razon_nombres}}
                         {% if form.razon_nombres.errors %}
@@ -79,7 +79,10 @@ data-info-url="{% url 'ajax_info_id' %}">
                 <div class="col-6 col-md-3 mb-0">{{ form.numero_participantes|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.total_horas|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.cantidad_cursos|as_crispy_field }}</div>
+                
+                
                 <div class="col-6 col-md-3 mb-0">{{ form.monto_propuesta|as_crispy_field }}</div>
+                
                 <div class="col-6 col-md-3 mb-0">{{ form.margen_contribucion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.utilidad_esperada|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.exito|as_crispy_field }}</div>
@@ -123,6 +126,7 @@ data-info-url="{% url 'ajax_info_id' %}">
 </script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/propuesta_money.js' %}"></script>
 <script src="{% static 'js/propuesta_form.js' %}"></script>
 {% endblock extrafooter %}
 {% endblock content %}

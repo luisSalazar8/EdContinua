@@ -9,7 +9,11 @@ from ventas.reporte_contacto.models import ReporteContacto
 from django.db.models import Q
 from dal import autocomplete
 from datetime import date
+from .filters import PropuestaCorporativoFilter
 
+def propuesta_list(request):
+    f = PropuestaCorporativoFilter(request.GET, queryset=PropuestaCorporativo.objects.all().order_by('cod_propuesta'))
+    return render(request, 'propuesta_corp_list.html', {'filter': f})
 
 class PropuestaCorporativoCreate(CreateView):
     model=PropuestaCorporativo

@@ -18,9 +18,9 @@ class ReporteAutocomplete(autocomplete.Select2QuerySetView):
         super().__init__(*args, **kwargs)
 
     def get_queryset(self):
-        qs = ReporteContacto.objects.all().order_by("empresa")
+        qs = ReporteContacto.objects.all().order_by("ruc_ci")
         if self.q:
-            qs = qs.filter(Q(empresa__nombre__icontains=self.q) | Q(cod_reporte__istartswith=self.q))
+            qs = qs.filter(Q(ruc_ci__istartswith=self.q) | Q(cod_reporte__istartswith=self.q))
         return qs
 
     def has_add_permission(self, request):

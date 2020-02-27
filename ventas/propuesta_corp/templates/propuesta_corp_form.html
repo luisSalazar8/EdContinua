@@ -4,7 +4,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data" novalidate>
+<form method="post" novalidate id="form-fact" enctype="multipart/form-data" ,
+data-persona-url="{% url 'ajax_load_personas' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}"
+data-natural-url="{% url 'natural_nuevo'%}" data-juridica-url="{% url 'juridicas_view' %}"
+data-info-url="{% url 'ajax_info_id' %}">
     {% csrf_token %}
     <div class="row mb-2">
         <div class="col-12 col-xl-12">
@@ -14,19 +17,65 @@
                 {% endblock regedit %}
             </h2>
         </div>
+        <input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
+    <input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
     </div>
     <div class="row darkwhite-bg py-2">
         <div class="col-12">
             <div class="form-row">
-                <div class="col-6 col-md-3 mb-0">{{ form.cod_propuesta|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0">{{ form.cod_propuesta|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.version|as_crispy_field }}</div>
-                <div class="col-6 col-md-7 mb-0">{{ form.nombre_propuesta|as_crispy_field }}</div>
-                <div class="col-6 col-md-4 mb-0">{{ form.tipo_empresa|as_crispy_field }}</div>
                 <div class="col-6 col-md-4 mb-0">{{ form.reporte|as_crispy_field }}</div>
-                <div class="col-6 col-md-4 mb-0">{{ form.estado|as_crispy_field }}</div>
-                <div class="col-6 mb-0">{{ form.empresa|as_crispy_field }}</div>
-                <div class="col-6 mb-0">{{ form.sector|as_crispy_field }}</div>
-                <div class="col-6 col-md-3 mb-0">{{ form.fecha_solicitud|as_crispy_field }}</div>
+    
+                <div class="col-6 col-md-2 mb-0 " id="field-ruc-ci">
+                    <div id="div_id_ruc_ci" class="form-group">
+                      <label for="{{ form.ruc_ci.id_for_label}}" class="col-form-label requiredField"
+                        id="ruc_ci">RUC/CI</label><span class="asteriskField">*</span>
+                      <div>
+                        {{ form.ruc_ci}}
+                        {% if form.ruc_ci.errors %}
+                        {% for error in form.ruc_ci.errors %}
+                        <p class="invalid-feedback d-block">
+                          <strong>{{ error }}</strong>
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+          
+                      </div>
+                    </div>
+                  </div>
+          
+                  <div class="col-6 col-md-2 mb-0 " id="field-razon">
+                    <div id="div_id_razon_nombres" class="form-group">
+                      <label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Razón
+                        Social/Nombres</label><span class="asteriskField">*</span>
+                      <div>
+                        {{ form.razon_nombres}}
+                        {% if form.razon_nombres.errors %}
+                        {% for error in form.razon_nombres.errors %}
+                        <p class="invalid-feedback d-block">
+                          <strong>{{ error }}</strong>
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+          
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-2 mb-0">{{ form.tipo_empresa|as_crispy_field }}</div>
+                
+                  
+                <div class="col-6 col-md-2 mb-0">{{ form.sector|as_crispy_field }}</div>
+                
+                <div class="col-6 col-md-2 mb-0">{{ form.fecha_solicitud|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0">{{ form.fecha_envio|as_crispy_field }}</div>
+                
+                <div class="col-6 col-md-2 mb-0">{{ form.fecha_respuesta|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0 font-weight-bold text-success" >{{ form.estado|as_crispy_field }}</div>
+
+                <div class="col-6 col-md-3 mb-0">{{ form.asesor|as_crispy_field }}</div>
+                <div class="col-6 col-md-3 mb-0">{{ form.area_capacitacion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.numero_participantes|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.total_horas|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.cantidad_cursos|as_crispy_field }}</div>
@@ -34,8 +83,9 @@
                 <div class="col-6 col-md-3 mb-0">{{ form.margen_contribucion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.utilidad_esperada|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.exito|as_crispy_field }}</div>
-                <div class="col-6 mb-0">{{ form.lugar|as_crispy_field }}</div>
-                <div class="col-6 mb-0">{{ form.fecha_inicio_estimada|as_crispy_field }}</div>
+                <div class="col-6 col-md-7  mb-0">{{ form.lugar|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0">{{ form.fecha_inicio_estimada|as_crispy_field }}</div>
+                
                 <div class="col-12 mb-0">
                     <label class="col-form-label">{{ form.servicios_incluidos.label }}</label>
                     <div class="form-group">
@@ -51,7 +101,6 @@
                 </div>
                 <div class="col-12 mb-0">{{ form.observacion|as_crispy_field }}</div>
                 <div class="col-12 mb-0">{{ form.anexo|as_crispy_field }}</div>
-                <div class="col-12 mb-0">{{ form.nombre|as_crispy_field }}</div>
             </div>
         </div>
     </div>
@@ -62,6 +111,8 @@
         </div>
     </div>
     {{ form.media }}
+    {{ form.errors }}
+{{ form.non_field_errors }}
 </form>
 
 {% block extrafooter %}
@@ -70,5 +121,8 @@
         document.getElementById("id_cod_propuesta").readOnly = true;
     };
 </script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/propuesta_form.js' %}"></script>
 {% endblock extrafooter %}
 {% endblock content %}

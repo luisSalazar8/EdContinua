@@ -1,20 +1,31 @@
 from django import forms
 from .models import PropuestaCorporativo
 from ventas.personas_juridicas.models import Sector
+from ventas.validaciones import validate_porcentaje, validate_positive, validate_anexo_corp
 from dal import autocomplete
 
 class PropuestaCorporativoForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(PropuestaCorporativoForm, self).__init__(*args, **kwargs)
+        self.fields['version'].disabled = True
+        self.fields['version'].initial = 1
+        self.fields['sector'].disabled = True
+        self.fields['tipo_empresa'].disabled = True
+        #self.fields['ruc_ci'].disabled = True
+        #self.fields['razon_nombres'].disabled = True
+
     class Meta:
         model = PropuestaCorporativo
 
         fields=[
             'cod_propuesta',
             'version',
-            'nombre_propuesta',
+            'ruc_ci',
+            'razon_nombres',
             'tipo_empresa',
             'reporte',
             'estado',
-            'empresa',
             'sector',
             'fecha_solicitud',
             'numero_participantes',
@@ -29,17 +40,20 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'fecha_inicio_estimada',
             'observacion',
             'anexo',
-            'nombre',
+            'area_capacitacion',
+            'asesor',
+            'fecha_envio',
+            'fecha_respuesta'
         ]
 
         labels = {
             'cod_propuesta':'Código de la propuesta',
+            'ruc_ci': 'RUC',
+            'razon_nombres': 'Razón social',
             'version':'Versión',
-            'nombre_propuesta':'Nombre Propuesta',
             'tipo_empresa':'Tipo de Empresa',
             'reporte':'Reporte de contacto asociado',
             'estado':'Estado',
-            'empresa':'Empresa',
             'sector':'Sector',
             'fecha_solicitud':'Fecha de solicitud',
             'numero_participantes':'Número de participantes',
@@ -54,14 +68,38 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'fecha_inicio_estimada':'Fecha de inicio estimada',
             'observacion':'Observación',
             'anexo':'Anexo',
-            'nombre':'Nombre',
+            'area_capacitacion':'Área de capacitación ',
+            'asesor': 'Asesor',
+            'fecha_envio':"Fecha de Envio",
+            'fecha_respuesta':'Fecha de Respuesta'
         }
         
         widgets={
             'reporte':autocomplete.ModelSelect2(url='reporte-autocomplete'),
-            'empresa':autocomplete.ModelSelect2(url='empresa-autocomplete'),
+            'razon_nombres': forms.Select(attrs={'class': ' select3'}),
+            'ruc_ci': forms.Select(attrs={'class': 'form-control select3'}),
             'observacion':forms.Textarea(attrs={'rows':2}),
             'fecha_solicitud':forms.DateInput(attrs={'type':'date'}),
             'fecha_inicio_estimada':forms.DateInput(attrs={'type':'date'}),
-            'total_horas':forms.TimeInput(attrs={'type':'time'})
+            'fecha_envio':forms.DateInput(attrs={'type':'date'}),
+            'fecha_respuesta':forms.DateInput(attrs={'type':'date'}),
+            'exito':forms.NumberInput(attrs={'type':'number'}),
+            'total_horas':forms.TimeInput(attrs={'type':'time'}),
+            'anexo':forms.FileInput(attrs={'multiple': True})
         }
+    
+    def clean_exito(self):
+        exito = self.cleaned_data["exito"]
+        return validate_porcentaje(exito)
+    
+    def clean_margen_contribucion(self):
+        margen = self.cleaned_data["margen_contribucion"]
+        return validate_porcentaje(margen)
+    
+    def clean_anexo(self):
+        anexo = self.cleaned_data["anexo"]
+        print(anexo)
+        if(anexo!=None):
+            return validate_anexo_corp(anexo)
+        else:
+            return anexo

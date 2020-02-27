@@ -122,6 +122,8 @@ def validate_positive(value):
 			code="invalid",
             params={'value': value},
 		)
+
+
 def validate_horarios(hora_inicio,hora_fin):
 	i= str(hora_inicio)
 	f = str(hora_fin)
@@ -132,8 +134,29 @@ def validate_horarios(hora_inicio,hora_fin):
 		raise forms.ValidationError("La hora de fin es menor que la hora de inicio")
 	elif(valores_fin[0]== valores_inicio[0] and valores_fin[1] < valores_inicio[1]):
 		raise forms.ValidationError("Los minutos de la hora de fin son menores que los de la hora de inicio")
+	elif(valores_fin[0]== valores_inicio[0] and valores_fin[1] == valores_inicio[1]):
+		raise forms.ValidationError("La hora de inicio no puede ser igual a la hora de fin")	
 	else:
 		return hora_fin
+
+def validate_porcentaje(valor):
+	if(valor<0):
+		raise forms.ValidationError("El porcentaje no puede ser negativo")
+	elif(valor>100):
+		raise forms.ValidationError("El porcentaje no puede ser mayor a 100")
+	else:
+		return valor
+
+def validate_anexo_corp(valor):
+	val= valor.name.split(".")
+	extension=val[1]
+	types=["pdf","xlsx","jpg","jpeg","png"]
+	if(extension in types):
+		return valor
+	else:
+		raise forms.ValidationError("Este tipo de documento no es aceptado")
+	
+	
 		
     
 	

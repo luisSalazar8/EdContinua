@@ -19,62 +19,71 @@
     <div class="col-12">
         <form action="" method="get">
             <div class="form-row ">
-                <div class="col-6">
-                    {{ filter.form.empresa|as_crispy_field }}
-                </div>
+                
                 <div class="col-6">
                     {{ filter.form.cod_propuesta|as_crispy_field }}
                 </div>
                 <div class="col-6">
                     {{ filter.form.estado|as_crispy_field }}
                 </div>
-                <div class="col-6 align-self-end">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-secondary green-bg float-right"><i class="fas fa-search"></i>
-                            Buscar</button>
-                    </div>
+                <div class="col-6">
+                    {{ filter.form.ruc_ci|as_crispy_field }}
                 </div>
+                <div class="col-6">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ filter.form.area|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ filter.form.asesor|as_crispy_field }}
+                </div>
+                
             </div>
+            
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary green-bg float-right"><i class="fas fa-search"></i>
+                        Buscar</button>
+                </div>
+            
         </form>
 
     </div>
 </div>
 
 <div class="row mt-4">
-    <div class="col-12">
+    <div class="col-12 col-xl-12 table-container">
 
         <table id="dtBasicExample" class="table table-responsive-md border-bottom">
             <thead class="white-text darkgreen-bg">
                 <tr>
-                    <td>Código propuesta</td>
-                    <td>Empresa</td>
-                    <td>Estado</td>
-                    <td>Anexo</td>
-                    <td>Acciones</td>
+                    <th scope="col">Código propuesta</th>
+                    <th scope="col">Version</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Fecha Envio</th>
+                    <th scope="col">Fecha Respuesta</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             {% if filter.qs %}
 
             <tbody>
                 {% for propuesta in filter.qs %}
-                <tr>
-                    <td>{{propuesta.cod_propuesta}}</td>
-                    <td>{{propuesta.empresa}}</td>
-                    <td>{{propuesta.get_estado_display}}</td>
-                    <td>
-                        {% if propuesta.anexo %}
-                        <a class="btn btn-secondary" href="{{propuesta.anexo.url}}" target="_blank">
-                            Descargar
-                        </a>
-                        {% else %}
-                        No anexo
-                        {% endif %}
-                    </td>
-                    <td>
+                <tr class="text-center">
+                    <td scope="row">{{propuesta.cod_propuesta}}</td>
+                    <td scope="row">{{propuesta.version}}</td>
+                    <td scope="row">{{propuesta.ruc_ci}} {{propuesta.razon_nombres}}</td>
+                    <td scope="row">{{propuesta.get_estado_display}}</td>
+                    <td scope="row">{{propuesta.fecha_solicitud}}</td>
+                    <td scope="row">{{propuesta.fecha_solicitud}}</td>
+                    <td scope="row">{{propuesta.fecha_solicitud}}</td>
+                    
+                    <td scope="row">
                         <a class="btn btn-secondary btn-sm" href="{% url 'propuesta_editar' propuesta.pk %}"><i
                                 class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'propuesta_eliminar' propuesta.pk %}"><i
-                                class="fas fa-trash"></i></a>
+                        
                     </td>
                 </tr>
                 {% endfor %}

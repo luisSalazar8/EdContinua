@@ -20,6 +20,8 @@ class PropuestaCorporativoCreate(CreateView):
     def post(self, request,*args, **kwargs):
         self.object=self.get_object
         form=self.form_class(request.POST, request.FILES)
+        print("yep")
+        print(form.instance.ruc_ci)
         if form.is_valid():
             try:
                 pre = str(int(self.model.objects.latest('pk').pk+1))
@@ -30,6 +32,7 @@ class PropuestaCorporativoCreate(CreateView):
             form.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
+            print("no fue valida")
             return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -54,6 +57,18 @@ class PropuestaCorporativoUpdate(UpdateView):
         context['checked_servicios_incluidos']=l
         return context
 
+    def post(self, request, *args, **kwargs):
+        print("lol")
+        self.object=self.get_object
+        form=self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            pk=self.kwargs.get('pk',0)
+            form.instance.version= self.model.objects.get(pk=pk).version+1
+            form.save()
+            
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 class PropuestaCorporativoDelete(DeleteView):
     model=PropuestaCorporativo

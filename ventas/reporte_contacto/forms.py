@@ -65,6 +65,7 @@ class ReporteContactoForm(forms.ModelForm):
             'tipo_empresa': forms.HiddenInput(),
             'sector': forms.HiddenInput(),
         }
+        
     def clean_hora_fin(self):
         hora_inicio = self.cleaned_data["hora_inicio"]
         hora_fin = self.cleaned_data["hora_fin"]

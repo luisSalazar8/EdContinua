@@ -24,9 +24,11 @@ $('.select3').select2({
 });
 
 $("#field-ruc-ci [data-select2-id=3]").remove();
-$("#field-ruc-ci [data-select2-id=5]").remove();
+$("#field-ruc-ci [data-select2-id=4]").remove();
 $("#field-razon [data-select2-id=4]").remove();
-$("#field-razon [data-select2-id=6]").remove();
+$("#field-razon [data-select2-id=5]").remove();
+$("#id_ruc_ci").prop('disabled', true);
+$("#id_razon_nombres").prop('disabled', true);
 
 $(document).on('change', "#id_reporte", function (e) {
   console.log("se hizo");
@@ -226,5 +228,10 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
     $("#rn").val("");
     load_data();
   }
+});
+
+$(document).on('click', "#hack", function (e) {
+  $("#id_ruc_ci").prop('disabled', false);
+  $("#id_razon_nombres").prop('disabled', false);
 });
 

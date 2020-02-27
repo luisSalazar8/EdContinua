@@ -12,6 +12,7 @@ class PropuestaCorporativoForm(forms.ModelForm):
         self.fields['version'].initial = 1
         self.fields['sector'].disabled = True
         self.fields['tipo_empresa'].disabled = True
+        self.fields['reporte'].required = True
         #self.fields['ruc_ci'].disabled = True
         #self.fields['razon_nombres'].disabled = True
 

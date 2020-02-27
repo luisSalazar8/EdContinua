@@ -1,9 +1,8 @@
 //seccion de signo de dolar
 var monto=$("#div_id_monto_propuesta");
+var inp=$("#div_id_monto_propuesta input");
 var hijos=monto.children();
 const dnuevo=hijos[1];
-
-var inp=$("#div_id_monto_propuesta input");
 dnuevo.remove();
 const dollar=$("<div>");
 dollar.attr("class","input-icon")
@@ -15,9 +14,9 @@ monto.append(dollar);
 
 
 var utilidad=$("#div_id_utilidad_esperada");
+var inpu=$("#div_id_utilidad_esperada input");
 var hijosu=utilidad.children();
 const dnuevou=hijosu[1];
-var inpu=$("#div_id_utilidad_esperada input");
 dnuevou.remove();
 const dollaru=$("<div>");
 dollaru.attr("class","input-icon")

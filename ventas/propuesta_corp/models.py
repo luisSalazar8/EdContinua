@@ -24,7 +24,7 @@ class PropuestaCorporativo(models.Model):
     cod_propuesta=models.CharField(max_length=20, blank=True)
     version=models.PositiveIntegerField()
     tipo_empresa=models.ForeignKey(TipoEmpresa, on_delete=models.SET_NULL, null=True, blank=True)
-    reporte=models.ForeignKey(ReporteContacto, on_delete=models.SET_NULL, null=True, blank=True)
+    reporte=models.ForeignKey(ReporteContacto, on_delete=models.CASCADE, blank=True)
     estado=models.CharField(max_length=15,
                             choices=ESTADO_CHOICES,
                             default='SG')

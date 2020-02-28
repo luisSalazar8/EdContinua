@@ -76,7 +76,7 @@
 				</div>
 			</div>
 
-			<div class="form-row">
+			{% comment %} <div class="form-row">
 				<div class="col-4 col-xl-4">
 					{{ filter.form.contacto_cedula|as_crispy_field }}
 				</div>
@@ -97,7 +97,7 @@
 				<div class="col-4 col-xl-4">
 					{{ filter.form.contacto_correo|as_crispy_field }}
 				</div>
-			</div>
+			</div> {% endcomment %}
 
 			<button type="submit" class="btn btn-secondary green-bg float-right">
 				<i class="fas fa-search"></i> Buscar</button>

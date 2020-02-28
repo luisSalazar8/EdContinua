@@ -1,11 +1,19 @@
 from dal import autocomplete
-
+from ventas.personas_naturales.models import Persona_Natural
 from . import models
 from django import forms
 import django_filters
 
+
+
+class Contacto_Natural_Form(forms.ModelForm):
+    cedula = forms.CharField(label="Cedula_Contacto",max_length=13)
+
+
 class DateInput(forms.DateInput):
     input_type = 'date'
+
+
 class JuridicaForm(forms.ModelForm):
 
 	class Meta:
@@ -24,13 +32,13 @@ class JuridicaForm(forms.ModelForm):
 					"representante",
 					"maximo_facturas",
 					"forma_pago",
-					"contacto_cedula",
-					"contacto_nombres",
-					"contacto_apellidos",
-					"contacto_cargo",
-					"contacto_telefono",
-					"contacto_celular",
-					"contacto_correo"
+					# "contacto_cedula",
+					# "contacto_nombres",
+					# "contacto_apellidos",
+					# "contacto_cargo",
+					# "contacto_telefono",
+					# "contacto_celular",
+					# "contacto_correo"
 					]
 
 
@@ -48,13 +56,13 @@ class JuridicaForm(forms.ModelForm):
 					"representante": "Representante legal",
 					"maximo_facturas": "Fecha máxima de recepción de facturas",
 					"forma_pago": "Forma usual de pago",
-					"contacto_cedula": "Cédula",
-					"contacto_nombres": "Nombres",
-					"contacto_apellidos":"Apellidos",
-					"contacto_cargo": "Cargo",
-					"contacto_telefono":"Teléfono",
-					"contacto_celular": "Celular",
-					"contacto_correo": "Correo electrónico"
+					# "contacto_cedula": "Cédula",
+					# "contacto_nombres": "Nombres",
+					# "contacto_apellidos":"Apellidos",
+					# "contacto_cargo": "Cargo",
+					# "contacto_telefono":"Teléfono",
+					# "contacto_celular": "Celular",
+					# "contacto_correo": "Correo electrónico"
 					}
 		widgets = {
 				"nombre":forms.TextInput(attrs={"class":"form-control"}),
@@ -70,13 +78,13 @@ class JuridicaForm(forms.ModelForm):
 				"representante":forms.TextInput(attrs={"class":"form-control"}),
 				"maximo_facturas":forms.DateInput(format='%Y-%m-%d', attrs={'class': 'datepicker', "type":"date"}),
 				"forma_pago":forms.Select(attrs={"class":"form-control"}),
-				"contacto_cedula":forms.TextInput(attrs={"class":"form-control"}),
-				"contacto_nombres":forms.TextInput(attrs={"class":"form-control"}),
-				"contacto_apellidos":forms.TextInput(attrs={"class":"form-control"}),
-				"contacto_cargo":forms.TextInput(attrs={"class":"form-control"}),
-				"contacto_telefono":forms.TextInput(attrs={"class":"form-control","type":"tel"}),
-				"contacto_celular":forms.TextInput(attrs={"class":"form-control","type":"tel"}),
-				"contacto_correo":forms.EmailInput(attrs={"class":"form-control"})
+				# "contacto_cedula":forms.TextInput(attrs={"class":"form-control"}),
+				# "contacto_nombres":forms.TextInput(attrs={"class":"form-control"}),
+				# "contacto_apellidos":forms.TextInput(attrs={"class":"form-control"}),
+				# "contacto_cargo":forms.TextInput(attrs={"class":"form-control"}),
+				# "contacto_telefono":forms.TextInput(attrs={"class":"form-control","type":"tel"}),
+				# "contacto_celular":forms.TextInput(attrs={"class":"form-control","type":"tel"}),
+				# "contacto_correo":forms.EmailInput(attrs={"class":"form-control"})
 
 
 		}
@@ -102,12 +110,12 @@ class JuridicaFilter(django_filters.FilterSet):
 	celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
 	correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo electrónico'}))
 	forma_pago = django_filters.ModelChoiceFilter(label="", empty_label="Forma usual de pago", queryset=models.FormaPago.objects.all())
-	contacto_cedula = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cédula'}))
-	contacto_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres'}))
-	contacto_apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos'}))
-	contacto_telefono = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Teléfono'}))
-	contacto_celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
-	contacto_correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo Electrónico'}))
+	# contacto_cedula = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cédula'}))
+	# contacto_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres'}))
+	# contacto_apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos'}))
+	# contacto_telefono = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Teléfono'}))
+	# contacto_celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
+	# contacto_correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo Electrónico'}))
 	provincia = django_filters.ModelChoiceFilter(label="", empty_label="Provincia", queryset=models.Provincia.objects.all())
 
 	def ciudades(request):
@@ -132,12 +140,12 @@ class JuridicaFilter(django_filters.FilterSet):
 					"celular",
 					"correo",
 					"forma_pago",
-					"contacto_cedula",
-					"contacto_nombres",
-					"contacto_apellidos",
-					"contacto_telefono",
-					"contacto_celular",
-					"contacto_correo"
+					# "contacto_cedula",
+					# "contacto_nombres",
+					# "contacto_apellidos",
+					# "contacto_telefono",
+					# "contacto_celular",
+					# "contacto_correo"
 					]
 
 		widgets = {

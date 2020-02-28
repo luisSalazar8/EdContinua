@@ -21,25 +21,29 @@
     <div class="col-12">
         <form action="" method="get">
             <div class="form-row ">
-                <div class="col-6">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.cod_reporte|as_crispy_field }}
                 </div>
-                <div class="col-6">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.fecha|as_crispy_field }}
                 </div>
-                <div class="col-6">
+            </div>
+            <div class="form-row ">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.ruc_ci|as_crispy_field }}
                 </div>
-                <div class="col-6">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.razon_nombres|as_crispy_field }}
                 </div>
-                <div class="col-4">
+            </div>
+            <div class="form-row ">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.tipo_empresa|as_crispy_field }}
                 </div>
-                <div class="col-4">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.sector|as_crispy_field }}
                 </div>
-                <div class="col-4">
+                <div class="col-6 col-md-4 mb-0 ">
                     {{ filter.form.canal_de_contacto|as_crispy_field }}
                 </div>
             </div>
@@ -92,8 +96,8 @@
                     <td scope="row">{{reporte.fecha}}</td>
                     <td scope="row">{{reporte.canal_de_contacto}}</td>
                     <td scope="row">
-                        <a class="btn btn-light btn-sm" href="{% url 'reporte_editar' reporte.pk %}"><i
-                                class="fas fa-edit darkgreen-text"></i></a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'reporte_editar' reporte.pk %}"><i
+                                class="fas fa-edit"></i></a>
                      
                         
                     </td>

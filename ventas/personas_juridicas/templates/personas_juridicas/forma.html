@@ -27,11 +27,14 @@
 	</div>
 </div>
 
-<form method="post" id="forma_test" data-cities-url="{% url 'ajax_load_ciudades' %}" novalidate>
+<form method="post" novalidate id="form_test" data-cities-url="{% url 'ajax_load_ciudades' %}" enctype="multipart/form-data" , data-persona-url="{% url 'ajax_load_personas' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}" eliminar-contacto-url="{% url 'eliminar_contacto'%}"data-natural-url="{% url 'natural_nuevo'%}" data-juridica-url="{% url 'juridicas_view' %}"
+data-info-url="{% url 'ajax_info_id' %}">
 	{% csrf_token %}
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
 			<div class=" form-row">
+				<input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
+    			<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
 				<div class="col-6 col-xl-4">
 					{{ form.nombre |as_crispy_field}}
 				</div>
@@ -80,63 +83,23 @@
 					{{ form.forma_pago |as_crispy_field}}
 				</div>
 			</div>
+	</form>
+			{% block tabla %}
+				<div class="row mt-3">
+					<div class="col-12">
+						<button type="submit" class="btn btn-secondary green-bg">Siguiente</button>
+						<a class="btn btn-secondary" href="{% url 'index_juridicas' %}"> Cancelar </a>
+					 </div>
+				 </div>
+			{% endblock tabla %}
+			
+	
 
-			<div class="row">
-				<div class="campo col-12 mt-2 p-2 pl-3 ">
-					<h5 class="black-text text-uppercase mb-0">Contacto empresa</h5>
-				</div>
-			</div>
-
-			<div class="form-row">
-				<div class="col-2 col-xl-2">
-					{{ form.contacto_cedula|as_crispy_field}}
-				</div>
-
-				<div class="col-5 col-xl-5">
-
-					{{ form.contacto_nombres |as_crispy_field}}
-				</div>
-
-				<div class="col-5 col-xl-5">
-
-					{{ form.contacto_apellidos|as_crispy_field}}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col-6 col-xl-6">
-					{{ form.contacto_cargo |as_crispy_field}}
-				</div>
-				<div class="col-6 col-xl-6">
-
-					{{ form.contacto_correo |as_crispy_field}}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col-6 col-xl-6">
-
-					{{ form.contacto_telefono|as_crispy_field}}
-				</div>
-				<div class="col-6 col-xl-6">
-
-					{{ form.contacto_celular|as_crispy_field}}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row mt-3">
-		<div class="col-12">
-			<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
-			<a class="btn btn-secondary" href="{% url 'index_juridicas' %}"> Cancelar </a>
-		</div>
-	</div>
-	</div>
-	{{ form.media }}
-</form>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
 	$("#id_provincia").change(function () {
-		var url = $("#forma_test").attr("data-cities-url");  // get the url of the `load_cities` view
+		var url = $("#form_test").attr("data-cities-url");  // get the url of the `load_cities` view
 		var provinciaId = $(this).val();  // get the selected country ID from the HTML input
 
 		$.ajax({                       // initialize an AJAX request
@@ -151,4 +114,5 @@
 
 	});
 </script>
+
 {% endblock %}

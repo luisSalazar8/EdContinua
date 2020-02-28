@@ -26,40 +26,43 @@
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-8 col-xl-8">
-					{{ filter.form.nombre|as_crispy_field }}
-				</div>
 				<div class="col-4 col-xl-4">
 					{{ filter.form.ruc|as_crispy_field }}
 				</div>
+				<div class="col-8 col-xl-8">
+					{{ filter.form.nombre|as_crispy_field }}
+				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-5 col-xl-5">
+				<div class="col-3 col-xl-3">
 					{{ filter.form.tipo_empresa|as_crispy_field }}
 				</div>
-				<div class="col-7 col-xl-7">
+				<div class="col-3 col-xl-3">
 					{{ filter.form.sector|as_crispy_field }}
+				</div>
+				<div class="col-3 col-xl-3">
+					{{ filter.form.provincia|as_crispy_field }}
+				</div>
+				<div class="col-3 col-xl-3">
+					{{ filter.form.ciudad|as_crispy_field }}
 				</div>
 			</div>
 			<div class="form-row">
 
-				<div class="col-2 col-xl-2">
-					{{ filter.form.provincia|as_crispy_field }}
-				</div>
-				<div class="col-2 col-xl-2">
-					{{ filter.form.ciudad|as_crispy_field }}
-				</div>
-				<div class="col-8 col-xl-8">
+				<div class="col-6 col-xl-6">
 					{{ filter.form.direccion|as_crispy_field }}
 				</div>
-			</div>
-			<div class="form-row">
 				<div class="col-3 col-xl-3">
 					{{ filter.form.telefono|as_crispy_field }}
 				</div>
 				<div class="col-3 col-xl-3">
 					{{ filter.form.celular|as_crispy_field }}
 				</div>
+
+			</div>
+	
+			<div class="form-row">
+				
 				<div class="col-3 col-xl-3">
 					{{ filter.form.correo|as_crispy_field }}
 				</div>
@@ -73,7 +76,7 @@
 				</div>
 			</div>
 
-			<div class="form-row">
+			{% comment %} <div class="form-row">
 				<div class="col-4 col-xl-4">
 					{{ filter.form.contacto_cedula|as_crispy_field }}
 				</div>
@@ -94,7 +97,7 @@
 				<div class="col-4 col-xl-4">
 					{{ filter.form.contacto_correo|as_crispy_field }}
 				</div>
-			</div>
+			</div> {% endcomment %}
 
 			<button type="submit" class="btn btn-secondary green-bg float-right">
 				<i class="fas fa-search"></i> Buscar</button>

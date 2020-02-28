@@ -133,12 +133,19 @@ def load_info(request):
     contacto=""
     sector=""
     tipo=""
+    ##Para Natural
+    email =""
+    celular = ""
+    cargo = ""
 
     if id!="":
         if persona=="Natural":
             cliente=Persona_Natural.objects.get(pk=id)
             direccion=cliente.dir_domicilio
             telefono=cliente.tel_domicilio
+            celular=cliente.celular
+            email = cliente.email
+            cargo = cliente.cargo
         elif persona=="Jurídica":
             print("si entra")
             cliente=Juridica.objects.get(ruc=id)
@@ -146,8 +153,8 @@ def load_info(request):
             #telefono= cliente.telefono
             sector= cliente.sector.nombre
             tipo= cliente.tipo_empresa.nombre
-            #contacto=cliente.contacto_nombres+" "+cliente.contacto_apellidos
-    return JsonResponse({'direccion': direccion, 'telefono': telefono, 'contacto': contacto, 'sector': sector, 'tipo': tipo})
+
+    return JsonResponse({'direccion': direccion, 'telefono': telefono, 'contacto': contacto, 'sector': sector, 'tipo': tipo,'email':email,'celular':celular,'cargo':cargo})
     
 def load_info_ci(request):
     pk = request.GET.get("pk")

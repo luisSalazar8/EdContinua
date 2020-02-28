@@ -235,3 +235,7 @@ $(document).on('click', "#hack", function (e) {
   $("#id_razon_nombres").prop('disabled', false);
 });
 
+//Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
+$(document).on('change', "input", function (e) {
+  $(this).css("box-shadow", "0 0 0px 1000px white inset");
+});

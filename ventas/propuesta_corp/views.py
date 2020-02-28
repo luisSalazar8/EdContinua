@@ -12,7 +12,7 @@ from datetime import date
 from .filters import PropuestaCorporativoFilter
 
 def propuesta_list(request):
-    f = PropuestaCorporativoFilter(request.GET, queryset=PropuestaCorporativo.objects.all().order_by('cod_propuesta'))
+    f = PropuestaCorporativoFilter(request.GET, queryset=PropuestaCorporativo.objects.all().order_by('cod_propuesta', 'version'))
     return render(request, 'propuesta_corp_list.html', {'filter': f})
 
 class PropuestaCorporativoCreate(CreateView):

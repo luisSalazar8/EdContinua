@@ -12,7 +12,7 @@ class PropuestaCorporativoFilter(django_filters.FilterSet):
     cod_propuesta = django_filters.CharFilter(lookup_expr='icontains', label='', widget=forms.TextInput(attrs={'placeholder': 'Código de Propuesta'}))
     ruc_ci = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'RUC'}))
     razon_nombres = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Empresa'}))
-    area = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Área de capacitación '}))
+    area_capacitacion = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Área de capacitación '}))
     asesor = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Asesor'}))
     class Meta:
         model = PropuestaCorporativo
@@ -22,6 +22,6 @@ class PropuestaCorporativoFilter(django_filters.FilterSet):
             'cod_propuesta',
             'razon_nombres',
             'ruc_ci',
-            'area',
+            'area_capacitacion',
             'asesor'
         ]

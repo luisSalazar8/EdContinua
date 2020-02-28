@@ -33,7 +33,7 @@ class PropuestaCorporativo(models.Model):
     sector=models.ForeignKey(Sector, on_delete=models.SET_NULL, null=True, blank=True)
     fecha_solicitud=models.CharField(max_length=12)
     numero_participantes=models.PositiveIntegerField()
-    total_horas=models.TimeField()
+    total_horas=models.PositiveIntegerField()
     cantidad_cursos=models.PositiveIntegerField()
     monto_propuesta=models.FloatField()
     margen_contribucion=models.FloatField( max_length=3)

@@ -85,7 +85,6 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'fecha_envio':forms.DateInput(attrs={'type':'date'}),
             'fecha_respuesta':forms.DateInput(attrs={'type':'date'}),
             'exito':forms.NumberInput(attrs={'type':'number'}),
-            'total_horas':forms.TimeInput(attrs={'type':'time'}),
             'anexo':forms.FileInput(attrs={'multiple': True})
         }
     

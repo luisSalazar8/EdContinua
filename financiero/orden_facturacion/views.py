@@ -142,11 +142,11 @@ def load_info(request):
         elif persona=="Jurídica":
             print("si entra")
             cliente=Juridica.objects.get(ruc=id)
-            direccion= cliente.direccion
-            telefono= cliente.telefono
+            #direccion= cliente.direccion
+            #telefono= cliente.telefono
             sector= cliente.sector.nombre
             tipo= cliente.tipo_empresa.nombre
-            contacto=cliente.contacto_nombres+" "+cliente.contacto_apellidos
+            #contacto=cliente.contacto_nombres+" "+cliente.contacto_apellidos
     return JsonResponse({'direccion': direccion, 'telefono': telefono, 'contacto': contacto, 'sector': sector, 'tipo': tipo})
     
 def load_info_ci(request):

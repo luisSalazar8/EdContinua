@@ -28,15 +28,22 @@ class PropuestaCorporativoCreate(CreateView):
         print(form.instance.ruc_ci)
         if form.is_valid():
             try:
-                pre = str(int(self.model.objects.latest('pk').pk+1))
-                sec = '0'*(4-len(pre))+pre
+                cod = PropuestaCorporativo.objects.all().order_by('cod_propuesta').latest('cod_propuesta')
+                print(cod)
+                datos=cod.cod_propuesta.split("-")
+                codant=datos[2]
+                pre=int(codant)+1
+                print(pre)
+                sec = '0'*(4-len(str(pre)))+str(pre)
+                #pre = str(int(self.model.objects.latest('pk').pk+1))
+                #sec = '0'*(4-len(pre))+pre
+                
             except self.model.DoesNotExist:
                 sec = '0001'
             form.instance.cod_propuesta = 'PRO-CEC-'+sec+'-'+str(date.today().year)
             form.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
-            print("no fue valida")
             return self.render_to_response(self.get_context_data(form=form))
 
 

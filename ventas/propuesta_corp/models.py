@@ -5,6 +5,9 @@ from multiselectfield import MultiSelectField
 import ventas.validaciones
 
 # Create your models here.
+
+
+
 class PropuestaCorporativo(models.Model):
 
     ESTADO_CHOICES= [
@@ -47,13 +50,14 @@ class PropuestaCorporativo(models.Model):
     fecha_envio=models.CharField(max_length=12)
     fecha_respuesta=models.CharField(max_length=12)
     observacion=models.CharField(max_length=250,blank=True,null=True)
-    anexo=models.FileField(upload_to='uploads/',blank=True, null=True)
 
     area_capacitacion= models.CharField(max_length=50, blank=True)
     asesor=models.CharField(max_length=50, blank=True)
 
-
     def delete(self, *arg, **kwargs):
-        self.anexo.delete()
+     #   self.anexo.delete()
         super().delete(*arg,**kwargs)
 
+class PropuestaFile(models.Model):
+    file = models.FileField(upload_to='uploads/',blank=True, null=True)
+    propuesta = models.ForeignKey(PropuestaCorporativo, on_delete=models.CASCADE, related_name='files')

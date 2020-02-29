@@ -86,7 +86,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                 <div class="col-6 col-md-3 mb-0">{{ form.margen_contribucion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.utilidad_esperada|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.exito|as_crispy_field }}</div>
-                <div class="col-6 col-md-7  mb-0">{{ form.lugar|as_crispy_field }}</div>
+                <div class="col-6 col-md-7 mb-0">{{ form.lugar|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_inicio_estimada|as_crispy_field }}</div>
                 
                 <div class="col-12 mb-0">
@@ -103,7 +103,12 @@ data-info-url="{% url 'ajax_info_id' %}">
                     </div>
                 </div>
                 <div class="col-12 mb-0">{{ form.observacion|as_crispy_field }}</div>
-                <div class="col-12 mb-0">{{ form.anexo|as_crispy_field }}</div>
+                {{ formset.management_form }}
+                {% for form in formset.forms %}
+                <div class="row form-row spacer anexo col-12 col-md-12 mb-0">
+                  {{ form.file}}
+                </div>
+                  {% endfor %}
             </div>
         </div>
     </div>
@@ -129,5 +134,6 @@ data-info-url="{% url 'ajax_info_id' %}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/propuesta_money.js' %}"></script>
 <script src="{% static 'js/propuesta_form.js' %}"></script>
+<script src="{% static 'js/propuesta_files.js' %}"></script>
 {% endblock extrafooter %}
 {% endblock content %}

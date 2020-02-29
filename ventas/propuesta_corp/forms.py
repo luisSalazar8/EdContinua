@@ -1,8 +1,10 @@
 from django import forms
-from .models import PropuestaCorporativo
+from .models import PropuestaCorporativo,PropuestaFile
 from ventas.personas_juridicas.models import Sector
 from ventas.validaciones import validate_porcentaje, validate_positive, validate_anexo_corp
 from dal import autocomplete
+from django.forms import modelformset_factory
+from django.forms.models import inlineformset_factory
 
 class PropuestaCorporativoForm(forms.ModelForm):
 
@@ -40,7 +42,6 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'servicios_incluidos',
             'fecha_inicio_estimada',
             'observacion',
-            'anexo',
             'area_capacitacion',
             'asesor',
             'fecha_envio',
@@ -68,7 +69,6 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'servicios_incluidos':'Servicios incluidos',
             'fecha_inicio_estimada':'Fecha de inicio estimada',
             'observacion':'Observación',
-            'anexo':'Anexo',
             'area_capacitacion':'Área de capacitación ',
             'asesor': 'Asesor',
             'fecha_envio':"Fecha de Envio",
@@ -84,8 +84,7 @@ class PropuestaCorporativoForm(forms.ModelForm):
             'fecha_inicio_estimada':forms.DateInput(attrs={'type':'date'}),
             'fecha_envio':forms.DateInput(attrs={'type':'date'}),
             'fecha_respuesta':forms.DateInput(attrs={'type':'date'}),
-            'exito':forms.NumberInput(attrs={'type':'number'}),
-            'anexo':forms.FileInput(attrs={'multiple': True})
+            'exito':forms.NumberInput(attrs={'type':'number'})
         }
     
     def clean_exito(self):
@@ -96,10 +95,29 @@ class PropuestaCorporativoForm(forms.ModelForm):
         margen = self.cleaned_data["margen_contribucion"]
         return validate_porcentaje(margen)
     
-    def clean_anexo(self):
-        anexo = self.cleaned_data["anexo"]
-        print(anexo)
-        if(anexo!=None):
-            return validate_anexo_corp(anexo)
-        else:
-            return anexo
+  #  def clean_anexo(self):
+   #     anexo = self.cleaned_data["anexo"]
+    #    print(anexo)
+     #   if(anexo!=None):
+      #      return validate_anexo_corp(anexo)
+      #  else:
+       #     return anexo
+
+
+class FileForm(forms.ModelForm):
+
+    class Meta: 
+        model= PropuestaFile 
+        exclude=()
+
+#FileFormset = modelformset_factory(
+#    PropuestaFile,
+#    fields=('file', ),
+#    extra=1
+    
+#)
+
+FileFormset = inlineformset_factory(
+    PropuestaCorporativo, PropuestaFile, form=FileForm,
+    fields=['file'], extra=1,can_delete=True
+    )

@@ -1,6 +1,3 @@
-
-
-
 var p_url = "";
 var sector="";
 
@@ -241,3 +238,13 @@ $(document).on('change', "input", function (e) {
     $(this).css("box-shadow", "0 0 0px 1000px white inset");
 }
 });
+
+
+/*
+<div id="div_anexos" class="form-group">
+                      <label for="id_archivo" class="col-form-label">Seleccione uno o mas archivos</label>
+                      <div class>
+                        <input type="file" id="id_archivo" name="archivo" class="form-control anexo" />
+                      </div>
+                  </div>*/
+

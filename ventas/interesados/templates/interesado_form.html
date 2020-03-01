@@ -1,4 +1,4 @@
-{% extends 'base_financiero.html' %}
+{% extends 'base_ventas.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% load index %}
@@ -37,6 +37,11 @@
 				</div>
 				<div class="col-6">
 					{{form.canal_de_contacto|as_crispy_field}}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-12">
+					{{ form.motivo_interes|as_crispy_field }}
 				</div>
 			</div>
 

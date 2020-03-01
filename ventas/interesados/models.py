@@ -9,6 +9,7 @@ class CanalContacto(models.Model):
 class Interesado(models.Model):
 	nombre = models.CharField(max_length=50, validators=[ventas.validaciones.validate_letras])
 	apellido = models.CharField(max_length=50, validators=[ventas.validaciones.validate_letras])
-	celular = models.CharField(max_length=20, validators=[ventas.validaciones.validate_celular])
-	correo = models.EmailField(max_length=100)
+	celular = models.CharField(max_length=20, unique=True, validators=[ventas.validaciones.validate_celular])
+	correo = models.EmailField(max_length=100, unique= True)
 	canal_de_contacto = models.ForeignKey(CanalContacto, on_delete=models.SET_NULL, blank=False, null=True)
+	motivo_interes=models.CharField(max_length=850)

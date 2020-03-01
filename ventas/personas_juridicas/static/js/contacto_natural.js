@@ -227,7 +227,7 @@ function Guardar(){
     var cedulas = []
     valores_cedulas = $(".td_cedula");
     
-    if(valores_cedulas){
+    if(valores_cedulas != " "){
       for(i=0;i<valores_cedulas.length;i++){
           ced = $(valores_cedulas[i]).text();
           cedulas.push(ced)

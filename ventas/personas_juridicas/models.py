@@ -62,7 +62,7 @@ class Contacto_natural(models.Model):
 	empresa = models.ForeignKey(Juridica,verbose_name= "Empresa del contacto",blank = True, on_delete=models.CASCADE)
 	contacto = models.CharField(max_length=13,verbose_name="Cedula del Contacto",blank=True)
 	def __str__(self):
-		return "Contacto "+ str(self.pk) + " "+ self.contacto
+		return "Contacto "+ str(self.pk) + " "+ self.contacto + "de la empresa " + str(self.empresa)
 
 
 

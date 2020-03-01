@@ -7,6 +7,7 @@ from .models import Ciudad
 from .models import Sector
 from .models import TipoEmpresa
 from .models import Contacto_natural
+from  ventas.personas_naturales.models import Persona_Natural
 #Forms
 from . import forms
 from financiero.orden_facturacion.forms import OrdenFacturacionForm
@@ -63,6 +64,9 @@ class SectorAutocomplete(autocomplete.Select2QuerySetView):
 # Create your views here.
 def index_juridicas(request):
 	juridicas_list = Juridica.objects.all().order_by("pk")
+	prueba = Contacto_natural.objects.select_related('empresa')
+	for i in prueba:
+		print(i)
 	filter = forms.JuridicaFilter(request.GET, queryset=juridicas_list )
 	paginator = Paginator(filter.qs, 30) 
 	page = request.GET.get('page')
@@ -108,7 +112,7 @@ def juridicas_editar(request,pk):
 						cedulas_modelo.append(i.contacto)
 					for i in cedulas_post:
 						if i not in cedulas_modelo:
-							p.contacto_natural_set.create(contacto = i )	
+							p.contacto_natural_set.create(contacto = i)	
 					
 					return HttpResponseRedirect(reverse_lazy("index_juridicas"))
 		else:
@@ -121,6 +125,7 @@ def juridicas_editar(request,pk):
 		final = []
 		contactos = []
 		cedulas_contactos = Contacto_natural.objects.filter(empresa = pk)
+		print(cedulas_contactos)
 		for i in cedulas_contactos:
 			if (i.contacto not in contactos):
 				contactos.append(i.contacto)

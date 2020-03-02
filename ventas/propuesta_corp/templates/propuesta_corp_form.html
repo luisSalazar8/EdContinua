@@ -104,13 +104,13 @@ data-info-url="{% url 'ajax_info_id' %}">
                     </div>
                 </div>
                 <div class="col-12 mb-0">{{ form.observacion|as_crispy_field }}</div>
-                <table>
+                <table class="table table-responsive-md border-bottom">
                   {{ formset.management_form|crispy }}
                   
                       {% for form in formset.forms %}
-                              <tr class="{% cycle 'row1' 'row2' %} form-row formset_row-{{ formset.prefix }}">
+                              <tr class="{% cycle 'row1' 'row2' %} text-centered form-control form-row formset_row-{{ formset.prefix }}">
                                   {% for field in form.visible_fields %}
-                                  <td>
+                                  <td scope="row">
                                       {# Include the hidden fields in the form #}
                                       {% if forloop.first %}
                                           {% for hidden in form.hidden_fields %}

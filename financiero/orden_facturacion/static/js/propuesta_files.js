@@ -66,3 +66,20 @@
             console.log($(el).attr('name'));
         }
 
+    if($("[name=cod_propuesta]").val()!=""){
+        $("td a + input").each(function() {
+            $(this).remove();
+          });
+        
+          $("td a + label").each(function() {
+            $(this).remove();
+        });
+    }else{
+        $("td input[type=checkbox]").each(function() {
+            $(this).parent().remove();
+            $(this).remove();
+          });
+        
+          
+    }
+        console.log($("[name=cod_propuesta]").val())

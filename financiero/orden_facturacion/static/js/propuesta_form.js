@@ -235,10 +235,16 @@ $(document).on('click', "#hack", function (e) {
 });
 
 //Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
-$(document).on('change', "input", function (e) {
+/*$(document).on('change', "input", function (e) {
   if ($(this).attr("type")!="checkbox"){
     $(this).css("box-shadow", "0 0 0px 1000px white inset");
 }
-});
+});*/
+
+
+  
+
+
+
 
 

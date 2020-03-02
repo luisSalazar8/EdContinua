@@ -112,70 +112,130 @@ class PropuestaCorporativoUpdate(UpdateView):
                 print("diferente version")
                 prop.active=False
                 prop.save()
-                form.save()
+                newprop=form.save()
+                if formset.is_valid():
+                    nel=[]
+                    for obj in formset.deleted_forms:
+                        nel.append(obj.instance.file)
+                    print(nel)
+                    for f in formset :
+                        if(f.instance.file!=None):
+                            if not(f.instance.file in nel):
+                                print(f.instance.file)
+                                newf=PropuestaFile.objects.create(file=f.instance.file,propuesta=newprop)
+                                newf.save()
+                                #formset.instance = newprop
+                                #formset.save()
             else :
                 print("igual version")
                 formr = self.form_class(request.POST or None,request.FILES, instance=prop)
                 formr.save()
-                for formf in formset:
-                    print(formf.instance.file)
-                  
-            
+                if formset.is_valid():
+                     formset.instance = self.object
+                     formset.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
+# class PropuestaCorporativoUpdate(UpdateView):
+#     model = PropuestaCorporativo
+#     template_name = 'propuesta_corp_form.html'
+#     form_class = PropuestaCorporativoUpdateForm
+#     success_url = reverse_lazy('propuesta_corporativa')
 
+#     def get_context_data(self, **kwargs):
+#         data = super(PropuestaCorporativoUpdate, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             print("entro")
+#             data['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
+#         else:
+            
+#             pk=self.kwargs.get('pk',0) 
+#             l=[]
+#             vals=str(self.model.objects.get(pk=pk).servicios_incluidos).split(',')
+#             print(vals)
+#             for s in self.model.SERVICIOS_CHOICES:
+#                 print(s)
+#                 if s[1] in vals or ' '+s[1] in vals:
+#                     print(s[1])
+#                     l.append(s[0])
+#             print(l)
+#             data['checked_servicios_incluidos']=l
+#             data['formset'] =FileFormset(instance=self.object)
+#         return data
 
-'''class PropuestaCorporativoUpdate(UpdateView):
-    model=PropuestaCorporativo
-    form_class=PropuestaCorporativoUpdateForm
-    template_name='propuesta_corp_form.html'
-    success_url=reverse_lazy('propuesta_corporativa')
-    formset_class=FileFormset
-    def get_context_data(self, **kwargs):
-        data = super(PropuestaCorporativoUpdate, self).get_context_data(**kwargs)
-        if self.request.POST:
-            print("entro post")
-            data['formset'] = FileFormset(self.request.POST,self.request.FILES,instance=self.object)
-            titles = data['formset']
-            print("nueva data")
-            for formf in titles:
-                    print(formf.instance.file)
-        else:
-            print("entro get")
-            pk=self.kwargs.get('pk',0)
-            l=[]
-            vals=str(self.model.objects.get(pk=pk).servicios_incluidos).split(',')
-            print(vals)
-            for s in self.model.SERVICIOS_CHOICES:
-                print(s)
-                if s[1] in vals or ' '+s[1] in vals:
-                    print(s[1])
-                    l.append(s[0])
-            print(l)
-            data['checked_servicios_incluidos']=l
-            data['formset'] =FileFormset(instance=self.object)
-            titles = data['formset']
-            for formf in titles:
-                    print(formf.instance.file)
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         titles = context['formset']
+#         pk=self.kwargs.get('pk',0)
+#         print(pk)
+#         prop= self.model.objects.get(pk=pk)
+#         print(prop.version)
+#         with transaction.atomic():
+#             if prop.version!=form.instance.version:
+#                 print("diferentes versiones")
+#             else :
+#                 print("mismas versiones")
+#                 form.instance.created_by = self.request.user    
+#                 self.object = form.save()
+#                 if titles.is_valid():
+#                     titles.instance = self.object
+#                     titles.save()
+#         return super(PropuestaCorporativoUpdate, self).form_valid(form)
 
-        return data
+#     def get_success_url(self):
+#         return self.success_url
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        titles = context['formset']
-        print("entro form")
-        with transaction.atomic():
-            form.instance.created_by = self.request.user
-            self.object = form.save()
-            if titles.is_valid():
-                titles.instance = self.object
-                titles.save()
-        return super(PropuestaCorporativoUpdate, self).form_valid(form)
+# class PropuestaCorporativoUpdate(UpdateView):
+#     model=PropuestaCorporativo
+#     form_class=PropuestaCorporativoUpdateForm
+#     template_name='propuesta_corp_form.html'
+#     success_url=reverse_lazy('propuesta_corporativa')
+#     formset_class=FileFormset
+#     def get_context_data(self, **kwargs):
+#         data = super(PropuestaCorporativoUpdate, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             print("entro post")
+#             prueba= FileFormset(self.request.POST)
+#             data['formset'] = FileFormset(self.request.POST,instance=self.object)
+#             titles = data['formset']
+#             print("nueva data")
+#             for formf in prueba:
+#                     print(formf.instance.file)
+#         else:
+#             print("entro get")
+#             pk=self.kwargs.get('pk',0) 
+#             l=[]
+#             vals=str(self.model.objects.get(pk=pk).servicios_incluidos).split(',')
+#             print(vals)
+#             for s in self.model.SERVICIOS_CHOICES:
+#                 print(s)
+#                 if s[1] in vals or ' '+s[1] in vals:
+#                     print(s[1])
+#                     l.append(s[0])
+#             print(l)
+#             data['checked_servicios_incluidos']=l
+#             data['formset'] =FileFormset(instance=self.object)
+#             titles = data['formset']
+#             for formf in titles:
+#                     print(formf.instance.file)
 
-    def get_success_url(self):
-        return self.success_url'''
+#         return data
+
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         titles = context['formset']
+#         print("entro form")
+#         with transaction.atomic():
+#             form.instance.created_by = self.request.user
+#             self.object = form.save()
+#             if titles.is_valid():
+#                 titles.instance = self.object
+#                 titles.save()
+#         return super(PropuestaCorporativoUpdate, self).form_valid(form)
+
+#     def get_success_url(self):
+#         return self.success_url
 
 
     

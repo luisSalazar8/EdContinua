@@ -4,13 +4,14 @@
         $(document).on('change', ".anexo", function (e) {
             e.preventDefault();
             console.log($(this).children([0]));
+            const hijo=$(this).children([0]);
             console.log($(this).val());
-            if($($(this).children([0])).val()==""){
+            if($(this).val()==""){
                 console.log("esta vacio");
-                deleteForm('form', $(this));
+                deleteForm('propuestafile_set', $(this));
             }else{
                 console.log("esta lleno");
-                cloneMore('.form-row:last', 'files');
+                cloneMore('.form-row:last', 'propuestafile_set');
                 /*  cantInput=cantInput+1;
                 const divp=$("<div>");
                 divp.attr("id","div_anexos"+cantInput);
@@ -44,7 +45,7 @@
         function deleteForm(prefix, btn) {
             var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
             if (total > 1){
-                $(btn).parent().remove();
+                $(btn).parent().parent().parent().parent().remove();
                 var forms = $('.form-row');
                 $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length-1);
                 for (var i=1, formCount=forms.length; i<formCount; i++) {

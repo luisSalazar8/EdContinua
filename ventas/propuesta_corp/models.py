@@ -60,4 +60,7 @@ class PropuestaCorporativo(models.Model):
 
 class PropuestaFile(models.Model):
     file = models.FileField(upload_to='uploads/',blank=True, null=True)
-    propuesta = models.ForeignKey(PropuestaCorporativo, on_delete=models.CASCADE, related_name='files')
+    #file = models.CharField(max_length=50, blank=True,default=" ")
+    #propuesta = models.ManyToManyField(PropuestaCorporativo, through='PropFileKey')
+    propuesta=models.ForeignKey(PropuestaCorporativo, on_delete=models.CASCADE)
+

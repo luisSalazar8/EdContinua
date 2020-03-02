@@ -1,6 +1,3 @@
-
-
-
 var p_url = "";
 var sector="";
 
@@ -231,11 +228,17 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
 });
 
 $(document).on('click', "#hack", function (e) {
+  $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+  
 });
 
 //Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
 $(document).on('change', "input", function (e) {
-  $(this).css("box-shadow", "0 0 0px 1000px white inset");
+  if ($(this).attr("type")!="checkbox"){
+    $(this).css("box-shadow", "0 0 0px 1000px white inset");
+}
 });
+
+

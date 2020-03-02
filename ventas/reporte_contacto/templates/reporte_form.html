@@ -154,7 +154,20 @@ data-info-url="{% url 'ajax_info_id' %}">
   {% endblock tablas %}
   {{ form.media }}
 </form>
-
+<div class="modal fade" id="capacitacionEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div id="capm" class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="asesoriaEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div id="asm" class="modal-content">
+        </div>
+    </div>
+</div>
 {% block extrafooter %}
 <script type="text/javascript">
   window.onload = function () {
@@ -164,5 +177,33 @@ data-info-url="{% url 'ajax_info_id' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/reporte_contacto.js' %}"></script>
+<script>
+  function eliminarCap(id,rep) {
+      $.ajax({
+          url: "{% url 'capacitacion_confirmar_eliminar' %}",
+          data: {
+              'pk': id,
+              'fk': rep,
+          },
+          success: function (data) {
+              console.log(data);
+              $("#capm").html(data)
+          }
+      });
+  };
+  function eliminarAs(id,rep) {
+      $.ajax({
+          url: "{% url 'asesoria_confirmar_eliminar' %}",
+          data: {
+              'pk': id,
+              'fk': rep,
+          },
+          success: function (data) {
+              console.log(data);
+              $("#asm").html(data)
+          }
+      });
+  };
+</script>
 {% endblock extrafooter %}
 {% endblock content %}

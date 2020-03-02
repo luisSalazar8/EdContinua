@@ -29,12 +29,12 @@ function load_info() {
       id=$('#rc').val();
     }
     per="Natural";
-    console.log(1)
+    
   }
   else{
     var id= $('#id_ruc_ci').val();
     per="Natural";
-    console.log(2)
+    
   }
   $.ajax({
     url: url,
@@ -202,6 +202,7 @@ function Agregar_Contacto(){
         
         let element = $("<input type = 'hidden'/>");
         // element.attr('name', 'extra_field_' + form_count);
+       
         element.attr('name', 'extra_field_'+ form_count);
         $(element).val(valor_cedula)
         $("#form_test").append(element);

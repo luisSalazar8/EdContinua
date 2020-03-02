@@ -25,9 +25,9 @@ Edición Persona Jurídica
 							<div>
 								{{ form_contacto.ruc_ci}}
 								{% if form_contacto.ruc_ci.errors %}
-									{% for error in form_contacto.ruc_ci.errors %}
+									{% for error in form_contacto.ruc_ci.errors  %}
 										<p class="invalid-feedback d-block">
-											<strong>{{ error }}</strong>
+											<strong>{{error }}</strong>
 										</p>
 									{% endfor %}
 								{% endif %}
@@ -41,27 +41,19 @@ Edición Persona Jurídica
             				<label for="{{ form_contacto.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Nombres</label><span class="asteriskField">*</span>
             				<div>
               					{{ form_contacto.razon_nombres}}
-              					{% if form_contacto.razon_nombres.errors %}
-									{% for error in form_contacto.razon_nombres.errors %}
-									<p class="invalid-feedback d-block">
-										<strong>{{ error }}</strong>
-									</p>
-              						{% endfor %}
-              					{% endif %}
+              					
 
             				</div>
           				 </div>
 
                         <div class="col-6 col-xl-3">
-					        {{form_natural}}
+					        {{form_cedulas}}
 				         </div>
 
 						 
         		 
 				</div>
-				<div class="col-6 col-xl-3">
-						{{form_cedulas}}
-				 </div>
+				
 			<div class="col-12 col-xl-12 table-container">
 		<table id="dtBasicExample" class="table table-responsive border-bottom" >
 			<thead class="white-text darkgreen-bg">
@@ -155,13 +147,6 @@ Edición Persona Jurídica
 
             <a class="btn btn-secondary" href="{% url 'index_juridicas' %}"> Cancelar </a>
 		</div>
-		{% if form.errors %}
-					{% for error in form.errors %}
-					<p class="invalid-feedback d-block">
-						<strong>{{ error }}</strong>
-					</p>
-				    {% endfor %}
-        {% endif %}
 	</div>
 </div>
 {% bootstrap_javascript jquery='full' %}

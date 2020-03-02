@@ -98,23 +98,31 @@ def juridicas_editar(request,pk):
 		if("eliminar_contacto" not in request.POST):
 				print(request.POST)
 				p = get_object_or_404(Juridica, pk=pk)
+				final = Persona_Natural.objects.filter(contacto_natural__empresa = pk)
 				form = JuridicaForm(request.POST,instance=p)
 				form_contacto = OrdenFacturacionForm()
+				form_cedulas = Contacto_Natural_Form()
 				if(form.is_valid()):
-					
+					pase = False
 					##PROBAR QUE SI ESTEN BIEN LOS CONTACTOS
 					cedulas_post = []
 					cedulas_modelo = []
 					for i in request.POST:
 						if "extra_field" in i and request.POST[i] not in cedulas_post:
 							cedulas_post.append(request.POST[i])
-					for i in cedulas_post:
-						try:
-							c = get_object_or_404(Persona_Natural, cedula=i)
-							p.contacto_natural_set.create(contacto = c)
-						except:
-							form.add_error("ruc",forms.ValidationError("No we"))
-					form.save()
+					if len(cedulas_post) == 0:
+						pase = True
+					else:
+						for i in cedulas_post:
+							try:
+								c = get_object_or_404(Persona_Natural, cedula=i)
+								p.contacto_natural_set.create(contacto = c)
+								pase = True
+							except:
+								form_contacto = OrdenFacturacionForm(request.POST)
+								form_contacto.add_error("ruc_ci",forms.ValidationError("Problemas con " + str(i) + " Dicho contacto ya pertenece a otra persona juridica"))
+								pase = False
+					
 					# contactos_empresa = Contacto_natural.objects.filter(empresa = pk)
 					
 					# if(len(contactos_empresa)!=0):
@@ -146,8 +154,9 @@ def juridicas_editar(request,pk):
 					# for i in cedulas_post:
 					# 	if i not in cedulas_modelo:
 					# 		p.contacto_natural_set.create(contacto = i )	
-					
-					return HttpResponseRedirect(reverse_lazy("index_juridicas"))
+					if(pase):
+						form.save()
+						return HttpResponseRedirect(reverse_lazy("index_juridicas"))
 		else:
 			c = get_object_or_404(Contacto_natural,contacto=request.POST.get("eliminar_contacto"))
 			c.delete()

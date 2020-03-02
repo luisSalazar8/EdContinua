@@ -25,3 +25,18 @@ iconou.text("$");
 dollaru.append(inpu);
 dollaru.append(iconou);
 utilidad.append(dollaru);
+
+//Codigo para controlar la version
+const ver=parseInt($("#id_version").val());
+if($("#ac").val()=="True"){
+  $(document).on('change', "#id_version", function (e) {
+    const veract=parseInt($("#id_version").val());
+    if(veract>(ver+1)){
+      $(this).val(ver+1)
+    }else if(veract<ver){
+      $(this).val(ver)
+    }
+  });
+}else{
+  $("#id_version").prop('disabled', true);
+}

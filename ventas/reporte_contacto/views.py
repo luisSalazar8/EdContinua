@@ -136,22 +136,34 @@ class CapacitacionUpdate(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
+def capacitacion_conf_elim(request):
+	capacitacion_id=request.GET.get('pk')
+	capacitacion=Capacitacion.objects.get(pk=capacitacion_id)
+	return render(request,"capacitacion_eliminar.html",{"capacitacion":capacitacion,"fk":request.GET.get('fk')})
+
+
+
 class CapacitacionDelete(DeleteView):
     model=Capacitacion
     form_class=CapacitacionForm
-    template_name='capacitacion_delete.html'
+    template_name='capacitacion_eliminar.html'
     success_url='/ventas/reporte_contacto/editar'
 
     def get_context_data(self, **kwargs):
+        print("get data")
         context=super(CapacitacionDelete,self).get_context_data(**kwargs)
         fk=self.kwargs.get('fk',0)
         context['reporte_id']=fk
         return context
 
     def post(self, request, *args, **kwargs):
+        
         reporte_id=kwargs['fk']
+        print("jeje")
+        print(reporte_id)
         self.object=self.get_object()
         self.object.delete()
+        print("momazo")
         return HttpResponseRedirect(self.get_success_url()+'/'+str(reporte_id))
 
 
@@ -206,11 +218,15 @@ class AsesoriaUpdate(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
+def asesoria_conf_elim(request):
+	asesoria_id=request.GET.get('pk')
+	asesoria=Asesoria.objects.get(pk=asesoria_id)
+	return render(request,"asesoria_eliminar.html",{"asesoria":asesoria,"fk":request.GET.get('fk')})
 
 class AsesoriaDelete(DeleteView):
     model=Asesoria
     form_class=AsesoriaForm
-    template_name='asesoria_delete.html'
+    template_name='asesoria_eliminar.html'
     success_url='/ventas/reporte_contacto/editar'
     
 

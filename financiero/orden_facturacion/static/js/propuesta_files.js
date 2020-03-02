@@ -64,3 +64,4 @@
             $(el).attr('name', namep);
             console.log($(el).attr('name'));
         }
+

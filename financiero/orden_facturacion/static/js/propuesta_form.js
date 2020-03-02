@@ -228,8 +228,10 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
 });
 
 $(document).on('click', "#hack", function (e) {
+  $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+  
 });
 
 //Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
@@ -239,12 +241,4 @@ $(document).on('change', "input", function (e) {
 }
 });
 
-
-/*
-<div id="div_anexos" class="form-group">
-                      <label for="id_archivo" class="col-form-label">Seleccione uno o mas archivos</label>
-                      <div class>
-                        <input type="file" id="id_archivo" name="archivo" class="form-control anexo" />
-                      </div>
-                  </div>*/
 

@@ -53,7 +53,7 @@ class PropuestaCorporativo(models.Model):
 
     area_capacitacion= models.CharField(max_length=50, blank=True)
     asesor=models.CharField(max_length=50, blank=True)
-
+    active=models.BooleanField(default = True)
     def delete(self, *arg, **kwargs):
      #   self.anexo.delete()
         super().delete(*arg,**kwargs)

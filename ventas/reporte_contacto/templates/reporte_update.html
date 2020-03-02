@@ -63,7 +63,9 @@ Edición Reporte de contacto
           <td>
             <a class="btn btn-light btn-block btn-sm" href="{% url 'capacitacion_editar' c.id reporte_id %}"><i
                 class="fas fa-edit darkgreen-text"></i></a>
-            
+                <a onclick='eliminarCap({{ c.pk }},{{reporte_id}});' class="btn btn-danger btn-sm"
+                data-toggle='modal' data-target="#capacitacionEliminarCenter" href='#'><i
+                    class="fas fa-trash"></i></a>
           </td>
         </tr>
         {% endfor%}
@@ -119,6 +121,9 @@ Edición Reporte de contacto
           <td>
             <a class="btn btn-light btn-sm btn-block" href="{% url 'asesoria_editar' a.id reporte_id %}"><i
                 class="fas fa-edit darkgreen-text"></i></a>
+                <a onclick='eliminarAs({{ a.pk }},{{reporte_id}});' class="btn btn-danger btn-sm"
+                data-toggle='modal' data-target="#asesoriaEliminarCenter" href='#'><i
+                    class="fas fa-trash"></i></a>
            
           </td>
         </tr>
@@ -137,4 +142,6 @@ Edición Reporte de contacto
   </div>
 </div>
 
+
 {% endblock tablas %}
+

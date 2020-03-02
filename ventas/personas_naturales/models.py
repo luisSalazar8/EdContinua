@@ -1,6 +1,5 @@
 from django.db import models
 import datetime
-from ventas.personas_juridicas.models import Ciudad 
 import ventas.validaciones 
 # Create your models here.
 

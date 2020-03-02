@@ -8,7 +8,7 @@ from .models import Sector
 from .models import TipoEmpresa
 from .models import Contacto_natural
 #Forms
-from . import forms
+from .forms import *
 from financiero.orden_facturacion.forms import OrdenFacturacionForm
 
 
@@ -63,7 +63,9 @@ class SectorAutocomplete(autocomplete.Select2QuerySetView):
 # Create your views here.
 def index_juridicas(request):
 	juridicas_list = Juridica.objects.all().order_by("pk")
-	filter = forms.JuridicaFilter(request.GET, queryset=juridicas_list )
+	#naturales_list = Persona_Natural.objects.all().order_by("pk")
+	filter = JuridicaFilter(request.GET, queryset=juridicas_list )
+	#filter2 = forms.Contacto_Filter(request.GET)
 	paginator = Paginator(filter.qs, 30) 
 	page = request.GET.get('page')
 	juridicas = paginator.get_page(page)
@@ -79,36 +81,71 @@ def load_ciudades(request):
 def juridicas_view(request):
 
 	if(request.method == "POST"):
-		form = forms.JuridicaForm(request.POST)
+		form = JuridicaForm(request.POST)
 		if(form.is_valid()):
 			form.save()
 			ruc = form.cleaned_data["ruc"]
 			url = reverse_lazy('editar_juridica', kwargs={'pk': ruc})
 			return HttpResponseRedirect(url)
 	else:
-		form = forms.JuridicaForm()
+		form = JuridicaForm()
 	return render(request,"personas_juridicas/forma.html", {"form":form})
+
 
 
 def juridicas_editar(request,pk):
 	if(request.method == "POST"):
 		if("eliminar_contacto" not in request.POST):
+				print(request.POST)
 				p = get_object_or_404(Juridica, pk=pk)
-				form = forms.JuridicaForm(request.POST,instance=p)
+				form = JuridicaForm(request.POST,instance=p)
+				form_contacto = OrdenFacturacionForm()
 				if(form.is_valid()):
-					form.save()
+					
 					##PROBAR QUE SI ESTEN BIEN LOS CONTACTOS
 					cedulas_post = []
 					cedulas_modelo = []
 					for i in request.POST:
-						if "cedula" in i:
-							cedulas_post.append(request.POST[i] )
-					cedulas_contactos = Contacto_natural.objects.filter(empresa = pk)
-					for i in cedulas_contactos:
-						cedulas_modelo.append(i.contacto)
+						if "extra_field" in i and request.POST[i] not in cedulas_post:
+							cedulas_post.append(request.POST[i])
 					for i in cedulas_post:
-						if i not in cedulas_modelo:
-							p.contacto_natural_set.create(contacto = i )	
+						try:
+							c = get_object_or_404(Persona_Natural, cedula=i)
+							p.contacto_natural_set.create(contacto = c)
+						except:
+							form.add_error("ruc",forms.ValidationError("No we"))
+					form.save()
+					# contactos_empresa = Contacto_natural.objects.filter(empresa = pk)
+					
+					# if(len(contactos_empresa)!=0):
+					# 	for i in contactos_empresa:
+					# 		cedulas_modelo.append(i.contacto.cedula)
+					
+					# for i in cedulas_post:
+					# 		if i not in cedulas_modelo:
+					# 			try:
+					# 				c = get_object_or_404(Persona_Natural, cedula=i)
+					# 				p.contacto_natural_set.create(contacto = c)
+					# 			except:
+					# 				form_contacto.add_error("ruc_ci",forms.ValidationError("No we"))
+
+
+
+					# for i in cedulas_post:
+					# 	if i not in cedulas_modelo:
+					# 		p.contacto_natural_set.create(contacto = i)
+						
+
+
+					# for i in request.POST:
+					# 	if "cedula" in i:
+					# 		cedulas_post.append(request.POST[i] )
+					# cedulas_contactos = Contacto_natural.objects.filter(empresa = pk)
+					# for i in cedulas_contactos:
+					# 	cedulas_modelo.append(i.contacto)
+					# for i in cedulas_post:
+					# 	if i not in cedulas_modelo:
+					# 		p.contacto_natural_set.create(contacto = i )	
 					
 					return HttpResponseRedirect(reverse_lazy("index_juridicas"))
 		else:
@@ -118,19 +155,12 @@ def juridicas_editar(request,pk):
 			return HttpResponseRedirect(url)
 			
 	else:
-		final = []
-		contactos = []
-		cedulas_contactos = Contacto_natural.objects.filter(empresa = pk)
-		for i in cedulas_contactos:
-			if (i.contacto not in contactos):
-				contactos.append(i.contacto)
-		for i in contactos:
-			n = Persona_Natural.objects.filter(cedula = i)
-			final = list(chain(final,n))
+		final = Persona_Natural.objects.filter(contacto_natural__empresa = pk)
 		p = get_object_or_404(Juridica, pk=pk)
-		form = forms.JuridicaForm(instance=p)
+		form = JuridicaForm(instance=p)
 		form_contacto = OrdenFacturacionForm()
-	return render(request, 'personas_juridicas/editar_forma.html', {'form': form,"form_contacto":form_contacto,"naturales":final})
+		form_cedulas = Contacto_Natural_Form()
+	return render(request, 'personas_juridicas/editar_forma.html', {'form_cedulas':form_cedulas,'form': form,"form_contacto":form_contacto,"naturales":final})
 
 
 def juridicas_eliminar(request,pk=None):

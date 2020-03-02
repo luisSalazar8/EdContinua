@@ -1,5 +1,6 @@
 from django.db import models
 import ventas.validaciones
+from ventas.personas_naturales.models import Persona_Natural
 
 
 
@@ -37,7 +38,6 @@ class Juridica(models.Model):
 	tipo_empresa = models.ForeignKey(TipoEmpresa,on_delete=models.SET_NULL, null=True)
 	sector = models.ForeignKey(Sector,on_delete=models.SET_NULL, null=True)
 	direccion = models.CharField(max_length=200)
-	ciudad = models.CharField(max_length=50)
 	provincia = models.ForeignKey(Provincia, on_delete=models.SET_NULL, null=True)
 	ciudad = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, null=True)
 	telefono = models.CharField(max_length=20, validators=[ventas.validaciones.validate_fono_convencional])
@@ -60,9 +60,10 @@ class Juridica(models.Model):
 		return self.nombre+" - "+self.ruc
 class Contacto_natural(models.Model):
 	empresa = models.ForeignKey(Juridica,verbose_name= "Empresa del contacto",blank = True, on_delete=models.CASCADE)
-	contacto = models.CharField(max_length=13,verbose_name="Cedula del Contacto",blank=True)
+	#contacto = models.CharField(max_length=13,verbose_name="Cedula del Contacto",blank=True)
+	contacto = models.OneToOneField(Persona_Natural,on_delete=models.CASCADE)
 	def __str__(self):
-		return "Contacto "+ str(self.pk) + " "+ self.contacto
+		return "Contacto "+ str(self.pk) + " "+ str(self.contacto) + "de la empresa " + str(self.empresa)
 
 
 

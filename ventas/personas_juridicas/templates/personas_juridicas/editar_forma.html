@@ -55,9 +55,13 @@ Edición Persona Jurídica
                         <div class="col-6 col-xl-3">
 					        {{form_natural}}
 				         </div>
+
+						 
         		 
 				</div>
-
+				<div class="col-6 col-xl-3">
+						{{form_cedulas}}
+				 </div>
 			<div class="col-12 col-xl-12 table-container">
 		<table id="dtBasicExample" class="table table-responsive border-bottom" >
 			<thead class="white-text darkgreen-bg">
@@ -146,11 +150,18 @@ Edición Persona Jurídica
 	</div>
 	<div class="row mt-3">
 		<div class="col-12">
-			{% comment %} <button id="Boton_guardar" type="submit" class="btn btn-secondary green-bg">Guardar</button> {% endcomment %}
-			<a id = "Boton_guardar" class="btn btn-secondary" href="{% url 'index_juridicas' %}" >Guardar </a>
+			<button id="Boton_guardar" type="submit" class="btn btn-secondary green-bg">Guardar</button>
+			{% comment %} <a id = "Boton_guardar" class="btn btn-secondary">Guardar </a> {% endcomment %}
 
             <a class="btn btn-secondary" href="{% url 'index_juridicas' %}"> Cancelar </a>
 		</div>
+		{% if form.errors %}
+					{% for error in form.errors %}
+					<p class="invalid-feedback d-block">
+						<strong>{{ error }}</strong>
+					</p>
+				    {% endfor %}
+        {% endif %}
 	</div>
 </div>
 {% bootstrap_javascript jquery='full' %}

@@ -1,5 +1,5 @@
 var p_url = "";
-
+let form_count = Number($("[name=contacto_natural]").val());
 $('.select2').select2({
   minimumInputLength: 2,
   language: {
@@ -195,6 +195,27 @@ function Agregar_Contacto(){
        
 
         $("#dtBasicExample").append(nuevo_contacto)
+
+        
+        
+        form_count ++;
+        
+        let element = $("<input type = 'hidden'/>");
+        // element.attr('name', 'extra_field_' + form_count);
+        element.attr('name', 'extra_field_'+ form_count);
+        $(element).val(valor_cedula)
+        $("#form_test").append(element);
+
+        // build element and append it to our forms container
+        
+        
+        // $("[name=extra_field_1]").val(valor_cedula);
+        // increment form count so our view knows to populate 
+        // that many fields for validation
+     
+
+
+
       }
     });
 }
@@ -248,6 +269,7 @@ function Guardar(){
     });
     
 }
+
 function Eliminar(){
   //Para los contactos que ya estan guardados
   $("[boton~='eliminar']").click(function(){
@@ -281,9 +303,9 @@ function Eliminar_Fila_Tabla(){
     flag=true;
     load_data();
     load_info();
-
+    
     Agregar_Contacto()
-    Guardar()
+    // Guardar()
     Eliminar()
     Eliminar_Fila_Tabla()
 

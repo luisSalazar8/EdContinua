@@ -71,14 +71,35 @@
 				</div>
 			</div>
 			<div class="row my-2">
-				<div class="campo p-2 pl-3 col-12">
+				<div class="campo mb-2 p-2 pl-3 col-12">
 					<h5 class="black-text text-uppercase mb-0">Contacto Empresa</h5>
 				</div>
+				<br>
+				<div class="col-4 col-xl-4">
+					{{ filter.form.contacto_natural__contacto__cedula|as_crispy_field }}
+				</div>
+				<div class="col-4 col-xl-4">
+					{{ filter.form.contacto_natural__contacto__nombres|as_crispy_field }}
+				</div>   
+				<div class="col-4 col-xl-4">
+					{{ filter.form.contacto_natural__contacto__apellidos|as_crispy_field }}
+				</div> 
 			</div>
-
+			<div class="form-row">
+				<div class="col-4 col-xl-4">
+					{{ filter.form.contacto_natural__contacto__tel_domicilio|as_crispy_field }}
+				</div>
+				<div class="col-4 col-xl-4">
+					{{ filter.form.contacto_natural__contacto__celular|as_crispy_field }}
+				</div>
+				<div class="col-4 col-xl-4">
+					{{  filter.form.contacto_natural__contacto__email|as_crispy_field }}
+				</div> 
+			</div> 
+			
 			{% comment %} <div class="form-row">
 				<div class="col-4 col-xl-4">
-					{{ filter.form.contacto_cedula|as_crispy_field }}
+					{{ filter.form.contacto_natural.cedula|as_crispy_field }}
 				</div>
 				<div class="col-4 col-xl-4">
 					{{ filter.form.contacto_nombres|as_crispy_field }}
@@ -143,16 +164,32 @@
 					<td scope="row">{{j.telefono}}</td>
 					<td scope="row">{{j.celular}}</td>
 					<td scope="row">{{j.representante}}</td>
-					<td scope="row">
-						{% for c in j.contacto_natural_set.all %}
-							{{c.contacto}}
-						{% endfor %}
-					</td>
-					<td scope="row">{{j.contacto_telefono}}</td>
-					<td scope="row">{{j.contacto_celular}}</td>
-					<td scope="row">{{j.contacto_correo}}</td>
-					
 
+
+					<td scope="row">
+					{% for c in j.contacto_natural_set.all %}
+						{{c.contacto.cedula}}
+					{% endfor %}
+					
+					 </td>
+
+					<td scope="row">
+					{% for c in j.contacto_natural_set.all %}
+						{{c.contacto.tel_domicilio}}
+					{% endfor %}
+					</td>
+
+					<td scope="row">
+					{% for c in j.contacto_natural_set.all %}
+						{{c.contacto.celular}}
+					{% endfor %}
+					</td>
+
+					<td scope="row">
+					{% for c in j.contacto_natural_set.all %}
+						{{c.contacto.email}}
+					{% endfor %}
+					</td>
 					<td scope="row">
 						<a class="btn btn-light btn-sm btn-block" href="{% url 'editar_juridica' pk=j.pk %}"><i
 								class="fas fa-edit darkgreen-text"></i></a>

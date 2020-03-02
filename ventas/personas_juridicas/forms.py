@@ -6,8 +6,20 @@ import django_filters
 
 
 
-class Contacto_Natural_Form(forms.ModelForm):
-    cedula = forms.CharField(label="Cedula_Contacto",max_length=13)
+class Contacto_Natural_Form(forms.Form):
+	contacto_natural = forms.CharField(label="contacto_natural",max_length=13,widget=forms.HiddenInput())
+	def __init__(self,*args,**kwargs):
+		extra_fields = kwargs.pop('extra',0)
+
+		super(Contacto_Natural_Form,self).__init__(*args,**kwargs)
+		self.fields['contacto_natural'].initial = extra_fields
+
+		for index in range(int(extra_fields)):
+			self.fields['extra_field_{index}' .format(index=index)] = \
+				forms.CharField()
+
+
+
 
 
 class DateInput(forms.DateInput):
@@ -110,7 +122,13 @@ class JuridicaFilter(django_filters.FilterSet):
 	celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
 	correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo electrónico'}))
 	forma_pago = django_filters.ModelChoiceFilter(label="", empty_label="Forma usual de pago", queryset=models.FormaPago.objects.all())
-	# contacto_cedula = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cédula'}))
+	contacto_natural__contacto__cedula = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cedula_Contacto'}))
+	contacto_natural__contacto__celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Celular_Contacto'}))
+	contacto_natural__contacto__nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres_Contacto'}))
+	contacto_natural__contacto__apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos_Contacto'}))
+	contacto_natural__contacto__tel_domicilio = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Telefono_Contacto'}))
+	contacto_natural__contacto__email = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo_Contacto'}))
+
 	# contacto_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres'}))
 	# contacto_apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos'}))
 	# contacto_telefono = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Teléfono'}))
@@ -155,3 +173,59 @@ class JuridicaFilter(django_filters.FilterSet):
 		super().__init__(*args, **kwargs)
 		self.form.fields['ciudad'].queryset = models.Ciudad.objects.none()
 
+class Contacto_Filter(django_filters.FilterSet):
+	#contacto = django_filters.CharFilter(label="",queryset=models.Persona_Natural.objects.all(), widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cedula_Contacto'}))
+	class Meta:
+		model = models.Persona_Natural
+		fields = ["cedula"]
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		print(args)
+		self.form.fields['cedula'].queryset = models.Persona_Juridica()
+		#print(kwargs)
+		
+	# 	nombre = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Razón Social'}))
+	# ruc = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'RUC'}))
+	# tipo_empresa = django_filters.ModelChoiceFilter(label="", empty_label="Tipo de Empresa", queryset=models.TipoEmpresa.objects.all())
+	# sector = django_filters.ModelChoiceFilter(label="", empty_label="Sector", queryset=models.Sector.objects.all())
+	# direccion = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Dirección'}))
+	# telefono = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Teléfono'}))
+	# celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
+	# correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo electrónico'}))
+	# forma_pago = django_filters.ModelChoiceFilter(label="", empty_label="Forma usual de pago", queryset=models.FormaPago.objects.all())
+	# # contacto_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres'}))
+	# # contacto_apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos'}))
+	# # contacto_telefono = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Teléfono'}))
+	# # contacto_celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"tel",'placeholder': 'Celular'}))
+	# # contacto_correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo Electrónico'}))
+	# provincia = django_filters.ModelChoiceFilter(label="", empty_label="Provincia", queryset=models.Provincia.objects.all())
+
+
+	# class Meta:
+	# 	model = models.Juridica
+	# 	fields = [
+	# 				"nombre",
+	# 				"ruc",
+	# 				"tipo_empresa",
+	# 				"sector",
+	# 				"direccion",
+	# 				"ciudad",
+	# 				"provincia",
+	# 				"telefono",
+	# 				"celular",
+	# 				"correo",
+	# 				"forma_pago",
+					# "contacto_cedula",
+					# "contacto_nombres",
+					# "contacto_apellidos",
+					# "contacto_telefono",
+					# "contacto_celular",
+					# "contacto_correo"
+					# ]
+
+		# widgets = {
+		# 		"maximo_facturas":forms.DateInput(format='%Y-%m-%d', attrs={'class': 'datepicker', "type":"date"}),
+		# }
+	# def __init__(self, *args, **kwargs):
+	# 	super().__init__(*args, **kwargs)
+		# self.form.fields['ciudad'].queryset = models.Ciudad.objects.none()

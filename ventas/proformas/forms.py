@@ -1,6 +1,7 @@
 from django import forms
 from .models import Proforma
 from dal import autocomplete
+from ventas.validaciones import validate_porcentaje, validate_positive, validate_anexo_corp
 
 class ProformaForm(forms.ModelForm):
 
@@ -9,10 +10,12 @@ class ProformaForm(forms.ModelForm):
 
 		fields=[
 			'codigo',
+			'tipo_cliente',
+			'ruc_ci',
+            'razon_nombres',
 			'version',
 			'nombreProforma',
 			'tipoEmpresa',
-			'empresa',
 			'sector',
 			'fechaSolicitud',
 			'fechaEnvio',
@@ -35,10 +38,12 @@ class ProformaForm(forms.ModelForm):
 
 		labels={
 			'codigo': 'Código',
+			'tipo_cliente': 'Cliente',
+			'ruc_ci': 'RUC',
+            'razon_nombres': 'Razón social',
 			'version':'Versión',
 			'nombreProforma':'Nombre',
 			'tipoEmpresa':'Tipo Empresa',
-			'empresa':'Empresa',
 			'sector':'Sector',
 			'fechaSolicitud':'Fecha Solicitud',
 			'fechaEnvio':'Fecha Envío',
@@ -64,7 +69,6 @@ class ProformaForm(forms.ModelForm):
 			'codigo': forms.TextInput(attrs={'class':'form-control'}),
 			'version': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'nombreProforma': forms.TextInput(attrs={'class':'form-control'}),
-			'empresa': autocomplete.ModelSelect2(url='empresa-autocomplete'),
 			'fechaSolicitud': forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'fechaEnvio':forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'numeroParticipantes': forms.NumberInput(attrs={'class':'form-control'}),
@@ -84,4 +88,15 @@ class ProformaForm(forms.ModelForm):
 			'montoAceptado': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'montoEjecutado': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'montoPorEjecutarse': forms.NumberInput(attrs={'class':'form-control','min': 0}),
+			'razon_nombres': forms.Select(attrs={'class': 'form-control select2'}),
+            'ruc_ci': forms.Select(attrs={'class': 'form-control select2'}),
 		}
+
+
+	def clean_porcentExito(self):
+		exito = self.cleaned_data["porcentExito"]
+		return validate_porcentaje(exito)
+	
+	def clean_porcentDesc(self):
+		desc = self.cleaned_data["porcentDesc"]
+		return validate_porcentaje(desc)

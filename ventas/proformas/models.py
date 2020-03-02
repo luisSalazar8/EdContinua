@@ -7,7 +7,13 @@ class Proforma(models.Model):
 	version=models.PositiveIntegerField()
 	nombreProforma=models.CharField(max_length=100)
 	tipoEmpresa=models.ForeignKey(TipoEmpresa, on_delete=models.CASCADE)
-	empresa=models.ForeignKey(Juridica, on_delete=models.CASCADE)
+	TIPO_CHOICES=[('Natural','Natural'),('Jurídica','Jurídica'),]
+	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
+	ruc_ci=models.CharField(max_length=13)
+    
+	
+	razon_nombres=models.CharField(max_length=200)
+
 	sector=models.ForeignKey(Sector, on_delete=models.CASCADE)
 	fechaSolicitud=models.CharField(max_length=30)
 	fechaEnvio=models.CharField(max_length=30)

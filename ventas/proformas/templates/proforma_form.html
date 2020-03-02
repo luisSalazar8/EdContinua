@@ -4,7 +4,10 @@
 
 
 {% block content %}
-<form enctype="multipart/form-data" method="post">
+<form method="post" novalidate id="form-fact" enctype="multipart/form-data" ,
+data-persona-url="{% url 'ajax_load_personas' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}"
+data-natural-url="{% url 'natural_nuevo'%}" data-juridica-url="{% url 'juridicas_view' %}"
+data-info-url="{% url 'ajax_info_id' %}">
 	{% csrf_token %}
 	<div class="row mb-2">
 		<div class="col-12 col-xl-12">
@@ -28,12 +31,50 @@
 					{{form.nombreProforma|as_crispy_field}}
 				</div>
 			</div>
+			<div class="col-6 col-md-3 mb-0">
+
+				{{form.tipo_cliente|as_crispy_field}}
+				<small class="form-text text-muted">Seleccione el tipo de cliente</small>
+	  
+			  </div>
+			  <div class="col-6 col-md-3 mb-0 " id="field-ruc-ci">
+				<div id="div_id_ruc_ci" class="form-group">
+				  <label for="{{ form.ruc_ci.id_for_label}}" class="col-form-label requiredField"
+					id="ruc_ci">RUC/CI</label><span class="asteriskField">*</span>
+				  <div>
+					{{ form.ruc_ci}}
+					{% if form.ruc_ci.errors %}
+					{% for error in form.ruc_ci.errors %}
+					<p class="invalid-feedback d-block">
+					  <strong>{{ error }}</strong>
+					</p>
+					{% endfor %}
+					{% endif %}
+	  
+				  </div>
+				</div>
+			  </div>
+	  
+			  <div class="col-6 col-md-3 mb-0 " id="field-razon">
+				<div id="div_id_razon_nombres" class="form-group">
+				  <label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Razón
+					Social/Nombres</label><span class="asteriskField">*</span>
+				  <div>
+					{{ form.razon_nombres}}
+					{% if form.razon_nombres.errors %}
+					{% for error in form.razon_nombres.errors %}
+					<p class="invalid-feedback d-block">
+					  <strong>{{ error }}</strong>
+					</p>
+					{% endfor %}
+					{% endif %}
+	  
+				  </div>
+				</div>
+			  </div>
 			<div class="form-row">
 				<div class="col-xl-4">
 					{{form.tipoEmpresa|as_crispy_field}}
-				</div>
-				<div class="col-xl-8">
-					{{form.empresa|as_crispy_field}}
 				</div>
 			</div>
 			<div class="form-row">
@@ -124,6 +165,10 @@
 </form>
 {% block extrafooter %}
 <script src="{% static 'js/proforma_nuevo.js' %}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/proforma_form.js' %}"></script>
+<script src="{% static 'js/proforma_money.js' %}"></script>
 {% endblock extrafooter %}
 
 {% endblock %}

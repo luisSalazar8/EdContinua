@@ -90,7 +90,7 @@ class PropuestaCorporativoUpdate(UpdateView):
                     l.append(s[0])
             print(l)
             context['checked_servicios_incluidos']=l
-            context['formset'] = FileFormset()
+            context['formset'] = FileFormset(instance=self.object)
             print(context)
         return context
 
@@ -101,7 +101,7 @@ class PropuestaCorporativoUpdate(UpdateView):
         form=self.form_class(request.POST)
         pk=self.kwargs.get('pk',0)
         print(pk)
-        formset = FileFormset(request.POST, request.FILES)
+        formset = FileFormset(request.POST, request.FILES,instance=self.object)
         
         if form.is_valid():
             prop= self.model.objects.get(pk=pk)

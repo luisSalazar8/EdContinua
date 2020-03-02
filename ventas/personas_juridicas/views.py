@@ -123,38 +123,6 @@ def juridicas_editar(request,pk):
 								form_contacto = OrdenFacturacionForm(request.POST)
 								form_contacto.add_error("ruc_ci",forms.ValidationError("Problemas con " + str(i) + " Dicho contacto ya pertenece a otra persona juridica"))
 								pase = False
-					
-					# contactos_empresa = Contacto_natural.objects.filter(empresa = pk)
-					
-					# if(len(contactos_empresa)!=0):
-					# 	for i in contactos_empresa:
-					# 		cedulas_modelo.append(i.contacto.cedula)
-					
-					# for i in cedulas_post:
-					# 		if i not in cedulas_modelo:
-					# 			try:
-					# 				c = get_object_or_404(Persona_Natural, cedula=i)
-					# 				p.contacto_natural_set.create(contacto = c)
-					# 			except:
-					# 				form_contacto.add_error("ruc_ci",forms.ValidationError("No we"))
-
-
-
-					# for i in cedulas_post:
-					# 	if i not in cedulas_modelo:
-					# 		p.contacto_natural_set.create(contacto = i)
-						
-
-
-					# for i in request.POST:
-					# 	if "cedula" in i:
-					# 		cedulas_post.append(request.POST[i] )
-					# cedulas_contactos = Contacto_natural.objects.filter(empresa = pk)
-					# for i in cedulas_contactos:
-					# 	cedulas_modelo.append(i.contacto)
-					# for i in cedulas_post:
-					# 	if i not in cedulas_modelo:
-					# 		p.contacto_natural_set.create(contacto = i )	
 					if(pase):
 						form.save()
 						return HttpResponseRedirect(reverse_lazy("index_juridicas"))

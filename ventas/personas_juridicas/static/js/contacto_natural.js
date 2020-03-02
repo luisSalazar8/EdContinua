@@ -163,23 +163,6 @@ function Agregar_Contacto(){
         td_borrar.attr("scope","row")
         
        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         nuevo_contacto.append(td_cedula)
         nuevo_contacto.append(td_nombres)
         nuevo_contacto.append(td_apellidos)
@@ -188,16 +171,10 @@ function Agregar_Contacto(){
         nuevo_contacto.append(td_celular)
         nuevo_contacto.append(td_email)
         nuevo_contacto.append(td_borrar)
-
-        
-       
-
        
 
         $("#dtBasicExample").append(nuevo_contacto)
 
-        
-        
         form_count ++;
         
         let element = $("<input type = 'hidden'/>");
@@ -214,62 +191,12 @@ function Agregar_Contacto(){
         // increment form count so our view knows to populate 
         // that many fields for validation
      
-
-
-
       }
     });
 }
 
 
-function Guardar(){
-    $("#Boton_guardar").click(function (e){
-    var CSRFtoken = $('input[name=csrfmiddlewaretoken]').val();
-    var atributos_campos = {"nombre":"","ruc":"","direccion":"","telefono":"","celular":"","correo":"","representante":"","maximo_facturas":""};
-    var atributos_selec = {"tipo_empresa":"","sector":'',"provincia":"","ciudad":"","forma_pago":""};
-    var formulario_campos = $("input[id*='id']");
-    var formulario_select = $("option[selected]");
-    var indice = 0;
-    for(var clave in atributos_campos){
-        var valores = $(formulario_campos[indice]).val();
-        atributos_campos[clave] = valores ;
-        console.log(valores)
-        indice+= 1;
-    }
-    var indice = 0;
-    for(var clave in atributos_selec){
-        var valores = $(formulario_select[indice]).val();
-        atributos_campos[clave] = valores ;
-        console.log(valores)
-        indice+= 1;
-    }
-    atributos_campos["csrfmiddlewaretoken"]= CSRFtoken;
-    
-    
-    var cedulas = []
-    valores_cedulas = $(".td_cedula");
-    
-    if(valores_cedulas != " "){
-      for(i=0;i<valores_cedulas.length;i++){
-          ced = $(valores_cedulas[i]).text();
-          cedulas.push(ced)
-      }
-      for(i=0; i<cedulas.length;i++){
-          var c = "cedula "+ String(i);
-          atributos_campos[c]=cedulas[i]
-      }
-    }
-    else{
-      console.log("vacio")
-    }
-    console.log(atributos_campos)
 
-    var url = window.location.pathname;
-
-    $.post(url, atributos_campos);
-    });
-    
-}
 
 function Eliminar(){
   //Para los contactos que ya estan guardados
@@ -294,8 +221,6 @@ function Eliminar_Fila_Tabla(){
   $('table').on('click', "[boton~='eliminar_tabla']", function(e){
     $(this).closest('tr').remove()
  })
- 
-
 }
 
 
@@ -304,9 +229,7 @@ function Eliminar_Fila_Tabla(){
     flag=true;
     load_data();
     load_info();
-    
     Agregar_Contacto()
-    // Guardar()
     Eliminar()
     Eliminar_Fila_Tabla()
 

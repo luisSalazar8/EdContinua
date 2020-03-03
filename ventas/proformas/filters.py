@@ -11,6 +11,9 @@ class ProformaFilter(django_filters.FilterSet):
     
     empresa= autocomplete.ModelSelect2(url='empresa-autocomplete',attrs={'placeholder':'Empresa'})
     
+    asesor = django_filters.CharFilter(label="", lookup_expr='icontains', widget=forms.TextInput(attrs={'placeholder': 'Asesor'}))
+
+
     fechaSolicitud=django_filters.DateFilter(field_name='fechaSolicitud', label='', widget=forms.DateInput(attrs={'placeholder':'Fecha Solicitud: dd-mm-aaaa'}))
     fechaEnvio=django_filters.DateFilter(field_name='fechaEnvio',label='', widget=forms.DateInput(attrs={'placeholder':'Fecha Envío: dd-mm-aaaa'}))
     estado=django_filters.ChoiceFilter(label="", empty_label="Estado", choices=ESTADO_CHOICES)
@@ -20,6 +23,7 @@ class ProformaFilter(django_filters.FilterSet):
         fields=[
             'codigo',
             'empresa',
+            'asesor',
             'fechaSolicitud',
             'fechaEnvio',
             'estado',

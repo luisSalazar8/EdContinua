@@ -31,14 +31,17 @@
             </div>
 
             <div class="form-row ">
-                <div class="col-4">
+                <div class="col-3">
                     {{ filter.form.fechaSolicitud|as_crispy_field }}
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     {{ filter.form.fechaEnvio|as_crispy_field }}
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     {{ filter.form.estado|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ filter.form.asesor|as_crispy_field }}
                 </div>
             </div>
 
@@ -59,6 +62,7 @@
                     <th>Código</th>
                     
                     <th>Empresa</th>
+                    <th>Asesor</th>
                     <th>Fecha Solicitud</th>
                     <th>Fecha Envío</th>
                     <th>Monto</th>
@@ -76,6 +80,8 @@
                     <td>{{proforma.codigo}}</td>
                     
                     <td>{{proforma.empresa}}</td>
+                    
+                    <td>{{proforma.asesor}}</td>
                     <td>{{proforma.fechaSolicitud}}</td>
                     <td>{{proforma.fechaEnvio}}</td>
                     <td>{{proforma.montoProforma}}</td>

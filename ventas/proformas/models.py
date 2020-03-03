@@ -14,6 +14,7 @@ class Proforma(models.Model):
     
 	empresa=models.ForeignKey(Juridica, on_delete=models.CASCADE,verbose_name="")
 
+	asesor=models.CharField(max_length=50)
 	
 	razon_nombres=models.CharField(max_length=200)
 
@@ -23,7 +24,7 @@ class Proforma(models.Model):
 	numeroParticipantes=models.PositiveIntegerField()
 	horas=models.PositiveIntegerField()
 	cantidadCursos=models.PositiveIntegerField()
-	estado=models.CharField(max_length=30)
+	estado=models.CharField(max_length=30,verbose_name="")
 	porcentExito=models.FloatField()
 	porcentDesc=models.FloatField()
 	montoProforma=models.FloatField()

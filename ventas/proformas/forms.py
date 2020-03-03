@@ -14,6 +14,7 @@ class ProformaForm(forms.ModelForm):
 			'ruc_ci',
             'razon_nombres',
 			'version',
+			'asesor',
 			'nombreProforma',
 			'tipoEmpresa',
 			"empresa",
@@ -43,6 +44,7 @@ class ProformaForm(forms.ModelForm):
 			'ruc_ci': 'RUC',
             'razon_nombres': 'Razón social',
 			'version':'Versión',
+			'asesor':'Asesor',
 
 			'empresa':'Empresa',
 			
@@ -53,7 +55,7 @@ class ProformaForm(forms.ModelForm):
 			'numeroParticipantes':'Número Participantes',
 			'horas':'Total Horas',
 			'cantidadCursos':'Cantidad Cursos',
-			'estado':'Estado',
+
 			'porcentExito':"% Éxito",
 			'porcentDesc':"% Descuento",
 			'montoProforma':'Monto Proforma',
@@ -71,6 +73,9 @@ class ProformaForm(forms.ModelForm):
 		widgets={
 			'codigo': forms.TextInput(attrs={'class':'form-control'}),
 			'version': forms.NumberInput(attrs={'class':'form-control','min': 0}),
+
+			'asesor': forms.TextInput(attrs={'class':'form-control'}),
+
 			'nombreProforma': forms.TextInput(attrs={'class':'form-control'}),
 			'fechaSolicitud': forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'fechaEnvio':forms.DateInput(attrs={'class':'form-control',"type":"date"}),

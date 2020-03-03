@@ -59,9 +59,6 @@ def cargar_personas_thread(f,q,formulario):
 				interesado.motivo_interes = "Chale"
 				interesado.canal_de_contacto = CanalContacto.objects.get(nombre=data[4])
 				interesado.full_clean()
-				
-
-					
 				interesado.save()	
 				c+=1
 			except ValidationError as e:

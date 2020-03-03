@@ -16,6 +16,62 @@ def propuesta_list(request):
     f = PropuestaCorporativoFilter(request.GET, queryset=PropuestaCorporativo.objects.all().order_by('cod_propuesta', 'version'))
     return render(request, 'propuesta_corp_list.html', {'filter': f})
 
+# class PropuestaCorporativoCreate(CreateView):
+#     model=PropuestaCorporativo
+#     form_class=PropuestaCorporativoForm
+#     form_class2= FileForm
+#    #form_classes = {'propuesta': PropuestaCorporativoForm,
+#    #                 'anexo': FileForm}
+#     template_name='propuesta_corp_form.html'
+#     success_url=reverse_lazy('propuesta_corporativa')
+    
+#     def get_context_data(self, **kwargs):
+#         data = super(PropuestaCorporativoCreate, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             data['formset'] = FileFormset(self.request.POST,self.request.FILES)
+#         else:
+#             data['formset'] = FileFormset()
+#         return data
+    
+#     def post(self, request,*args, **kwargs):
+        
+#         self.object=self.get_object
+#         #form=self.form_class(request.POST, request.FILES)
+#         propuestaform = PropuestaCorporativoForm(request.POST)
+#         formset = FileFormset(request.POST, request.FILES)
+#         #if form.is_valid():
+#         if propuestaform.is_valid() and formset.is_valid():
+#             print("entro doble")
+#             try:
+#                 cod = PropuestaCorporativo.objects.all().order_by('cod_propuesta').latest('cod_propuesta')
+#                 print(cod)
+#                 datos=cod.cod_propuesta.split("-")
+#                 codant=datos[2]
+#                 pre=int(codant)+1
+#                 print(pre)
+#                 sec = '0'*(4-len(str(pre)))+str(pre)
+#                 #pre = str(int(self.model.objects.latest('pk').pk+1))
+#                 #sec = '0'*(4-len(pre))+pre
+                
+#             except self.model.DoesNotExist:
+#                 sec = '0001'
+#             propuestaform.instance.cod_propuesta = 'PRO-CEC-'+sec+'-'+str(date.today().year)
+#             #form.save()
+#             propuesta = propuestaform.save()
+#             for form in formset:
+#                 # so that `book` instance can be attached.
+#                 print(form.instance.file)
+#                 if(form.instance.file!=None):
+#                     file = form.save(commit=False)
+#                     file.propuesta = propuesta
+#                     file.save()
+#             return HttpResponseRedirect(self.get_success_url())
+#         else:
+#             user_form = self.form_class(None)
+#             formset= FileFormset(queryset=PropuestaFile.objects.none())
+#             #return self.render_to_response(self.get_context_data(form=form))
+#             return render(request, 'propuesta_corp_form.html', {'form': propuestaform, 'formset': formset})
+
 class PropuestaCorporativoCreate(CreateView):
     model=PropuestaCorporativo
     form_class=PropuestaCorporativoForm
@@ -36,6 +92,7 @@ class PropuestaCorporativoCreate(CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         titles = context['formset']
+        
         try:
             cod = PropuestaCorporativo.objects.all().order_by('cod_propuesta').latest('cod_propuesta')
             print(cod)

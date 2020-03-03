@@ -9,6 +9,11 @@ class Persona_Natural(models.Model):
 	TRABAJO_CHOICES = [("Dependiente","Dependiente"), ("Independiente","Profesional Independiente")]
 	ESTUDIOS_CHOICES = [("Primaria","Primaria"), ("Secundaria","Secundaria"), ("Tercer Nivel","Tercer Nivel"), ("Postgrado","Postgrado")]
 	MEDIOS_CHOICES = [("Facebook","Facebook"), ("Twitter","Twitter"), ("Linkedin","Linkedin"), ("Celular","Celular"), ("WhatsApp","WhatsApp"), ("Correo Electrónico","Correo Electrónico"), ("Video Conferencia","Video Conferencia"), ("Visita Cliente","Visita Cliente"),("Página Web","Página Web"),]
+	GENERO_CHOICES = [("Femenino","Femenino"), ("Masculino","Masculino")]
+	PROGRESO_CHOICES = [("Concluida","Concluida"), ("En curso","En curso"), ("Inconclusa","Inconclusa")]
+	PAISES_CHOICES = [("Afganistan","Afganistan"),("Albania","Albania"),("Alemania","Alemania"),("Andorra","Andorra"),("Angola","Angola"),("Antartida","Antartida"),("Antigua y Barbuda","Antigua y Barbuda"),("Arabia Saudi","Arabia Saudi"),("Argelia","Argelia"),("Argentina","Argentina"),("Armenia","Armenia"),("Australia","Australia"),("Austria","Austria"),("Azerbaiyan","Azerbaiyan"),("Bahamas","Bahamas"),("Bahrain","Bahrain"),("Bangladesh","Bangladesh"),("Barbados","Barbados"),("Belgica","Belgica"),("Belice","Belice"),("Benin","Benin"),("Bermudas","Bermudas"),("Bielorrusia","Bielorrusia"),("Birmania Myanmar","Birmania Myanmar"),("Bolivia","Bolivia"),("Bosnia y Herzegovina","Bosnia y Herzegovina"),("Botswana","Botswana"),("Brasil","Brasil"),("Brunei","Brunei"),("Bulgaria","Bulgaria"),("Burkina Faso","Burkina Faso"),("Burundi","Burundi"),("Butan","Butan"),("Cabo Verde","Cabo Verde"),("Camboya","Camboya"),("Camerun","Camerun"),("Canada","Canada"),("Chad","Chad"),("Chile","Chile"),("China","China"),("Chipre","Chipre"),("Colombia","Colombia"),("Comores","Comores"),("Congo"," Congo"),("Corea del Norte","Corea del Norte"),("Corea del Sur","Corea del Sur"),("Costa de Marfil","Costa de Marfil"),("Costa Rica","Costa Rica"),("Croacia","Croacia"),("Cuba","Cuba"),("Dinamarca","Dinamarca"),("Dominica","Dominica"),("Ecuador","Ecuador"),("Egipto","Egipto"),("El Salvador","El Salvador"),("El Vaticano","El Vaticano"),("Emiratos arabes Unidos","Emiratos arabes Unidos"),("Eritrea","Eritrea"),("Eslovaquia","Eslovaquia"),("Eslovenia","Eslovenia"),("España","España"),("Estados Unidos","Estados Unidos"),("Estonia","Estonia"),("Etiopia","Etiopia"),("Filipinas","Filipinas"),("Finlandia","Finlandia"),("Fiji","Fiji"),("Francia","Francia"),("Gabon","Gabon"),("Gambia","Gambia"),("Georgia","Georgia"),("Ghana","Ghana"),("Gibraltar","Gibraltar"),("Granada","Granada"),("Grecia","Grecia"),("Guam","Guam"),("Guatemala","Guatemala"),("Guinea","Guinea"),("Guinea Ecuatorial","Guinea Ecuatorial"),("Guinea Bissau","Guinea Bissau"),("Guyana","Guyana"),("Haiti","Haiti"),("Honduras","Honduras"),("Hungria","Hungria"),("India","India"),("Indian Ocean","Indian Ocean"),("Indonesia","Indonesia"),("Iran","Iran"),("Iraq","Iraq"),("Irlanda","Irlanda"),("Islandia","Islandia"),("Israel","Israel"),("Italia","Italia"),("Jamaica","Jamaica"),("Japon","Japon"),("Jersey","Jersey"),("Jordania","Jordania"),("Kazajstan","Kazajstan"),("Kenia","Kenia"),("Kirguistan","Kirguistan"),("Kiribati","Kiribati"),("Kuwait","Kuwait"),("Laos","Laos"),("Lesoto","Lesoto"),("Letonia","Letonia"),("Libano","Libano"),("Liberia","Liberia"),("Libia","Libia"),("Liechtenstein","Liechtenstein"),("Lituania","Lituania"),("Luxemburgo","Luxemburgo"),("Macedonia","Macedonia"),("Madagascar","Madagascar"),("Malasia","Malasia"),("Malawi","Malawi"),("Maldivas","Maldivas"),("Mali","Mali"),("Malta","Malta"),("Marruecos","Marruecos"),("Mauricio","Mauricio"),("Mauritania","Mauritania"),("Mexico","Mexico"),("Micronesia","Micronesia"),("Moldavia","Moldavia"),("Monaco","Monaco"),("Mongolia","Mongolia"),("Montserra","Montserra"),("Mozambique","Mozambique"),("Namibia","Namibia"),("Nauru","Nauru"),("Nepal","Nepal"),("Nicaragua","Nicaragua"),("Niger","Niger"),("Nigeria","Nigeria"),("Noruega","Noruega"),("Nueva Zelanda","Nueva Zelanda"),("Oman","Oman"),("Paises Bajos","Paises Bajos"),("Pakistan","Pakistan"),("Palau","Palau"),("Panama","Panama"),("Papua Nueva Guinea","Papua Nueva Guinea"),("Paraguay","Paraguay"),("Peru","Peru"),("Polonia","Polonia"),("Portugal","Portugal"),("Puerto Rico","Puerto Rico"),("Qatar","Qatar"),("Reino Unido","Reino Unido"),("Republica Centroafricana","Republica Centroafricana"),("Republica Checa","Republica Checa"),("Republica Democratica del Congo","Republica Democratica del Congo"),("Republica Dominicana","Republica Dominicana"),("Ruanda","Ruanda"),("Rumania","Rumania"),("Rusia","Rusia"),("Sahara Occidental","Sahara Occidental"),("Samoa","Samoa"),("San Cristobal y Nevis","San Cristobal y Nevis"),("San Marino","San Marino"),("San Vicente y las Granadinas","San Vicente y las Granadinas"),("Santa Lucia","Santa Lucia"),("Santo Tome y Principe","Santo Tome y Principe"),("Senegal","Senegal"),("Seychelles","Seychelles"),("Sierra Leona","Sierra Leona"),("Singapur","Singapur"),("Siria","Siria"),("Somalia","Somalia"),("Southern Ocean","Southern Ocean"),("Sri Lanka","Sri Lanka"),("Swazilandia","Swazilandia"),("Sudafrica","Sudafrica"),("Sudan","Sudan"),("Suecia","Suecia"),("Suiza","Suiza"),("Surinam","Surinam"),("Tailandia","Tailandia"),("Taiwan","Taiwan"),("Tanzania","Tanzania"),("Tayikistan","Tayikistan"),("Togo","Togo"),("Tokelau","Tokelau"),("Tonga","Tonga"),("Trinidad y Tobago","Trinidad y Tobago"),("Tunez","Tunez"),("Turkmekistan","Turkmekistan"),("Turquia","Turquia"),("Tuvalu","Tuvalu"),("Ucrania","Ucrania"),("Uganda","Uganda"),("Uruguay","Uruguay"),("Uzbekistan","Uzbekistan"),("Vanuatu","Vanuatu"),("Venezuela","Venezuela"),("Vietnam","Vietnam"),("Yemen","Yemen"),("Djibouti","Djibouti"),("Zambia","Zambia"),("Zimbabue","Zimbabue")]
+
+
 
 	cedula = models.CharField(max_length=10, primary_key=True, verbose_name="Cédula", validators=[ventas.validaciones.validate_cedula])
 	apellidos = models.CharField(max_length=75, validators=[ventas.validaciones.validate_letras])
@@ -16,10 +21,20 @@ class Persona_Natural(models.Model):
 	fecha_nacimiento = models.CharField(max_length=30,verbose_name="Fecha de Nacimiento")
 	tel_domicilio = models.CharField(max_length=20, verbose_name="Teléfono Domicilio", validators=[ventas.validaciones.validate_fono_convencional])
 	celular = models.CharField(max_length=20, validators=[ventas.validaciones.validate_celular])
+	celular2 = models.CharField(max_length=20, blank=True, null=True, verbose_name="Celular Alternativo", validators=[ventas.validaciones.validate_celular])
+
 	email = models.EmailField(max_length=254)
+	email2 = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Email Alternativo")
+
 	ci_domicilio = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Domicilio", choices=CIUDADES_CHOICES)
 	dir_domicilio = models.CharField(max_length=75, verbose_name="Dirección Domicilio")
 	nivel_estudio = models.CharField(choices=ESTUDIOS_CHOICES, default="Primaria", max_length=50, verbose_name="Nivel de Estudio")
+	progreso = models.CharField(max_length=50, verbose_name="Progreso", choices=PROGRESO_CHOICES)
+	pais = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
+	pais_estudio = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
+
+	institucion = models.CharField(max_length=100, blank=True, null=True, verbose_name="Institución")
+
 	ti_tercernivel = models.CharField(max_length=100, blank=True, null=True, verbose_name="Título Tercer Nivel")
 	un_tercernivel = models.CharField(max_length=75, blank=True, null=True, verbose_name="Universidad Tercer Nivel")
 	ti_postgrado = models.CharField(max_length=100, blank=True, null=True, verbose_name="Titulo Postgrado")
@@ -28,12 +43,15 @@ class Persona_Natural(models.Model):
 	forma_trabajo = models.CharField(choices=TRABAJO_CHOICES, max_length=100, verbose_name="Forma de Trabajo")
 	empresa = models.CharField(max_length=75, blank=True, null=True)
 	cargo = models.CharField(max_length=50, blank=True, null=True)
+	email_empresa = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Email Empresa")
 	ci_trabajo = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Trabajo", choices=CIUDADES_CHOICES)
 	area = models.CharField(max_length=50, blank=True, null=True, verbose_name="Área/Departamento")
 	dir_trabajo = models.CharField(max_length=75, blank=True, null=True, verbose_name="Dirección Trabajo")
 	tel_trabajo = models.CharField(max_length=10, blank=True, null=True, verbose_name="Teléfono Trabajo", validators=[ventas.validaciones.validate_fono_convencional])
 	medios = models.CharField(max_length=50, verbose_name="Medio de contacto", choices=MEDIOS_CHOICES, default='Correo Electrónico')
 	novedad_medios = models.CharField(max_length=500, verbose_name="Novedades sobre medio de contacto", blank=True, null=True)
-	
+	genero = models.CharField(max_length=50, verbose_name="Género", choices=GENERO_CHOICES)
+	motivo_eliminacion = models.CharField(max_length=200, verbose_name="Motivo", blank=True, null=True)
+
 	def __str__(self):
 		return self.nombres+" "+self.apellidos+" - "+self.cedula

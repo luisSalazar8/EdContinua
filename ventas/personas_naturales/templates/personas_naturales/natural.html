@@ -15,6 +15,8 @@
 			Agregar Nuevo</a>
 	</div>
 </div>
+
+
 <div class="row darkwhite-bg py-2">
 	<div class="col-12">
 		<form method="GET">
@@ -28,26 +30,26 @@
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.nombres.label_tag }}
 					{{ naturales_filter.form.nombres }}-->
-					{{ naturales_filter.form.nombres|as_crispy_field }}
+					{{ naturales_filter.form.ci_domicilio|as_crispy_field }}
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.apellidos.label_tag }}
 					{{ naturales_filter.form.apellidos }}-->
-					{{ naturales_filter.form.apellidos|as_crispy_field }}
+					{{ naturales_filter.form.nombres|as_crispy_field }}
 				</div>
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.empresa.label_tag }}
 					{{ naturales_filter.form.empresa }}-->
-					{{ naturales_filter.form.empresa|as_crispy_field }}
+					{{ naturales_filter.form.apellidos|as_crispy_field }}
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.un_tercernivel.label_tag }}
 					{{ naturales_filter.form.un_tercernivel }}-->
-					{{ naturales_filter.form.un_tercernivel|as_crispy_field }}
+					{{ naturales_filter.form.empresa|as_crispy_field }}
 				</div>
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.cargo.label_tag }}
@@ -59,12 +61,12 @@
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.profesion.label_tag }}
 					{{ naturales_filter.form.profesion }}-->
-					{{ naturales_filter.form.profesion|as_crispy_field }}
+					{{ naturales_filter.form.un_tercernivel|as_crispy_field }}
 				</div>
 				<div class="col-6 col-xl-6">
 					<!--{{ naturales_filter.form.ci_domicilio.label_tag }}
 					{{ naturales_filter.form.ci_domicilio }}-->
-					{{ naturales_filter.form.ci_domicilio|as_crispy_field }}
+					{{ naturales_filter.form.profesion|as_crispy_field }}
 				</div>
 			</div>
 			<div class="row">
@@ -101,9 +103,13 @@
 					<th scope="col">Apellidos</th>
 					<th scope="col">Nombres</th>
 					<th scope="col">Fecha de Nacimiento</th>
+					<th scope="col">Género</th>
+					<th scope="col">País</th>
 					<th scope="col">Telefono</th>
 					<th scope="col">Celular</th>
+					<th scope="col">Celular (Alternativo)</th>
 					<th scope="col">Email</th>
+					<th scope="col">Email (Alternativo)</th>
 					<th scope="col">Ciudad</th>
 					<th scope="col">Dirección</th>
 					<th scope="col">Nivel de Estudio</th>
@@ -132,9 +138,13 @@
 					<td scope="row">{{ persona.apellidos }}</td>
 					<td scope="row">{{ persona.nombres }}</td>
 					<td scope="row">{{ persona.fecha_nacimiento }}</td>
+					<td scope="row">{{ persona.genero }}</td>
+					<td scope="row">{{ persona.pais }}</td>
 					<td scope="row">{{ persona.tel_domicilio }}</td>
 					<td scope="row">{{ persona.celular }}</td>
+					<td scope="row">{{ persona.celular2 }}</td>
 					<td scope="row">{{ persona.email }}</td>
+					<td scope="row">{{ persona.email2 }}</td>
 					<td scope="row">{{ persona.ci_domicilio }}</td>
 					<td scope="row">{{ persona.dir_domicilio }}</td>
 					<td scope="row">{{ persona.nivel_estudio }}</td>
@@ -152,11 +162,13 @@
 					<td scope="row">{{ persona.tel_trabajo }}</td>
 					<td scope="row">{{ persona.medios }}</td>
 					<td scope="row">
-						<a class="btn btn-light btn-sm btn-block" href="{% url 'natural_editar' persona.cedula %}"><i
-								class="fas fa-edit darkgreen-text"></i></a>
-						<a onclick='eliminar({{ persona.cedula }});' class="btn btn-light btn-sm btn-block"
+						<a class="btn btn-secondary btn-sm" href="{% url 'natural_editar' persona.cedula %}"><i
+								class="fas fa-edit"></i></a>
+						<br>
+						<br>
+						<!--<a onclick='eliminar({{ persona.cedula }});' class="btn btn-danger btn-sm"
 							data-toggle='modal' data-target="#personaEliminar" href='#'><i
-								class="fas fa-trash darkgreen-text"></i></a>
+								class="fas fa-trash"></i></a>-->
 					</td>
 				</tr>
 				{% endfor%}
@@ -167,6 +179,8 @@
 		</table>
 	</div>
 </div>
+
+
 <!--
 <ul class="pagination justify-content-center">
 	{% if naturales.has_previous %}

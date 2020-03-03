@@ -16,9 +16,10 @@ class NaturalBusquedaFilter(django_filters.FilterSet):
 	celular = django_filters.CharFilter(label="", lookup_expr='icontains', widget=forms.TextInput(attrs={'placeholder': 'Celular'}))
 	email = django_filters.CharFilter(label="", lookup_expr='icontains', widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 	ci_domicilio = django_filters.ChoiceFilter(label="", empty_label="Ciudad", choices=CIUDADES_CHOICES)
+	
 	class Meta:
 		model = Persona_Natural
-		fields = ['cedula', 'nombres', 'apellidos', 'empresa', 'un_tercernivel', 'cargo', 'profesion', 
-		'ci_domicilio', 'tel_domicilio', 'celular', 'email',]
+		fields = ['cedula','ci_domicilio','nombres', 'apellidos', 'empresa',  'cargo','un_tercernivel', 'profesion', 
+		'tel_domicilio', 'celular', 'email',]
 		
 		

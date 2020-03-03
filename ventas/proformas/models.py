@@ -8,6 +8,7 @@ class Proforma(models.Model):
 	nombreProforma=models.CharField(max_length=100)
 	tipoEmpresa=models.ForeignKey(TipoEmpresa, on_delete=models.CASCADE)
 	TIPO_CHOICES=[('Natural','Natural'),('Jurídica','Jurídica'),]
+	
 	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
 	ruc_ci=models.CharField(max_length=13)
     

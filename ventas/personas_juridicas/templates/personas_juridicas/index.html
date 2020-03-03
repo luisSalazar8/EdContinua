@@ -147,7 +147,7 @@
 					<th scope="col">Contacto Teléfono</th>
 					<th scope="col">Contacto Celular</th>
 					<th scope="col">Contacto Email</th>
-					<th scope="col">Acciones</th>
+					<th>Acciones</th>
 				</tr>
 			</thead>
 			{% if juridicas %}
@@ -190,12 +190,13 @@
 						{{c.contacto.email}}
 					{% endfor %}
 					</td>
-					<td scope="row">
-						<a class="btn btn-light btn-sm btn-block" href="{% url 'editar_juridica' pk=j.pk %}"><i
-								class="fas fa-edit darkgreen-text"></i></a>
+					<td class="row" >
+						
+						<a class="m-auto btn btn-secondary btn-sm" href="{% url 'editar_juridica' pk=j.pk %}"><i class="fas fa-edit"></i></a>
 
-						<a onclick='eliminar({{ j.pk }});' class="btn btn-light btn-sm btn-block" data-toggle='modal'
-							data-target="#personaEliminar" href='#'><i class="fas fa-trash darkgreen-text"></i></a>
+						<a onclick='eliminar({{ j.pk }});' class="m-auto btn btn-danger btn-sm" data-toggle='modal'
+							data-target="#personaEliminar" href='#'><i class="fas fa-trash"></i></a>
+						
 					</td>
 				</tr>
 				{% endfor %}

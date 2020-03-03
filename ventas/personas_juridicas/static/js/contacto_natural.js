@@ -143,11 +143,11 @@ function Agregar_Contacto(){
         var td_email = $("<td></td>").html(email)
 
         var icono = $("<i></i>")
-        icono.addClass("fas fa-trash darkgreen-text text-center")
+        icono.addClass("fas fa-trash")
         
         var boton = $("<a></a>").html(icono)
         boton.attr({"boton":"eliminar_tabla"})
-        boton.addClass("btn btn-light btn-sm btn-block waves-effect waves-light")
+        boton.addClass("text-white m-auto btn btn-danger btn-sm")
         var td_borrar = $("<td></td>").html(boton)
       
         td_cedula.addClass("td_cedula")

@@ -65,7 +65,7 @@ Edición Persona Jurídica
 					<th scope="col">Contacto Teléfono</th>
 					<th scope="col">Contacto Celular</th>
 					<th scope="col">Contacto Email</th>
-					<th scope="col">Eliminar Contacto</th>
+					<th scope="col">Acciones</th>
 				</tr>
             </thead>
             {% if naturales %}
@@ -81,8 +81,8 @@ Edición Persona Jurídica
 					<td id ="apellidos_tabla"scope="row">{{ persona.celular }}</td>
 					<td id ="apellidos_tabla"scope="row">{{ persona.email }}</td>
 					<td scope="row">
-						<a boton="eliminar" argumento="{{persona.cedula}}" class="btn btn-light btn-sm btn-block" data-toggle='modal'
-						data-target="#contactoEliminar" href='#'><i class="fas fa-trash darkgreen-text"></i></a>
+						<a boton="eliminar" argumento="{{persona.cedula}}" class="m-auto btn btn-danger btn-sm" data-toggle='modal'
+						data-target="#contactoEliminar" href='#'><i class="fas fa-trash"></i></a>
 					</td>
 				</tr>
 				{% endfor%}
@@ -101,7 +101,7 @@ Edición Persona Jurídica
 				 </div>
 			 </div>
 		 </div>
-       <a id="agregar_contacto"  class="btn btn-secondary green-bg"  target="blank">Agregar contacto</a>
+       <a id="agregar_contacto"  class="text-white btn btn-secondary green-bg"  target="blank">Agregar contacto</a>
 
 			
 			{% comment %} <div class="form-row">

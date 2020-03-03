@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView,UpdateView,DeleteView
+from django.core.exceptions import ValidationError
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -37,32 +38,51 @@ def interesado_conf_elim(request):
 	interesado_id=request.GET.get('pk')
 	interesado=Interesado.objects.get(pk=interesado_id)
 	return render(request,"interesado_eliminar.html",{"interesado":interesado})
-def cargar_personas_thread(f,q):
+def cargar_personas_thread(f,q,formulario):
+	campos = {"motivo_interes":"Motivo de interés","correo":"Correo","celular":"Celular","apellido":"Apellido","nombre":"Nombre"}
 	if(f==None and f.lower().find(".csv")==-1):
 		return
 	fi = open(f,"r")
 	c=0
+	errores = 0
 	for line in fi:
 		data = line.strip().split(",")
 		if(len(data)==5):
 			interesado = Interesado()
-			interesado.nombre=data[0]
-			interesado.apellido = data[1]
-			interesado.celular = data[3]
-			interesado.correo = data[2]
+			
 			try:
+				
+				interesado.nombre=data[0]
+				interesado.apellido = data[1]
+				interesado.celular = data[2]
+				interesado.correo = data[3]
+				interesado.motivo_interes = "Chale"
 				interesado.canal_de_contacto = CanalContacto.objects.get(nombre=data[4])
-				interesado.save()
+				interesado.full_clean()
+				
+
+					
+				interesado.save()	
 				c+=1
+			except ValidationError as e:
+				c+=1
+				errores+=1
+				for i in e.error_dict:
+					for j in e.error_dict[i]:
+						error = str(j).strip("['']")
+						formulario.add_error("archivo",forms.ValidationError("Problemas en la linea "+str(c)+ " con el " + campos[str(i)]  + ': '+ str(error)))
+				pass
 			except:
 				c+=1
-				q.put(c)
+				errores+=1
+				formulario.add_error("archivo",forms.ValidationError("Problemas en la linea " + str(c) + " con el Canal de contacto o un valor no válido"))
 				pass
+	q.put(errores)
 	q.put(c)
 	q.put("fin")		
 	fi.close()
 	os.remove(f)
-def handle_uploaded_file(f):
+def handle_uploaded_file(f,formulario):
 	# _file = 'media/uploads/carga/'+str(f)
 	_file = str(f)
 
@@ -74,32 +94,27 @@ def handle_uploaded_file(f):
 			destination.write(chunk)
 	valores_retorno = queue.Queue()
 	t = threading.Thread(target=cargar_personas_thread,
-							 args=(_file,valores_retorno))
+							 args=(_file,valores_retorno,formulario))
 	t.setDaemon(True)
 	t.start()
 	lineas =[]
 	for valores in iter(valores_retorno.get, "fin"):
 		lineas.append(valores)
+	print(lineas)
 	return lineas
 	
 
 def cargar_interesados(request):
 	if request.method == 'POST':
+	
 		form = InteresadoCargarForm(request.POST, request.FILES)
 		if form.is_valid():
-			errores = handle_uploaded_file(request.FILES['archivo'])
-			if(len(errores)==1):
+			errores = handle_uploaded_file(request.FILES['archivo'],form)
+			if(errores[0]==0):
 				return HttpResponseRedirect(reverse_lazy('interesados'))
 			else:
-				cantidad_errores = len(errores)-1
-				cantidad_filas = errores[-1]
-				for i in range(cantidad_errores):
-					error ="Problema en la linea " + str(errores[i]) + ": El canal de contacto no es el correcto o dicho interesado ya existe"
-					form.add_error("archivo",forms.ValidationError(error))
-				if(cantidad_errores!= cantidad_filas):
+				if(errores[0]!=errores[1]):
 					form.add_error("archivo",forms.ValidationError("El resto de interesados fueron creados exitosamente"))
-		
-
 	else:
 		form = InteresadoCargarForm()
 	return render(request, 'interesados_cargar.html', {'form': form})

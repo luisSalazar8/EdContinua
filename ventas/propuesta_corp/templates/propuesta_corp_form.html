@@ -24,7 +24,7 @@ data-info-url="{% url 'ajax_info_id' %}">
     <div class="row darkwhite-bg py-2">
         <div class="col-12">
             <div class="form-row">
-                <div class="col-6 col-md-2 mb-0">{{ form.cod_propuesta|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0 ">{{ form.cod_propuesta|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.version|as_crispy_field }}</div>
                 <div class="col-12 col-md-4 mb-0">{{ form.reporte|as_crispy_field }}</div>
                 
@@ -104,12 +104,28 @@ data-info-url="{% url 'ajax_info_id' %}">
                     </div>
                 </div>
                 <div class="col-12 mb-0">{{ form.observacion|as_crispy_field }}</div>
-                {{ formset.management_form }}
-                {% for form in formset.forms %}
-                <div class="row form-row spacer anexo form-control col-12 col-md-12 mb-0">
-                  {{ form.file}}
-                </div>
-                  {% endfor %}
+                <table class="table table-responsive-md border-bottom">
+                  {{ formset.management_form|crispy }}
+                  
+                      {% for form in formset.forms %}
+                              <tr class="{% cycle 'row1' 'row2' %} form-control form-row formset_row-{{ formset.prefix }}">
+                                  {% for field in form.visible_fields %}
+                                  <td scope="row">
+                                      {# Include the hidden fields in the form #}
+                                      {% if forloop.first %}
+                                          {% for hidden in form.hidden_fields %}
+                                              {{ hidden }}
+                                          {% endfor %}
+                                      {% endif %}
+                                      {{ field.errors.as_ul }}
+                                      {{ field|as_crispy_field }}
+                                  </td>
+                                  {% endfor %}
+                              </tr>
+                      {% endfor %}
+                  
+                  </table>
+                  
             </div>
         </div>
     </div>
@@ -135,6 +151,6 @@ data-info-url="{% url 'ajax_info_id' %}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/propuesta_money.js' %}"></script>
 <script src="{% static 'js/propuesta_form.js' %}"></script>
-<script src="{% static 'js/propuesta_files.js' %}"></script>
+
 {% endblock extrafooter %}
 {% endblock content %}

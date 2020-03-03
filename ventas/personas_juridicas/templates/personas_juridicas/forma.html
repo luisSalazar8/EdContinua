@@ -35,12 +35,13 @@ data-info-url="{% url 'ajax_info_id' %}">
 			<div class=" form-row">
 				<input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
     			<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
-				<div class="col-6 col-xl-4">
-					{{ form.nombre |as_crispy_field}}
-				</div>
 				<div class="col-6 col-xl-3">
 					{{ form.ruc|as_crispy_field}}
 				</div>
+				<div class="col-6 col-xl-4">
+					{{ form.nombre |as_crispy_field}}
+				</div>
+				
 				<div class="col-6 col-xl-2">
 					{{ form.tipo_empresa|as_crispy_field}}
 				</div>

@@ -219,5 +219,6 @@ class FileForm(forms.ModelForm):
 
 FileFormset = inlineformset_factory(
     PropuestaCorporativo, PropuestaFile, form=FileForm,
-    fields=['file'],widgets={'file':forms.ClearableFileInput(attrs={'accept':'image/*,.pdf,.xlsx,.xlsm,.xlsb,.xltx,.xltm,.xls,.xlt,.xls,.xml,.xlam,.xla,.xlw,.XLR,.csv'}),}, extra=1,can_delete=True
+    fields=['file'],widgets={"file":forms.ClearableFileInput(attrs={'class':' anexo','accept':'image/*,.pdf,.xlsx,.xlsm,.xlsb,.xltx,.xltm,.xls,.xlt,.xml,.xlam,.xla,.xlw,.XLR,csv '})},
+     extra=1,can_delete=True
     )

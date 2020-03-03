@@ -24,6 +24,8 @@
 			<h5 class="black-text text-uppercase mb-0">Información básica</h5>
 		</div>
 	</div>
+
+
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
 			<div class="form-row">
@@ -31,14 +33,23 @@
 					{{ form.cedula|as_crispy_field }}
 				</div>
 				<div class="col-6">
-					{{ form.apellidos|as_crispy_field }}
+					{{ form.fecha_nacimiento|as_crispy_field }}
 				</div>
 				<div class="col-6">
 					{{ form.nombres|as_crispy_field }}
 				</div>
 				<div class="col-6">
-					{{ form.fecha_nacimiento|as_crispy_field }}
+					{{ form.apellidos|as_crispy_field }}
 				</div>
+
+				<div class="col-6">
+					{{ form.pais|as_crispy_field }}
+				</div>
+
+				<div class="col-6">
+					{{ form.genero|as_crispy_field }}
+				</div>
+				
 			</div>
 
 			<div class="row">
@@ -53,8 +64,14 @@
 				<div class="col-6 col-md-3">
 					{{ form.celular|as_crispy_field }}
 				</div>
+				<div class="col-6 col-md-3">
+					{{ form.celular2|as_crispy_field }}
+				</div>
 				<div class="col-6 col-xl-6">
 					{{ form.email|as_crispy_field }}
+				</div>
+				<div class="col-6 col-xl-6">
+					{{ form.email2|as_crispy_field }}
 				</div>
 				<div class="col-6 col-xl-6">
 					{{ form.ci_domicilio|as_crispy_field }}
@@ -63,37 +80,69 @@
 					{{ form.dir_domicilio|as_crispy_field }}
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="mt-2 campo p-2 pl-3 col-12">
 					<h5 class="black-text text-uppercase mb-0">Datos de estudios</h5>
 				</div>
 			</div>
 
+
+			
 			{{ form.nivel_estudio.label_tag }}
 			{% for opc in form.nivel_estudio %}
 			{{ opc }}
-			{% endfor %} <br>
+			{% endfor %} 
+				
+
+
+			<br>
+
+
 			<div class="row">
-				<div class="col-6 col-xl-6">
+				<div class="col-6 col-xl-6" id='id_ti_tercernivel' style='display:none'>
 					{{ form.ti_tercernivel|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6">
+				<div class="col-6 col-xl-6" id='id_un_tercernivel' style='display:none'>
 					{{ form.un_tercernivel|as_crispy_field }}
 				</div>
+				<div class="col-6 col-xl-6" id='id_pais_estudio' style='display:none'>
+					{{ form.pais_estudio|as_crispy_field }}
+				</div>
 			</div>
+
 			<div class="row">
-				<div class="col-6 col-xl-6">
+				<div class="col-6 col-xl-6" id='id_ti_postgrado' style='display:none'>
 					{{ form.ti_postgrado|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6">
+				<div class="col-6 col-xl-6" id='id_un_postgrado' style='display:none'>
 					{{ form.un_postgrado|as_crispy_field }}
 				</div>
 			</div>
+
 			<div class="row">
+				<div class="col-6 col-xl-6">
+					{{ form.institucion|as_crispy_field }}
+				</div>
+			</div>
+
+
+	<div class="row">
+				<div class="col-6 col-xl-6">
+					{{ form.progreso|as_crispy_field }}
+				</div>
 				<div class="col-6 col-xl-6">
 					{{ form.profesion|as_crispy_field }}
 				</div>
 			</div>
+
+
+
+
+
+
+
+
 			<div class="row">
 				<div class="mt-2 campo p-2 pl-3 col-12">
 					<h5 class="black-text text-uppercase mb-0">Datos del trabajo</h5>
@@ -105,13 +154,17 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-6 col-xl-6">
+				<div class="col-4 col-xl-4">
 					<!--{{ form.empresa.label_tag }}-->
 					{{ form.empresa|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6">
+				<div class="col-4 col-xl-4">
 					<!--{{ form.cargo.label_tag }}-->
 					{{ form.cargo|as_crispy_field }}
+				</div>
+				<div class="col-4 col-xl-4">
+					<!--{{ form.cargo.label_tag }}-->
+					{{ form.email_empresa|as_crispy_field }}
 				</div>
 			</div>
 			<div class="row">
@@ -134,6 +187,12 @@
 					{{ form.tel_trabajo|as_crispy_field }}
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="mt-2 campo p-2 pl-3 col-12">
+					<h5 class="black-text text-uppercase mb-0">Medio por el que se enteró del evento</h5>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-6 col-xl-6">
 					{{ form.medios|as_crispy_field }}
@@ -153,3 +212,10 @@
 	</div>
 </form>
 {% endblock %}
+
+{% block extrafooter %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/nivel_estu.js' %}"></script>
+
+{% endblock extrafooter %}

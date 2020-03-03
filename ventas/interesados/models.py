@@ -12,4 +12,5 @@ class Interesado(models.Model):
 	celular = models.CharField(max_length=20, unique=True, validators=[ventas.validaciones.validate_celular])
 	correo = models.EmailField(max_length=100, unique= True)
 	canal_de_contacto = models.ForeignKey(CanalContacto, on_delete=models.SET_NULL, blank=False, null=True)
-	motivo_interes=models.CharField(max_length=850)
+	motivo_interes = models.CharField(max_length=850)
+	

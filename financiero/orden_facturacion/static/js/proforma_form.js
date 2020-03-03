@@ -1,7 +1,6 @@
 var p_url = "";
-var sector="";
 
-$('.select3').select2({
+$('.select2').select2({
   minimumInputLength: 2,
   language: {
 
@@ -20,76 +19,29 @@ $('.select3').select2({
   }
 });
 
-$("#field-ruc-ci [data-select2-id=3]").remove();
-$("#field-ruc-ci [data-select2-id=4]").remove();
-$("#field-razon [data-select2-id=4]").remove();
-$("#field-razon [data-select2-id=5]").remove();
-$("#id_ruc_ci").prop('disabled', true);
-$("#id_razon_nombres").prop('disabled', true);
-
-$(document).on('change', "#id_reporte", function (e) {
-  console.log("se hizo");
-  var reporte=$("#select2-id_reporte-container").attr("title");
-  console.log(reporte);
-  var datos=reporte.split(" ");
-  const ruc=datos[1];
-  console.log(ruc);
- /* $('#id_ruc_ci  option').filter(function() { 
-    return ($(this).text() == ruc); //To select Blue
-  }).prop('selected', true);*/
-  
-  
-  const razon=$('#id_ruc_ci option').filter(function() { 
-    return ($(this).val() == ruc); //To select Blue
-  }).attr("name");
-  $('#rc').val(ruc);
-  $('#rn').val(razon);
-  /*$('#id_ruc_ci').val(ruc);
-  $('#id_razon_nombres').val(razon);
-  $('#id_ruc_ci').trigger('change.select2');
-  $('#id_razon_nombres').trigger('change.select2');*/
-  load_data();
-  load_info();
-  
-});
-
 
 function load_info() {
   var url = $('#form-fact').attr("data-info-url");
-  var per="";
-  var id=0;
   if(flag){
-    var id= $('#id_ruc_ci').val();
-    if(id==null){
-      id=$('#rc').val();
-    }
-    per="Jurídica";
-    console.log(1)
+    var id= $('#rc').val();
   }
   else{
     var id= $('#id_ruc_ci').val();
-    per="Jurídica";
-    console.log(2)
   }
-  console.log($('#rc').val());
-  console.log(id);
-  console.log(per);
   $.ajax({
     url: url,
     data: {
       'id': id,
-      'persona': "Jurídica",
+      'persona': $("#id_tipo_cliente").val(),
     },
     success: function (data) {
       flag=false;
-      console.log(data.sector)
-    
       $('#id_sector option').filter(function() { 
-            return ($(this).text() == data.sector); //To select Blue
-        }).prop('selected', true);
-      $('#id_tipo_empresa option').filter(function() { 
-            return ($(this).text() == data.tipo); //To select Blue
-        }).prop('selected', true);
+        return ($(this).text() == data.sector); //To select Blue
+    }).prop('selected', true);
+  $('#id_tipoEmpresa option').filter(function() { 
+        return ($(this).text() == data.tipo); //To select Blue
+    }).prop('selected', true);
       $("#contacto").val(data.contacto);
       $("#telefono").val(data.telefono);
       $("#direccion").val(data.direccion);
@@ -97,11 +49,9 @@ function load_info() {
   })
 }
 
-
-
 function load_data() {
   var url = $('#form-fact').attr("data-persona-url");
-  var persona = "Jurídica";
+  var persona = $("#id_tipo_cliente").val();
 
   if (persona != "") {
     $.ajax({
@@ -209,42 +159,14 @@ $(document).on('click', "#pnuevo", function () {
 })
 
 $(document).on('click', "#div_id_ruc_ci span.selection", function (e) {
-  console.log($("#id_ruc_ci").attr("disabled"))
-  const dis=$("#id_ruc_ci").attr("disabled");
-  if(dis!="disabled"){
-    $("#rc").val("");
-    $("#rn").val("");
-    load_data();
-  }
+  $("#rc").val("");
+  $("#rn").val("");
+  load_data();
 });
 
 $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
-  const dis=$("#id_razon_nombres").attr("disabled");
-  if(dis!="disabled"){
-    $("#rc").val("");
-    $("#rn").val("");
-    load_data();
-  }
+  $("#rc").val("");
+  $("#rn").val("");
+  load_data();
 });
-
-$(document).on('click', "#hack", function (e) {
-  $("#id_version").prop('disabled', false);
-  $("#id_ruc_ci").prop('disabled', false);
-  $("#id_razon_nombres").prop('disabled', false);
-  
-});
-
-//Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
-/*$(document).on('change', "input", function (e) {
-  if ($(this).attr("type")!="checkbox"){
-    $(this).css("box-shadow", "0 0 0px 1000px white inset");
-}
-});*/
-
-
-  
-
-
-
-
 

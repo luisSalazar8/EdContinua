@@ -4,7 +4,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<form id="capel" method="POST" action="{% url 'asesoria_eliminar' asesoria.pk fk %}" >
+<form id="asel" method="POST" action="{% url 'asesoria_eliminar' asesoria.pk fk %}" >
     {% csrf_token %}
 
     <div class="modal-body text-justify">
@@ -16,6 +16,6 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button class="btn btn-secondary green-bg mr-3" form="capel" type="submit"> Eliminar </button>
+        <button class="btn btn-secondary green-bg mr-3" form="asel" type="submit"> Eliminar </button>
     </div>
 </form>

@@ -21,19 +21,30 @@
                 <div class="col-4">
                     {{ filter.form.codigo|as_crispy_field }}
                 </div>
-                <div class="col-4">
-                    {{ filter.form.nombreProforma|as_crispy_field }}
+
+                <div class="col-1">
+                    <h8>Empresa: </h8>
                 </div>
-                <div class="col-4">
-                    {{ filter.form.fechaSolicitud|as_crispy_field }}
-                </div>
-                <div class="col-4">
-                    {{ filter.form.fechaEnvio|as_crispy_field }}
-                </div>
-                <div class="col-4">
-                    {{ filter.form.estado|as_crispy_field }}
+                <div class="col-7">
+                    {{ filter.form.empresa|as_crispy_field }}
                 </div>
             </div>
+
+            <div class="form-row ">
+                <div class="col-3">
+                    {{ filter.form.fechaSolicitud|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ filter.form.fechaEnvio|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ filter.form.estado|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ filter.form.asesor|as_crispy_field }}
+                </div>
+            </div>
+
             <div>
                 <button type="submit" class="btn btn-secondary green-bg float-right">
                     <span class="fas fa-search"></span> Buscar</button>
@@ -49,8 +60,9 @@
             <thead class="white-text darkgreen-bg">
                 <tr>
                     <th>Código</th>
-                    <th>Nombre</th>
+                    
                     <th>Empresa</th>
+                    <th>Asesor</th>
                     <th>Fecha Solicitud</th>
                     <th>Fecha Envío</th>
                     <th>Monto</th>
@@ -66,8 +78,10 @@
                 {% for proforma in filter.qs %}
                 <tr class="text-center">
                     <td>{{proforma.codigo}}</td>
-                    <td>{{proforma.nombreProforma}}</td>
+                    
                     <td>{{proforma.empresa}}</td>
+                    
+                    <td>{{proforma.asesor}}</td>
                     <td>{{proforma.fechaSolicitud}}</td>
                     <td>{{proforma.fechaEnvio}}</td>
                     <td>{{proforma.montoProforma}}</td>
@@ -75,8 +89,8 @@
                     <td>
                         <a class="btn btn-secondary btn-sm" href="{% url 'proforma_editar' proforma.id%}"><i
                                 class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'proforma_eliminar' proforma.id%}"><i
-                                class="fas fa-trash"></i></a>
+                       <!-- <a class="btn btn-danger btn-sm" href="{% url 'proforma_eliminar' proforma.id%}"><i
+                                class="fas fa-trash"></i></a>-->
                     </td>
                 </tr>
                 {% endfor %}

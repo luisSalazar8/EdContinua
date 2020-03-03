@@ -1,30 +1,25 @@
 {% extends "base_ventas.html" %}
-{% load static %}
 {% load crispy_forms_tags %}
+{% load static %}
 
-{%block extraheader %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/interesados.css' %}">
-{% endblock extraheader %}
 
 {% block content %}
-<div class = "container-fluid">
+<div class = "mb-2 container-fluid">
     <div class="row d-flex white-bg">
-        <div class="col-4 col-sm-4 v-align">
+        <div class="col-12 col-sm-4 v-align">
             <h2 class="text-uppercase">Consultas <span class="darkgreen-text">Interesados</span></h2>
         </div>
-        <div class="col-10 col-md-8 ">
-            <div class = "container-fluid">
-                <div class="row d-flex">
-                    <div class="col-9 col-sm-4 col-md-12 v-align ">
-                        <a id="boton_cargar_interesados" class="btn btn-secondary green-bg float-right" href="{% url 'interesados_cargar' %}"><i class="fas fa-plus"></i> Cargar Interesados</a>
-                    </div> 
-                    <div id="div_boton_agregar_interesados" class="mt-1 col-9  offset-sm-2 col-sm-2  col-md-10  v-align ">
-                        <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"><i class="fas fa-plus"></i> Agregar Interesado</a>
-                    </div>
-                    
-                </div>
-            </div>
+      
+        <div  class="col-9 col-sm-4 offset-md-4 col-md-1 v-align ">
+            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"><i class="fas fa-plus"></i> Agregar Interesado</a>
         </div>
+         <div class=" mt-1 col-9  offset-sm-2 col-sm-2  col-md-1  v-align " >
+            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_cargar' %}"><i class="fas fa-plus"></i> Cargar Interesados</a>
+        </div> 
+                    
+                
+            
+        
     </div>
 </div>  
       

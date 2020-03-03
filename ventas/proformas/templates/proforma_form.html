@@ -27,9 +27,6 @@ data-info-url="{% url 'ajax_info_id' %}">
 				<div class="col-xl-3">
 					{{form.version|as_crispy_field}}
 				</div>
-				<div class="col-xl-6">
-					{{form.nombreProforma|as_crispy_field}}
-				</div>
 			</div>
 			<div class="col-6 col-md-3 mb-0">
 
@@ -103,32 +100,39 @@ data-info-url="{% url 'ajax_info_id' %}">
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-xl-3">
-					{{form.estado|as_crispy_field}}
-				</div>
-				<div class="col-xl-3">
-					{{form.porcentExito|as_crispy_field}}
-				</div>
-				<div class="col-xl-3">
-					{{form.porcentDesc|as_crispy_field}}
-				</div>
-				<div class="col-xl-3">
-					{{form.montoDesc|as_crispy_field}}
-				</div>
-			</div>
-			<div class=form-row>
-				<div class="col-xl-12">
-					{{form.observacion|as_crispy_field}}
-				</div>
-			</div>
-			<div class=form-row>
-				<div class="col-xl-6">
-					{{form.anexos|as_crispy_field}}
-				</div>
-				<div class="col-xl-6">
-					{{form.nombre|as_crispy_field}}
-				</div>
-			</div>
+				<div class="col-1">
+                    <br>
+                    {{form.porcentExito|as_crispy_field}}
+                </div>
+                <div class="col-1">
+                    {{form.porcentDesc|as_crispy_field}}
+                </div>
+                <div class="col-1">
+                    {{form.montoDesc|as_crispy_field}}
+                </div>
+            </div>
+            <div class=form-row>
+                <div class="col-xl-12">
+                    {{form.observacion|as_crispy_field}}
+                </div>
+            </div>
+            <div class=form-row>
+                <div class="col-xl-6">
+                    {{form.anexos|as_crispy_field}}
+                </div>
+                
+            </div>
+            <br>
+            <div class=form-row>
+                
+                <div class="col-0.5">
+                    <font color="green"><h6><b> Estado: </b></h6></font>
+                </div>
+                <div class="col-xl-3">
+                    {{form.estado|as_crispy_field}}
+                </div>
+            </div>
+
 			<div class="row">
 				<div class="mt-2 campo p-2 pl-3 col-12">
 					<h5 class="black-text text-uppercase mb-0">Aceptación Proforma</h5>

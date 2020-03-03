@@ -16,6 +16,7 @@ class ProformaForm(forms.ModelForm):
 			'version',
 			'nombreProforma',
 			'tipoEmpresa',
+			"empresa",
 			'sector',
 			'fechaSolicitud',
 			'fechaEnvio',
@@ -42,7 +43,9 @@ class ProformaForm(forms.ModelForm):
 			'ruc_ci': 'RUC',
             'razon_nombres': 'Razón social',
 			'version':'Versión',
-			'nombreProforma':'Nombre',
+
+			'empresa':'Empresa',
+			
 			'tipoEmpresa':'Tipo Empresa',
 			'sector':'Sector',
 			'fechaSolicitud':'Fecha Solicitud',

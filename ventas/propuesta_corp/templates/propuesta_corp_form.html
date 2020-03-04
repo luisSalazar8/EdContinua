@@ -26,8 +26,8 @@ data-info-url="{% url 'ajax_info_id' %}">
             <div class="form-row">
                 <div class="col-6 col-md-2 mb-0 ">{{ form.cod_propuesta|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.version|as_crispy_field }}</div>
-                <div class="col-12 col-md-4 mb-0">{{ form.reporte|as_crispy_field }}</div>
-                
+                <div class="col-12 col-md-3 mb-0">{{ form.reporte|as_crispy_field }}</div>
+                <div class="col-12 col-md-4 mb-0"></div>
                 <div class="col-6 col-md-2 mb-0 " id="field-ruc-ci">
                     <div id="div_id_ruc_ci" class="form-group">
                       <label for="{{ form.ruc_ci.id_for_label}}" class="col-form-label requiredField"
@@ -46,7 +46,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                     </div>
                   </div>
           
-                  <div class="col-6 col-md-2 mb-0 " id="field-razon">
+                  <div class="col-6 col-md-2 mb-0" id="field-razon">
                     <div id="div_id_razon_nombres" class="form-group">
                       <label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Razón
                         Social</label><span class="asteriskField">*</span>
@@ -68,14 +68,15 @@ data-info-url="{% url 'ajax_info_id' %}">
                 
                   
                 <div class="col-6 col-md-2 mb-0">{{ form.sector|as_crispy_field }}</div>
-                
+                <div class="col-12 col-md-3 mb-0"></div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_solicitud|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_envio|as_crispy_field }}</div>
                 
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_respuesta|as_crispy_field }}</div>
-                <div class="col-6 col-md-2 mb-0 font-weight-bold text-success" >{{ form.estado|as_crispy_field }}</div>
 
                 <div class="col-6 col-md-3 mb-0">{{ form.asesor|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0 font-weight-bold text-success" >{{ form.estado|as_crispy_field }}</div>
+                
                 <div class="col-6 col-md-3 mb-0">{{ form.area_capacitacion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.numero_participantes|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.total_horas|as_crispy_field }}</div>
@@ -87,7 +88,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                 <div class="col-6 col-md-3 mb-0">{{ form.margen_contribucion|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.utilidad_esperada|as_crispy_field }}</div>
                 <div class="col-6 col-md-3 mb-0">{{ form.exito|as_crispy_field }}</div>
-                <div class="col-6 col-md-7 mb-0">{{ form.lugar|as_crispy_field }}</div>
+                <div class="col-6 col-md-3 mb-0">{{ form.lugar|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_inicio_estimada|as_crispy_field }}</div>
                 
                 <div class="col-12 mb-0">

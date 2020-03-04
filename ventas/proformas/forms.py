@@ -17,7 +17,7 @@ class ProformaForm(forms.ModelForm):
 			'asesor',
 			'nombreProforma',
 			'tipoEmpresa',
-			"empresa",
+			#"empresa",
 			'sector',
 			'fechaSolicitud',
 			'fechaEnvio',
@@ -46,7 +46,7 @@ class ProformaForm(forms.ModelForm):
 			'version':'Versión',
 			'asesor':'Asesor',
 
-			'empresa':'Empresa',
+			#'empresa':'Empresa',
 			
 			'tipoEmpresa':'Tipo Empresa',
 			'sector':'Sector',

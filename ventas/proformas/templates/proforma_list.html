@@ -22,11 +22,11 @@
                     {{ filter.form.codigo|as_crispy_field }}
                 </div>
 
-                <div class="col-1">
-                    <h8>Empresa: </h8>
+                <div class="col-6 col-md-4 mb-0 ">
+                    {{ filter.form.ruc_ci|as_crispy_field }}
                 </div>
-                <div class="col-7">
-                    {{ filter.form.empresa|as_crispy_field }}
+                <div class="col-6 col-md-4 mb-0 ">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
                 <tr class="text-center">
                     <td>{{proforma.codigo}}</td>
                     
-                    <td>{{proforma.empresa}}</td>
+                    <td>{{proforma.ruc_ci}}-{{proforma.razon_nombres}}</td>
                     
                     <td>{{proforma.asesor}}</td>
                     <td>{{proforma.fechaSolicitud}}</td>

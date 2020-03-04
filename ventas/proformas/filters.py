@@ -9,7 +9,9 @@ class ProformaFilter(django_filters.FilterSet):
     ESTADO_CHOICES= [("Aceptada","Aceptada"),("No aceptada","No aceptada"), ("Seguimiento","Seguimiento") ,("Por Enviar","Por Enviar")]
     codigo=django_filters.CharFilter(lookup_expr='icontains',label='', widget=forms.TextInput(attrs={'placeholder': 'Código'}))
     
-    empresa= autocomplete.ModelSelect2(url='empresa-autocomplete',attrs={'placeholder':'Empresa'})
+    #empresa= autocomplete.ModelSelect2(url='empresa-autocomplete',attrs={'placeholder':'Empresa'})
+    ruc_ci = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'RUC'}))
+    razon_nombres = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Empresa'}))
     
     asesor = django_filters.CharFilter(label="", lookup_expr='icontains', widget=forms.TextInput(attrs={'placeholder': 'Asesor'}))
 
@@ -22,7 +24,9 @@ class ProformaFilter(django_filters.FilterSet):
         
         fields=[
             'codigo',
-            'empresa',
+            #'empresa',
+            'razon_nombres',
+            'ruc_ci',
             'asesor',
             'fechaSolicitud',
             'fechaEnvio',

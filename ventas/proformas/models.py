@@ -12,7 +12,7 @@ class Proforma(models.Model):
 	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
 	ruc_ci=models.CharField(max_length=13)
     
-	empresa=models.ForeignKey(Juridica, on_delete=models.CASCADE,verbose_name="")
+	#empresa=models.ForeignKey(Juridica, on_delete=models.CASCADE,verbose_name="")
 
 	asesor=models.CharField(max_length=50)
 	

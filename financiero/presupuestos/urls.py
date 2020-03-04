@@ -7,13 +7,13 @@ from .models import *
 from ventas.personas_juridicas.models import Juridica
 urlpatterns = [
     path('', views.index_presupuestos, name='index_presupuestos'),
-    path('nuevo/', views.presupuestos_nuevo, name='nuevo_presupuestos'),
-    path('editar/<pk>', views.presupuestos_editar, name='editar_presupuestos'),
-    path('eliminar/', views.presupuestos_eliminar, name='eliminar_presupuestos'),
-    path('eliminar/<pk>', views.presupuestos_eliminar, name='eliminar_presupuestos'),
-    path("aula-autocomplete/",views.AulaAutocomplete.as_view(model=Aula,create_field="nombre"),name="aula-autocomplete"),
-    path('aprobar/<pk>', views.presupuestos_aprobar, name="aprobar_presupuestos"),
-    path("ajax/load-tarifario/", views.load_tarifario, name="ajax_load_tarifario"),
+    path('nuevo/', views.PresupuestoEventoCreate.as_view(), name='nuevo_presupuestos'),
+    path('editar/<pk>', views.PresupuestoEventoUpdate.as_view(), name='editar_presupuestos'),
+    path('ajax/load-elminar-presupuesto',views.presupuesto_conf_elim,name='presupuesto_confirmar_eliminar'),
+    path('eliminar/<pk>/', views.PresupuestoEventoDelete.as_view(), name='presupuesto_eliminar'),
+    path('ajax/cargar-valor', views.cargar_info, name="ajax_cargar_valor"),
+    path('aprobar/<pk>',views.PresupuestoEventoAprobar.as_view(), name="presupuesto_aprobar"),
+    path('anular/<pk>',views.anular_presupuesto, name="presupuesto_anular"),
 ]
     
 

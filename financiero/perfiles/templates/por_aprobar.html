@@ -122,8 +122,8 @@
 					<thead class="white-text darkgreen-bg">
 						<tr>
 							<th scope="col">Ver Detalles</th>
-							<th scope="col">Estado</th>
-							<th scope="col">Nombre</th>
+							<th scope="col">Código</th>
+							<th scope="col">Nombre Evento</th>
 							<th scope="col">Fecha</th>
 							<th scope="col">Aula</th>
 							<th scope="col">Horas</th>
@@ -136,13 +136,12 @@
 					<tbody>
 						{% for p in presupuestos_ev %}
 						<tr class="text-center">
-							<td scope="row"><a class="btn btn-secondary float-right"
-									href="{% url 'aprobar_presupuestos' pk=p.id %}"><i class="fas fa-eye"></i></a></td>
+							<td scope="row"><a class="btn btn-secondary"
+									href="{% url 'presupuesto_aprobar' pk=p.id %}"><i class="fas fa-eye"></i></a></td>
 							<td scope="row">{{p.codigo}}</td>
-							<td scope="row">{{p.estado}}</td>
-							<td scope="row">{{p.nombre}}</td>
+							<td scope="row">{{p.evento.nombre}}</td>
 							<td scope="row">{{p.fecha}}</td>
-							<td scope="row">{{p.aula}}</td>
+							<td scope="row">{{p.evento.aula}}</td>
 							<td scope="row">{{p.n_horas}}</td>
 							<td scope="row">{{p.n_dias}}</td>
 							<td scope="row">{{p.n_participantes}}</td>

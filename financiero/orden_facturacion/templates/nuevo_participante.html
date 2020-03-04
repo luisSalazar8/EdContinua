@@ -46,7 +46,7 @@
         minimumInputLength: 2,
         language: {
             noResults: function () {
-                $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + $('#form-fact').attr("data-natural-url") + "' target='_blank'>Agregar Nuevo</a>");
+                $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='{% url 'natural_nuevo' %}' target='_blank'>Agregar Nuevo</a>");
                 return "No hay resultados";
             },
             searching: function () {

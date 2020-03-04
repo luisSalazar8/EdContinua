@@ -19,7 +19,7 @@ def index_coordinador(request):
 	return render(request, 'base_coordinador.html')
 
 def por_aprobar(request):
-	presupuestos_ev = PresupuestoEvento.objects.filter(estado=None)
+	presupuestos_ev = PresupuestoEvento.objects.filter(estado='Solicitud Enviada')
 	orden_fact=OrdenFacturacion.objects.filter(estado='SLCE')
 	orden_pago = OrdenPago.objects.filter(estado='ENVD')
 	presupuestos_an = Espoltech.objects.filter(estado='ENVD')

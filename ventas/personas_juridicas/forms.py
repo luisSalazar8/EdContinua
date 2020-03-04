@@ -112,6 +112,11 @@ class JuridicaForm(forms.ModelForm):
 		elif self.instance.pk:
 			self.fields['ciudad'].queryset = self.instance.provincia.ciudad_set.order_by('nombre')
 
+class PropertyModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+         return obj.type
+
+
 class JuridicaFilter(django_filters.FilterSet):
 	nombre = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Razón Social'}))
 	ruc = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'RUC'}))
@@ -136,13 +141,14 @@ class JuridicaFilter(django_filters.FilterSet):
 	# contacto_correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo Electrónico'}))
 	provincia = django_filters.ModelChoiceFilter(label="", empty_label="Provincia", queryset=models.Provincia.objects.all())
 
-	def ciudades(request):
-		if request is None:
-			return models.Ciudad.objects.none()
-		else:
-			return request.provincia.city_set.order_by('name')
+	# def ciudades(request):
+	# 	if request is None:
+	# 		return models.Ciudad.objects.none()
+	# 	else:
+			
+	# 		return models.Ciudad.objects.all()
 
-	ciudad = django_filters.ModelChoiceFilter(label="", empty_label="Ciudad", queryset=ciudades)
+	ciudad = django_filters.ModelChoiceFilter(label="", empty_label="Ciudad", queryset=models.Ciudad.objects.all().order_by("nombre"))
 
 	class Meta:
 		model = models.Juridica
@@ -152,7 +158,7 @@ class JuridicaFilter(django_filters.FilterSet):
 					"tipo_empresa",
 					"sector",
 					"direccion",
-					"ciudad",
+					#"ciudad",
 					"provincia",
 					"telefono",
 					"celular",
@@ -171,5 +177,5 @@ class JuridicaFilter(django_filters.FilterSet):
 		}
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.form.fields['ciudad'].queryset = models.Ciudad.objects.none()
+		#self.form.fields['ciudad'].queryset = models.Ciudad.objects.none()
 

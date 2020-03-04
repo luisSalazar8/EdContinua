@@ -241,10 +241,24 @@ $(document).on('click', "#hack", function (e) {
 }
 });*/
 
+// $("#div_id_razon_nombres span").each(function(){
+//   const ca=$(this).attr("class")
+//   $(this).attr("class",ca+" col-md-10")
+// });
 
-  
 
+// $("#div_id_ruc_ci select + span").each(function(){
+//   const ca=$(this).attr("class")
+//   $(this).attr("class",ca+" col-md-10")
+// });
 
+$("#div_id_ruc_ci span[class='select2-selection select2-selection--single']").each(function(){
+  const ca=$(this).attr("class")
+  $(this).attr("class",ca+" col-md-9")
+});
 
-
+$("#div_id_razon_nombres span[class='select2-selection select2-selection--single']").each(function(){
+  const ca=$(this).attr("class")
+  $(this).attr("class",ca+" col-md-9")
+});
 

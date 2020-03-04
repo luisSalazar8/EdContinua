@@ -179,7 +179,17 @@ class PropuestaCorporativoUpdate(UpdateView):
                         if(f.instance.file!=None):
                             if not(f.instance.file in nel):
                                 print(f.instance.file)
-                                newf=PropuestaFile.objects.create(file=f.instance.file,propuesta=newprop)
+                                #newf=PropuestaFile.objects.create(file=f.instance.file,propuesta=newprop)
+                                fileobject=f.instance.file
+                                fs=FileSystemStorage()
+                                filename=fs.save(fileobject.name,fileobject)
+                                fs.url(filename)
+                                fileobject.name=filename
+                                # name=fileobject.name.split(".")
+                                # newname=name[0]+"_"+str(PropuestaFile.objects.all().latest("file").id)+"."+name[len(name)-1]
+                                # fileobject.name=newname
+                                
+                                newf = PropuestaFile(file=fileobject,propuesta=newprop)
                                 newf.save()
                                 #formset.instance = newprop
                                 #formset.save()

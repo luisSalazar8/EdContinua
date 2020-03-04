@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_cleanup',
     'dal',
     'dal_select2',
     'dal_queryset_sequence',

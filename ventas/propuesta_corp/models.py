@@ -3,6 +3,9 @@ from ventas.reporte_contacto.models import ReporteContacto
 from ventas.personas_juridicas.models import Juridica, Sector, TipoEmpresa
 from multiselectfield import MultiSelectField
 import ventas.validaciones
+import os
+from django.core.files import File
+from educacion_continua2 import settings
 
 # Create your models here.
 
@@ -63,4 +66,16 @@ class PropuestaFile(models.Model):
     #file = models.CharField(max_length=50, blank=True,default=" ")
     #propuesta = models.ManyToManyField(PropuestaCorporativo, through='PropFileKey')
     propuesta=models.ForeignKey(PropuestaCorporativo, on_delete=models.CASCADE)
+
+    # def save(self, *args, **kwargs):
+    #     #Generate a new license file overwriting any previous version
+    #     #and update file path
+    #     # Using File
+    #     f = open(self.file,'r')
+    #     self.file.save(self.file.file, File(f))
+    #     #super(PropuestaFile, self).save(*args, **kwargs)
+
+    # def delete(self, *args, **kwargs):
+    #     os.remove(os.path.join(settings.MEDIA_ROOT, self.file.name))
+    #     super(PropuestaFile,self).delete(*args,**kwargs)
 

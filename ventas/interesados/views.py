@@ -46,8 +46,8 @@ def cargar_personas_thread(f,q,formulario):
 	c=0
 	errores = 0
 	for line in fi:
-		data = line.strip().split(",")
-		if(len(data)==5):
+		data = line.strip().split("|")
+		if(len(data)==6):
 			interesado = Interesado()
 			
 			try:
@@ -56,7 +56,7 @@ def cargar_personas_thread(f,q,formulario):
 				interesado.apellido = data[1]
 				interesado.celular = data[2]
 				interesado.correo = data[3]
-				interesado.motivo_interes = "Chale"
+				interesado.motivo_interes = data[5]
 				interesado.canal_de_contacto = CanalContacto.objects.get(nombre=data[4])
 				interesado.full_clean()
 				interesado.save()	
@@ -74,6 +74,11 @@ def cargar_personas_thread(f,q,formulario):
 				errores+=1
 				formulario.add_error("archivo",forms.ValidationError("Problemas en la linea " + str(c) + " con el Canal de contacto o un valor no válido"))
 				pass
+		else:
+			c+=1
+			errores+=1
+			formulario.add_error("archivo",forms.ValidationError("Problemas en la linea " + str(c)+ " la cantidad de datos ingresados por fila es incorrecta"))
+
 	q.put(errores)
 	q.put(c)
 	q.put("fin")		

@@ -1,9 +1,19 @@
 from django import forms
-from .models import Proforma
+from .models import Proforma, ProformaFile
 from dal import autocomplete
 from ventas.validaciones import validate_porcentaje, validate_positive, validate_anexo_corp
+from django.forms import modelformset_factory
+from django.forms.models import inlineformset_factory
 
 class ProformaForm(forms.ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		super(ProformaForm, self).__init__(*args, **kwargs)
+
+		self.fields['sector'].disabled = True
+		self.fields['tipoEmpresa'].disabled = True
+        #self.fields['ruc_ci'].disabled = True
+        #self.fields['razon_nombres'].disabled = True
 
 	class Meta:
 		model=Proforma
@@ -15,7 +25,6 @@ class ProformaForm(forms.ModelForm):
             'razon_nombres',
 			'version',
 			'asesor',
-			'nombreProforma',
 			'tipoEmpresa',
 			#"empresa",
 			'sector',
@@ -30,8 +39,6 @@ class ProformaForm(forms.ModelForm):
 			'montoProforma',
 			'montoDesc',
 			'observacion',
-			'anexos',
-			'nombre',
 			'fechaRespuesta',
 			'montoAceptado',
 			'montoEjecutado',
@@ -61,8 +68,6 @@ class ProformaForm(forms.ModelForm):
 			'montoProforma':'Monto Proforma',
 			'montoDesc':'Monto Descuento',
 			'observacion':'Observación',
-			'anexos':'Anexos',
-			'nombre':'Nombre',
 			'fechaRespuesta':'Fecha Respuesta',
 			'montoAceptado':'Monto Aceptado',
 			'montoEjecutado':'Monto Ejecutado',
@@ -76,7 +81,7 @@ class ProformaForm(forms.ModelForm):
 
 			'asesor': forms.TextInput(attrs={'class':'form-control'}),
 
-			'nombreProforma': forms.TextInput(attrs={'class':'form-control'}),
+			
 			'fechaSolicitud': forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'fechaEnvio':forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'numeroParticipantes': forms.NumberInput(attrs={'class':'form-control'}),
@@ -90,8 +95,6 @@ class ProformaForm(forms.ModelForm):
 			'montoProforma': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'montoDesc': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'observacion': forms.Textarea(attrs={'class':'form-control', 'rows':2}),
-			'anexos': forms.ClearableFileInput(attrs={'class':'form-control','multiple': True}),
-			'nombre': forms.TextInput(attrs={'class':'form-control'}),
 			'fechaRespuesta': forms.DateInput(attrs={'class':'form-control',"type":"date"}),
 			'montoAceptado': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'montoEjecutado': forms.NumberInput(attrs={'class':'form-control','min': 0}),
@@ -101,10 +104,22 @@ class ProformaForm(forms.ModelForm):
 		}
 
 
-	def clean_porcentExito(self):
-		exito = self.cleaned_data["porcentExito"]
-		return validate_porcentaje(exito)
+	# def clean_porcentExito(self):
+	# 	exito = self.cleaned_data["porcentExito"]
+	# 	return validate_porcentaje(exito)
 	
-	def clean_porcentDesc(self):
-		desc = self.cleaned_data["porcentDesc"]
-		return validate_porcentaje(desc)
+	# def clean_porcentDesc(self):
+	# 	desc = self.cleaned_data["porcentDesc"]
+	# 	return validate_porcentaje(desc)
+
+class FileForm(forms.ModelForm):
+
+    class Meta: 
+        model= ProformaFile 
+        exclude=()
+
+FileFormset = inlineformset_factory(
+    Proforma, ProformaFile, form=FileForm,
+    fields=['file'],widgets={"file":forms.ClearableFileInput(attrs={'class':'proformaf','accept':'image/*,.pdf'})},
+     extra=1,can_delete=True
+    )

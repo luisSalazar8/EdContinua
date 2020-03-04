@@ -108,7 +108,7 @@
             $(el).attr('id', id);
             console.log($(el).attr('name'));
         }
-
+console.log($("[name=cod_propuesta]"))
     if($("[name=cod_propuesta]").val()!=""){
         $("td a + input").each(function() {
             $(this).remove();

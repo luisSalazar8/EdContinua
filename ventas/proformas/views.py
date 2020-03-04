@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .forms import ProformaForm
+from django.http import HttpResponse,HttpResponseRedirect
+from .forms import ProformaForm, FileForm, FileFormset
 from .models import Proforma
 from django.urls import reverse_lazy
 from datetime import date
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
+from django.db import transaction
 # Create your views here.
 
 """try:
@@ -14,27 +15,104 @@ from django.views.generic import ListView,CreateView,UpdateView,DeleteView
             sec='0001'
         form.instance.cod_orden_fact=sec+'-'+str(date.today().year)"""
 
-def proforma_view(request):
-	if request.method == "POST":
-		form=ProformaForm(request.POST,request.FILES)
-		if form.is_valid():
-			try:
-				pre = str(int(Proforma.objects.latest('pk').pk+1))
-				sec = '0'*(4-len(pre))+pre
-			except Proforma.DoesNotExist:
-				sec = '0001'
-			form.instance.codigo = 'PROF-CEC-'+sec+'-'+str(date.today().year)
-			form.save()
-		return redirect("proforma_lista")
-	else:
-		form=ProformaForm()
-	return render(request, 'proforma_form.html', {'form':form})
+# def proforma_view(request):
+# 	if request.method == "POST":
+# 		form=ProformaForm(request.POST,request.FILES)
+# 		if form.is_valid():
+# 			try:
+# 				pre = str(int(Proforma.objects.latest('pk').pk+1))
+# 				sec = '0'*(4-len(pre))+pre
+# 			except Proforma.DoesNotExist:
+# 				sec = '0001'
+# 			form.instance.codigo = 'PROF-CEC-'+sec+'-'+str(date.today().year)
+# 			form.save()
+# 		return redirect("proforma_lista")
+# 	else:
+# 		form=ProformaForm()
+# 	return render(request, 'proforma_form.html', {'form':form})
+
+class ProformaCreate(CreateView):
+    model=Proforma
+    form_class=ProformaForm
+    form_class2= FileForm
+   #form_classes = {'propuesta': PropuestaCorporativoForm,
+   #                 'anexo': FileForm}
+    template_name='proforma_form.html'
+    success_url=reverse_lazy('proforma_lista')
+    
+    def get_context_data(self, **kwargs):
+        data = super(ProformaCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset'] = FileFormset(self.request.POST,self.request.FILES)
+        else:
+            data['formset'] =FileFormset()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        titles = context['formset']
+        
+        try:
+            pre=str(int(Proforma.objects.latest('pk').pk+1))
+            sec = '0'*(4-len(pre))+pre
+                
+        except self.model.DoesNotExist:
+            sec = '0001'
+        form.instance.codigo = 'PROF-CEC-'+sec+'-'+str(date.today().year)
+
+        with transaction.atomic():
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            if titles.is_valid():
+                titles.instance = self.object
+                titles.save()
+        return super(ProformaCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return self.success_url
+
+
+
 
 class ProformaUpdate(UpdateView):
     model=Proforma
     form_class=ProformaForm
     template_name='profoma_editar.html'
     success_url=reverse_lazy('proforma_lista')
+    formset_class=FileFormset
+    def get_context_data(self, **kwargs):
+        context =super(ProformaUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            print("entro post")
+            context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
+        else:
+            print("entro get")
+            #context['form'] = self.form_class(instance=self.object)
+            context['formset'] = FileFormset(instance=self.object)
+            print(context)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        print("lol")
+        self.object=self.get_object()
+        
+        form=self.form_class(request.POST)
+        pk=self.kwargs.get('pk',0)
+        print(pk)
+        formset = FileFormset(request.POST, request.FILES,instance=self.object)
+        
+        if form.is_valid():
+            prop= self.model.objects.get(pk=pk)
+            
+            print("igual version")
+            formr = self.form_class(request.POST or None,request.FILES, instance=prop)
+            formr.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class ProformaDelete(DeleteView):

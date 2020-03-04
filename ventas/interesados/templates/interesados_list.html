@@ -6,22 +6,15 @@
 {% block content %}
 
     <div class="row mb-2 d-flex white-bg">
-        <div class="col-12 col-sm-8 v-align">
+        <div class="col-12 col-sm-6 col-md-8 v-align">
             <h2 class="text-uppercase">Consultas <span class="darkgreen-text">Interesados</span></h2>
         </div>
-        <div  class="col-9 col-sm-2 col-md-2 v-align ">
-            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"><i class="fas fa-plus"></i> Agregar Nuevo</a>
+        <div  class="col-9 col-sm-3 col-md-2  ml-md-0.4 v-align ">
+            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"> <i  class="fas fa-plus "></i>   Agregar Nuevo</a>
         </div>
-         <div class="  col-md-2  v-align">
-            <a  class="btn btn-secondary green-bg float-right " href="{% url 'interesados_cargar' %}"><i class="fas fa-plus"></i> Cargar Nuevo</a>
+         <div class=" col-sm-3 col-md-2">
+            <a  class="btn btn-secondary green-bg float-right " href="{% url 'interesados_cargar' %}"> <i class="mr-sm-0 mr-md-1 fas fa-plus"></i>  Cargar   Interesados</a>
         </div>
-        
-       
-       
-                    
-                
-            
-        
     </div>
 
       

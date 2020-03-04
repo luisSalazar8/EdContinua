@@ -4,24 +4,26 @@
 
 
 {% block content %}
-<div class = "mb-2 container-fluid">
-    <div class="row d-flex white-bg">
-        <div class="col-12 col-sm-4 v-align">
+
+    <div class="row mb-2 d-flex white-bg">
+        <div class="col-12 col-sm-8 v-align">
             <h2 class="text-uppercase">Consultas <span class="darkgreen-text">Interesados</span></h2>
         </div>
-      
-        <div  class="col-9 col-sm-4 offset-md-4 col-md-1 v-align ">
-            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"><i class="fas fa-plus"></i> Agregar Interesado</a>
+        <div  class="col-9 col-sm-2 col-md-2 v-align ">
+            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_nuevo' %}"><i class="fas fa-plus"></i> Agregar Nuevo</a>
         </div>
-         <div class=" mt-1 col-9  offset-sm-2 col-sm-2  col-md-1  v-align " >
-            <a  class="btn btn-secondary green-bg float-right" href="{% url 'interesados_cargar' %}"><i class="fas fa-plus"></i> Cargar Interesados</a>
-        </div> 
+         <div class="  col-md-2  v-align">
+            <a  class="btn btn-secondary green-bg float-right " href="{% url 'interesados_cargar' %}"><i class="fas fa-plus"></i> Cargar Nuevo</a>
+        </div>
+        
+       
+       
                     
                 
             
         
     </div>
-</div>  
+
       
 
 <div class="row darkwhite-bg py-2">

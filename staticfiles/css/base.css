@@ -277,3 +277,26 @@ input[type=date]{
 	background-color: #53AF57 !important;
 	border-color: #53AF57 !important;
 }
+
+.select2-results__option{
+	font-size: small !important;
+}
+
+.currency-wrap{
+	position:relative !important;
+}
+
+.currency-code{
+	position:absolute !important;
+	left:8px !important;
+	top:7px !important;
+}
+
+.text-currency{
+	padding:10px 5px 10px 20px !important;
+	border:solid 1px #ccc !important;
+	border-radius:5px !important;
+}
+.card{
+	border-radius: 0% !important;
+}

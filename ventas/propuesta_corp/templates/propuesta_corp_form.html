@@ -24,7 +24,7 @@ data-info-url="{% url 'ajax_info_id' %}">
     <div class="row darkwhite-bg py-2">
         <div class="col-12">
             <div class="form-row">
-                <div class="col-6 col-md-2 mb-0">{{ form.cod_propuesta|as_crispy_field }}</div>
+                <div class="col-6 col-md-2 mb-0 ">{{ form.cod_propuesta|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.version|as_crispy_field }}</div>
                 <div class="col-12 col-md-4 mb-0">{{ form.reporte|as_crispy_field }}</div>
                 
@@ -108,7 +108,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                   {{ formset.management_form|crispy }}
                   
                       {% for form in formset.forms %}
-                              <tr class="{% cycle 'row1' 'row2' %} text-centered form-control form-row formset_row-{{ formset.prefix }}">
+                              <tr class="{% cycle 'row1' 'row2' %} form-control form-row formset_row-{{ formset.prefix }}">
                                   {% for field in form.visible_fields %}
                                   <td scope="row">
                                       {# Include the hidden fields in the form #}
@@ -125,6 +125,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                       {% endfor %}
                   
                   </table>
+                  
             </div>
         </div>
     </div>

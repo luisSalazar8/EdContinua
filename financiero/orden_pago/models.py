@@ -9,6 +9,10 @@ from django.db import models
 
 class Centro_Costos(models.Model):
 	nombre = models.CharField(max_length=10)
+	espol=models.DecimalField(max_digits=10, decimal_places=2)
+	espoltech=models.DecimalField(max_digits=10, decimal_places=2)
+	ministerio=models.DecimalField(max_digits=10, decimal_places=2)
+	fundaespol=models.DecimalField(max_digits=10, decimal_places=2)
 
 	def __str__(self):
 		return self.nombre

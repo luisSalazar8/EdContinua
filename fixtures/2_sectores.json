@@ -67,7 +67,7 @@
     "model":"personas_juridicas.Sector",
     "pk": 9,
     "fields": {
-      "nombre":"Mineroy Energético"
+      "nombre":"Minero y Energético"
     }
   }
 ]

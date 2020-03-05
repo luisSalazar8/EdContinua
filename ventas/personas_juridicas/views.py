@@ -7,6 +7,7 @@ from .models import Ciudad
 from .models import Sector
 from .models import TipoEmpresa
 from .models import Contacto_natural
+from django.core.exceptions import ValidationError
 from  ventas.personas_naturales.models import Persona_Natural
 #Forms
 from .forms import *
@@ -117,17 +118,21 @@ def juridicas_editar(request,pk):
 						for i in cedulas_post:
 							try:
 								c = get_object_or_404(Persona_Natural, cedula=i)
-								p.contacto_natural_set.create(contacto = c)
-								pase = True
-							except:
+								cedulas_modelo = Contacto_natural.objects.filter(contacto=i,empresa=pk)
+								if(len(cedulas_modelo)==0):
+									p.contacto_natural_set.create(contacto = c)
+									pase = True
+								else:
+									raise  forms.ValidationError("ruc_ci","Ya creaste dicho contacto")
+							except ValidationError as e:
 								form_contacto = OrdenFacturacionForm(request.POST)
-								form_contacto.add_error("ruc_ci",forms.ValidationError("Problemas con " + str(i) + " Dicho contacto ya pertenece a otra persona juridica"))
+								form_contacto.add_error("ruc_ci",forms.ValidationError("Problemas con " + str(i) + " Dicho contacto ya ha sido asignado a esta persona juridica"))
 								pase = False
 					if(pase):
 						form.save()
 						return HttpResponseRedirect(reverse_lazy("index_juridicas"))
 		else:
-			c = get_object_or_404(Contacto_natural,contacto=request.POST.get("eliminar_contacto"))
+			c = get_object_or_404(Contacto_natural,contacto=request.POST.get("eliminar_contacto"),empresa = pk)
 			c.delete()
 			url = reverse_lazy('editar_juridica', kwargs={'pk': pk})
 			return HttpResponseRedirect(url)

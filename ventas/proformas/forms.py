@@ -104,13 +104,13 @@ class ProformaForm(forms.ModelForm):
 		}
 
 
-	# def clean_porcentExito(self):
-	# 	exito = self.cleaned_data["porcentExito"]
-	# 	return validate_porcentaje(exito)
+	def clean_porcentExito(self):
+		exito = self.cleaned_data["porcentExito"]
+		return validate_porcentaje(exito)
 	
-	# def clean_porcentDesc(self):
-	# 	desc = self.cleaned_data["porcentDesc"]
-	# 	return validate_porcentaje(desc)
+	def clean_porcentDesc(self):
+		desc = self.cleaned_data["porcentDesc"]
+		return validate_porcentaje(desc)
 
 class FileForm(forms.ModelForm):
 

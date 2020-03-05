@@ -33,9 +33,11 @@
             <div class="form-row ">
                 <div class="col-3">
                     {{ filter.form.fechaSolicitud|as_crispy_field }}
+                    <small class="form-text text-muted">Fecha de Solicitud</small>
                 </div>
                 <div class="col-3">
                     {{ filter.form.fechaEnvio|as_crispy_field }}
+                    <small class="form-text text-muted">Fecha de Envío</small>
                 </div>
                 <div class="col-3">
                     {{ filter.form.estado|as_crispy_field }}

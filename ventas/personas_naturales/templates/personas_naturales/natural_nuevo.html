@@ -109,6 +109,9 @@
 				<div class="col-6 col-xl-6" id='id_pais_estudio' style='display:none'>
 					{{ form.pais_estudio|as_crispy_field }}
 				</div>
+				<div class="col-6 col-xl-6" id='id_tercer_progreso' style='display:none'>
+					{{ form.tercer_progreso|as_crispy_field }}
+				</div>
 			</div>
 
 			<div class="row">
@@ -124,13 +127,16 @@
 				<div class="col-6 col-xl-6">
 					{{ form.institucion|as_crispy_field }}
 				</div>
+				<div class="col-6 col-xl-6">
+					{{ form.progreso|as_crispy_field }}
+				</div>
 			</div>
 
 
 	<div class="row">
-				<div class="col-6 col-xl-6">
-					{{ form.progreso|as_crispy_field }}
-				</div>
+				
+				
+				
 				<div class="col-6 col-xl-6">
 					{{ form.profesion|as_crispy_field }}
 				</div>

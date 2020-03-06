@@ -100,29 +100,34 @@
 
 
 			<div class="row">
-				<div class="col-6 col-xl-6" id='id_ti_tercernivel' style='display:none'>
+				<div class="col-6 col-xl-6" id='id_ti_tercerniveldp' style='display:none'>
 					{{ form.ti_tercernivel|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6" id='id_un_tercernivel' style='display:none'>
+				<div class="col-6 col-xl-6" id='id_un_tercerniveldp' style='display:none'>
 					{{ form.un_tercernivel|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6" id='id_pais_estudio' style='display:none'>
+				
+			</div>
+
+
+
+			<div class="row">
+				<div class="col-6 col-xl-6" id='id_ti_postgradodp' style='display:none'>
+					{{ form.ti_postgrado|as_crispy_field }}
+				</div>
+				<div class="col-6 col-xl-6" id='id_un_postgradodp' style='display:none'>
+					{{ form.un_postgrado|as_crispy_field }}
+				</div>
+				<div class="col-6 col-xl-6" id='id_pais_estudiodp' style='display:none'>
 					{{ form.pais_estudio|as_crispy_field }}
 				</div>
-				<div class="col-6 col-xl-6" id='id_tercer_progreso' style='display:none'>
+				<div class="col-6 col-xl-6" id='id_tercer_progresodp' style='display:none'>
 					{{ form.tercer_progreso|as_crispy_field }}
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-6 col-xl-6" id='id_ti_postgrado' style='display:none'>
-					{{ form.ti_postgrado|as_crispy_field }}
-				</div>
-				<div class="col-6 col-xl-6" id='id_un_postgrado' style='display:none'>
-					{{ form.un_postgrado|as_crispy_field }}
-				</div>
-			</div>
-
+			
+			
 			<div class="row">
 				<div class="col-6 col-xl-6">
 					{{ form.institucion|as_crispy_field }}

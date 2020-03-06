@@ -128,10 +128,10 @@ class JuridicaFilter(django_filters.FilterSet):
 	correo = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo electrónico'}))
 	forma_pago = django_filters.ModelChoiceFilter(label="", empty_label="Forma usual de pago", queryset=models.FormaPago.objects.all())
 	contacto_natural__contacto__cedula = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Cédula Contacto'}))
-	contacto_natural__contacto__celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Celular Contacto'}))
+	contacto_natural__contacto__celular = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'Celular Contacto'}))
 	contacto_natural__contacto__nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres Contacto'}))
 	contacto_natural__contacto__apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos Contacto'}))
-	contacto_natural__contacto__tel_domicilio = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Teléfono Contacto'}))
+	contacto_natural__contacto__tel_domicilio = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'Teléfono Contacto'}))
 	contacto_natural__contacto__email = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Correo Contacto'}))
 
 	# contacto_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombres'}))

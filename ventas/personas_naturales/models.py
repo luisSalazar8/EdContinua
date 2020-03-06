@@ -24,8 +24,8 @@ class Persona_Natural(models.Model):
 	celular = models.CharField(max_length=20, validators=[ventas.validaciones.validate_celular])
 	celular2 = models.CharField(max_length=20, blank=True, null=True, verbose_name="Celular Alternativo", validators=[ventas.validaciones.validate_celular])
 
-	email = models.EmailField(max_length=254)
-	email2 = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Email Alternativo")
+	email = models.EmailField(max_length=100)
+	email2 = models.EmailField(blank=True, null=True, max_length=100,verbose_name="Email Alternativo")
 
 	ci_domicilio = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Domicilio", choices=CIUDADES_CHOICES)
 	dir_domicilio = models.CharField(max_length=75, verbose_name="Dirección Domicilio")

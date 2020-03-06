@@ -234,6 +234,13 @@ $(document).on('click', "#hack", function (e) {
   
 });
 
+$(document).on('click', "#hack2", function (e) {
+  $("#id_version").prop('disabled', false);
+  $("#id_ruc_ci").prop('disabled', false);
+  $("#id_razon_nombres").prop('disabled', false);
+  
+});
+
 //Evento para quitar el fondo azul al hacer el autocomplete de los text inputs
 /*$(document).on('change', "input", function (e) {
   if ($(this).attr("type")!="checkbox"){
@@ -262,3 +269,25 @@ $("#div_id_razon_nombres span[class='select2-selection select2-selection--single
   $(this).attr("class",ca+" col-md-9")
 });
 
+//para eliminar el modal cuando sea editar
+if($("[name=cod_propuesta]").val()!=""){
+  console.log("momazo")
+  
+  var newbutton=$("<button>");
+  newbutton.attr("id","hack2");
+  newbutton.attr("class","btn btn-secondary green-bg mr-1");
+  newbutton.attr("type","submit");
+  newbutton.html("Guardar");
+  var newcancel=$("<a>");
+  newcancel.attr("class","btn btn-secondary");
+  newcancel.html("Cancelar");
+  var remp=$("#remplazo");
+  var remp2=$("#remplazo2").remove();
+  var parent=remp.parent();
+  newcancel.attr("href",remp2.attr("href"));
+  remp.remove();
+  remp2.remove();
+  parent.append(newbutton);
+  parent.append(newcancel);
+
+}

@@ -123,7 +123,7 @@ class PropuestaCorporativoCreate(CreateView):
 class PropuestaCorporativoUpdate(UpdateView):
     model=PropuestaCorporativo
     form_class=PropuestaCorporativoUpdateForm
-    template_name='propuesta_corp_form.html'
+    template_name='propuesta_corp_edit.html'
     success_url=reverse_lazy('propuesta_corporativa')
     formset_class=FileFormset
     def get_context_data(self, **kwargs):

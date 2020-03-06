@@ -217,6 +217,7 @@ function Eliminar(){
  
 }
 
+
 function Eliminar_Fila_Tabla(){
   $('table').on('click', "[boton~='eliminar_tabla']", function(e){
     $(this).closest('tr').remove()
@@ -232,7 +233,7 @@ function Eliminar_Fila_Tabla(){
     Agregar_Contacto()
     Eliminar()
     Eliminar_Fila_Tabla()
-
+ 
 
   });
 

@@ -85,6 +85,7 @@ def juridicas_view(request):
 	if(request.method == "POST"):
 		form = JuridicaForm(request.POST)
 		if(form.is_valid()):
+			print("Acabo de entrar al post")
 			form.save()
 			ruc = form.cleaned_data["ruc"]
 			url = reverse_lazy('editar_juridica', kwargs={'pk': ruc})
@@ -165,3 +166,4 @@ def juridica_contacto_eliminar(request,pk=None):
 	pk= request.GET.get('contacto')
 	c = get_object_or_404(Persona_Natural,pk=pk)
 	return render(request, 'personas_juridicas/eliminar_contacto.html', {'object': c})
+

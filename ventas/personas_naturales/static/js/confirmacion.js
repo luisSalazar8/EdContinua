@@ -1,4 +1,4 @@
-let vacio = 0;  
+let vacios = 0;  
 let vacioList = [];
 function Confirmar(){
     var vacioList=[]

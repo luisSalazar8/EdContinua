@@ -31,7 +31,7 @@ class Persona_Natural(models.Model):
 	dir_domicilio = models.CharField(max_length=75, verbose_name="Dirección Domicilio")
 	nivel_estudio = models.CharField(choices=ESTUDIOS_CHOICES, default="Primaria", max_length=50, verbose_name="Nivel de Estudio")
 	progreso = models.CharField(max_length=50, verbose_name="Progreso", choices=PROGRESO_CHOICES)
-	tercer_progreso = models.CharField(max_length=50, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
+	tercer_progreso = models.CharField(max_length=50,blank=True, null=True, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
 
 	pais = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
 	pais_estudio = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)

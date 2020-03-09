@@ -170,3 +170,13 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
   load_data();
 });
 
+if($("[name=codigo]").val()!=""){
+    $(".crear").hide();
+    
+
+}else{
+  $(".editar").each(function() {
+    $(this).hide();
+  });
+
+}

@@ -70,8 +70,8 @@ function load_data() {
         //$('#select2-id_razon_nombres-container').text($('#rn').val());
       }
     });
-    $('#field-razon').show();
-    $('#field-ruc-ci').show();
+    $('#field-razon').css('visibility', 'visible');
+    $('#field-ruc-ci').css('visibility', 'visible');
 
     if (persona == "Natural") {
       $('#ruc_ci').text('CI');
@@ -88,8 +88,8 @@ function load_data() {
     $("#direccion").val("");
   }
   else {
-    $('#field-razon').hide();
-    $('#field-ruc-ci').hide();
+    $('#field-razon').css('visibility', 'hidden');
+    $('#field-ruc-ci').css('visibility', 'hidden');
   }
 };
 

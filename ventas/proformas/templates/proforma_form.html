@@ -73,9 +73,7 @@ data-info-url="{% url 'ajax_info_id' %}">
 				</div>
 			  </div>
 			
-			  <div class="col-6 col-md-2 mb-0 ">
-				{{form.asesor|as_crispy_field}}
-			</div>
+			  
 				<div class="col-6 col-md-2 mb-0">
 					{{form.tipoEmpresa|as_crispy_field}}
 				</div>
@@ -83,6 +81,9 @@ data-info-url="{% url 'ajax_info_id' %}">
 			
 				<div class="col-6 col-md-2 mb-0">
 					{{form.sector|as_crispy_field}}
+				</div>
+				<div class="col-6 col-md-2 mb-0 ">
+					{{form.asesor|as_crispy_field}}
 				</div>
 				<div class="col-6 col-md-2 mb-0">
 					{{form.fechaSolicitud|as_crispy_field}}
@@ -185,12 +186,15 @@ data-info-url="{% url 'ajax_info_id' %}">
 	{{ form.media }}
     
 </form>
+
+
+{% endblock %}
+
 {% block extrafooter %}
 <script src="{% static 'js/proforma_nuevo.js' %}"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/proforma_form.js' %}"></script>
 <script src="{% static 'js/proforma_money.js' %}"></script>
+<script src="{% static 'js/proforma_files.js' %}"></script>
 {% endblock extrafooter %}
-
-{% endblock %}

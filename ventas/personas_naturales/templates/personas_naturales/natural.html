@@ -164,11 +164,7 @@
 					<td scope="row">
 						<a class="btn btn-secondary btn-sm" href="{% url 'natural_editar' persona.cedula %}"><i
 								class="fas fa-edit"></i></a>
-						<br>
-						<br>
-						<!--<a onclick='eliminar({{ persona.cedula }});' class="btn btn-danger btn-sm"
-							data-toggle='modal' data-target="#personaEliminar" href='#'><i
-								class="fas fa-trash"></i></a>
+						
 					</td>
 				</tr>
 				{% endfor%}
@@ -181,7 +177,7 @@
 </div>
 
 
-<!--
+
 <ul class="pagination justify-content-center">
 	{% if naturales.has_previous %}
 
@@ -223,7 +219,7 @@
 	{% endif %}
 
 </ul>
--->
+
 <div class="modal fade" id="personaEliminar" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">

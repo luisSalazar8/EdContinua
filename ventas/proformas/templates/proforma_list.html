@@ -62,7 +62,7 @@
             <thead class="white-text darkgreen-bg">
                 <tr>
                     <th>Código</th>
-                    
+                    <th>Versión</th>
                     <th>Empresa</th>
                     <th>Asesor</th>
                     <th>Fecha Solicitud</th>
@@ -80,7 +80,7 @@
                 {% for proforma in filter.qs %}
                 <tr class="text-center">
                     <td>{{proforma.codigo}}</td>
-                    
+                    <td>{{proforma.version}}</td>
                     <td>{{proforma.ruc_ci}}-{{proforma.razon_nombres}}</td>
                     
                     <td>{{proforma.asesor}}</td>

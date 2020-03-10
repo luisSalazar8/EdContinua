@@ -18,7 +18,8 @@ data-info-url="{% url 'ajax_info_id' %}">
 			</h2>
 		</div>
 		<input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
-    	<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
+		<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
+		<input type="hidden" id='ac' value="{{form.active.value}}">
 	</div>
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
@@ -179,7 +180,7 @@ data-info-url="{% url 'ajax_info_id' %}">
 
 	<div class="row mt-3 editar">
 		<div class="col-12">
-			<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
+			<button type="submit" class="btn btn-secondary green-bg hack">Guardar</button>
 			<a class="btn btn-secondary" href="{% url 'proforma_lista' %}"> Cancelar </a>
 		</div>
 	</div>
@@ -209,7 +210,7 @@ data-info-url="{% url 'ajax_info_id' %}">
 								</div>
 								<div class="modal-footer">
 									<button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-									<button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+									<button type="submit" class="btn btn-secondary green-bg mr-3 hack">Confirmar</button>
 								</div>
 							</div>
 						</div>

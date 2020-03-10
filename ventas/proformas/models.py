@@ -33,6 +33,7 @@ class Proforma(models.Model):
 	montoAceptado=models.FloatField(blank=True,null=True)
 	montoEjecutado=models.FloatField(blank=True,null=True)
 	montoPorEjecutarse=models.FloatField(blank=True,null=True)
+	active=models.BooleanField(default = True)
 
 
 class ProformaFile(models.Model):

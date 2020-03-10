@@ -203,7 +203,7 @@ class ProformaUpdateForm(forms.ModelForm):
 				attrs={'class':'form-control', "id":"seleccion","onchange":"run()"}),
 			'porcentExito': forms.NumberInput(attrs={'class':'form-control','min': 0, 'max': 100}),
 			'porcentDesc': forms.NumberInput(attrs={'class':'form-control','min': 0, 'max': 100}),
-			'montoProforma': forms.NumberInput(attrs={'class':'form-control','min': 0}),
+			'montoProforma': forms.NumberInput(attrs={'class':'form-control','min': 0,'step':'0.01','value':'0.00'}),
 			'montoDesc': forms.NumberInput(attrs={'class':'form-control','min': 0}),
 			'observacion': forms.Textarea(attrs={'class':'form-control', 'rows':2}),
 			'fechaRespuesta': forms.DateInput(attrs={'class':'form-control',"type":"date"}),

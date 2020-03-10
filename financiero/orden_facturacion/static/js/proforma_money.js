@@ -82,3 +82,45 @@ if($("#ac").val()=="True"){
 }else{
   $("#id_version").prop('disabled', true);
 }
+
+function transform(input){
+  $(input).val(parseFloat($(input).val()).toFixed(2));
+  $(input).attr("type","text");
+  console.log($(input).val())
+  var numeroe=$(input).val().split(".")
+  const long= numeroe[0].length;
+  console.log(long)
+  var newnum="";
+  for(var i=0;i<long;i++){
+        if((i%3)==0 && i!=0){
+          
+            newnum=newnum+","+numeroe[0].charAt(i);
+          console.log("coma");
+          console.log(i);
+          console.log(numeroe[0].charAt(i));
+        }else{
+          console.log("no coma");
+          console.log(i);
+          console.log(numeroe[0].charAt(i));
+          newnum=newnum+numeroe[0].charAt(i);
+        }
+  }
+  console.log(newnum+"."+numeroe[1]);
+  $(input).val(newnum+"."+numeroe[1])
+}
+
+transform($("#id_montoProforma"));
+$("#id_montoProforma").focusout(function() {
+    transform($(this));
+})
+$("#id_montoProforma").focus(function() {
+  const val=$(this).val();
+  $(this).attr("type","number");
+  $(this).val(parseFloat(val.replace(/,/g,"")));
+  $(this).val(parseFloat($(this).val()).toFixed(2));
+  
+  
+})
+$("#id_porcentExito").parent().attr("lang","en-US");
+// $("#id_montoProforma").val(parseFloat($("#id_montoProforma").val()).toFixed(2));
+// $("#id_montoDesc").val(parseFloat($("#id_montoDesc").val()).toFixed(2));

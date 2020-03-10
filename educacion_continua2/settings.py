@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.humanize',
     'django_cleanup',
     'dal',
     'dal_select2',
@@ -142,12 +143,13 @@ LANGUAGE_CODE = 'es-ec'
 
 TIME_ZONE = 'America/Guayaquil'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
+DECIMAL_SEPARATOR = "."
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

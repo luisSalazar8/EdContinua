@@ -1,7 +1,8 @@
 {% extends "base_ventas.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-
+{% load humanize %}
+{% load l10n %}
 {% block content %}
 <div class="row mb-2 d-flex white-bg">
     <div class="col-9 v-align">
@@ -86,7 +87,7 @@
                     <td>{{proforma.asesor}}</td>
                     <td>{{proforma.fechaSolicitud}}</td>
                     <td>{{proforma.fechaEnvio}}</td>
-                    <td>{{proforma.montoProforma}}</td>
+                    <td>{{proforma.montoProforma|floatformat:2|intcomma}}</td>
                     <td>{{proforma.estado}}</td>
                     <td>
                         <a class="btn btn-secondary btn-sm" href="{% url 'proforma_editar' proforma.id%}"><i

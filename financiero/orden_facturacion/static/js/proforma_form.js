@@ -170,6 +170,7 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
   load_data();
 });
 
+
 if($("[name=codigo]").val()!=""){
     $(".crear").hide();
     
@@ -180,3 +181,9 @@ if($("[name=codigo]").val()!=""){
   });
 
 }
+
+//para habilitar la wea de version
+$(document).on('click', ".hack", function (e) {
+  $("#id_version").prop('disabled', false);
+  
+});

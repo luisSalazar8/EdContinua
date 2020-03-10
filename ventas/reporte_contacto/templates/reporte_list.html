@@ -63,6 +63,7 @@
             <thead class="white-text darkgreen-bg">
                 <tr>
                     <th scope="col">Código del reporte</th>
+                    <th scope="col">RUC</th>
                     <th scope="col">Empresa</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Canal</th>
@@ -76,7 +77,8 @@
                 {% for reporte in filter.qs %}
                 <tr class="text-center">
                     <td scope="row">{{reporte.cod_reporte}}</td>
-                    <td scope="row">{{reporte.ruc_ci}}-{{reporte.razon_nombres}}</td>
+                    <td scope="row">{{reporte.ruc_ci}}</td>
+                    <td scope="row">{{reporte.razon_nombres}}</td>
                     <td scope="row">{{reporte.fecha}}</td>
                     <td scope="row">{{reporte.canal_de_contacto}}</td>
                     <td scope="row">

@@ -185,5 +185,10 @@ if($("[name=codigo]").val()!=""){
 //para habilitar la wea de version
 $(document).on('click', ".hack", function (e) {
   $("#id_version").prop('disabled', false);
-  
+
+  const val=$("#id_montoProforma").val();
+  $("#id_montoProforma").attr("type","number");
+  $("#id_montoProforma").val(parseFloat(val.replace(/,/g,"")));
+  $("#id_montoProforma").val(parseFloat($("#id_montoProforma").val()).toFixed(2));
+  $
 });

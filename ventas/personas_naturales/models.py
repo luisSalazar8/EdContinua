@@ -33,7 +33,7 @@ class Persona_Natural(models.Model):
 	progreso = models.CharField(max_length=50, verbose_name="Progreso",blank=True, null=True, choices=PROGRESO_CHOICES)
 	tercer_progreso = models.CharField(max_length=50,blank=True, null=True, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
 
-	pais = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
+	pais = models.CharField(max_length=25,verbose_name="País", choices=PAISES_CHOICES)
 	pais_estudio = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
 
 	institucion = models.CharField(max_length=100, blank=True, null=True, verbose_name="Institución")
@@ -46,7 +46,7 @@ class Persona_Natural(models.Model):
 	forma_trabajo = models.CharField(choices=TRABAJO_CHOICES, max_length=100, verbose_name="Tipo de Trabajo")
 	empresa = models.CharField(max_length=75, blank=True, null=True)
 	cargo = models.CharField(max_length=50, blank=True, null=True)
-	email_empresa = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Correo Electronico")
+	email_empresa = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Correo Electrónico")
 	ci_trabajo = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Trabajo", choices=CIUDADES_CHOICES)
 	area = models.CharField(max_length=50, blank=True, null=True, verbose_name="Área/Departamento")
 	dir_trabajo = models.CharField(max_length=75, blank=True, null=True, verbose_name="Dirección Trabajo")

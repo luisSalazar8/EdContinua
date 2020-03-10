@@ -231,6 +231,16 @@ $(document).on('click', "#hack", function (e) {
   $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+
+  const valmp=$("#id_monto_propuesta").val();
+  $("#id_monto_propuesta").attr("type","number");
+  $("#id_monto_propuesta").val(parseFloat(valmp.replace(/,/g,"")));
+  $("#id_monto_propuesta").val(parseFloat($("#id_monto_propuesta").val()).toFixed(2));
+
+  const value=$("#id_utilidad_esperada").val();
+  $("#id_utilidad_esperada").attr("type","number");
+  $("#id_utilidad_esperada").val(parseFloat(value.replace(/,/g,"")));
+  $("#id_utilidad_esperada").val(parseFloat($("#id_utilidad_esperada").val()).toFixed(2));
   
 });
 
@@ -238,6 +248,16 @@ $(document).on('click', "#hack2", function (e) {
   $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+
+  const valmp=$("#id_monto_propuesta").val();
+  $("#id_monto_propuesta").attr("type","number");
+  $("#id_monto_propuesta").val(parseFloat(valmp.replace(/,/g,"")));
+  $("#id_monto_propuesta").val(parseFloat($("#id_monto_propuesta").val()).toFixed(2));
+
+  const value=$("#id_utilidad_esperada").val();
+  $("#id_utilidad_esperada").attr("type","number");
+  $("#id_utilidad_esperada").val(parseFloat(value.replace(/,/g,"")));
+  $("#id_utilidad_esperada").val(parseFloat($("#id_utilidad_esperada").val()).toFixed(2));
   
 });
 

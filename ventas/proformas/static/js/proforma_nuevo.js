@@ -5,8 +5,13 @@ window.onload = function() {
 	console.log(text)
 	document.getElementById("id_codigo").readOnly=true;
 
-	if (text!="Aceptada"){
+	if (text!="Aceptada" && text!="No aceptada"){
 		document.getElementById("id_fechaRespuesta").disabled=true;
+		document.getElementById("id_montoAceptado").disabled=true;
+		document.getElementById("id_montoEjecutado").disabled=true;
+		document.getElementById("id_montoPorEjecutarse").disabled=true;
+	}else if(text=="No aceptada"){
+		document.getElementById("id_fechaRespuesta").disabled=false;
 		document.getElementById("id_montoAceptado").disabled=true;
 		document.getElementById("id_montoEjecutado").disabled=true;
 		document.getElementById("id_montoPorEjecutarse").disabled=true;
@@ -26,8 +31,13 @@ function run(){
 	console.log(text)
 	document.getElementById("id_codigo").readOnly=true;
 
-	if (text!="Aceptada"){
+	if (text!="Aceptada" && text!="No aceptada"){
 		document.getElementById("id_fechaRespuesta").disabled=true;
+		document.getElementById("id_montoAceptado").disabled=true;
+		document.getElementById("id_montoEjecutado").disabled=true;
+		document.getElementById("id_montoPorEjecutarse").disabled=true;
+	}else if(text=="No aceptada"){
+		document.getElementById("id_fechaRespuesta").disabled=false;
 		document.getElementById("id_montoAceptado").disabled=true;
 		document.getElementById("id_montoEjecutado").disabled=true;
 		document.getElementById("id_montoPorEjecutarse").disabled=true;

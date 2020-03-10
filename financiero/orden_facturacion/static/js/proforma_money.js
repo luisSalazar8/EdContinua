@@ -112,9 +112,52 @@ $(this).val(parseFloat(val.replace(/,/g,"")));
 $(this).val(parseFloat($(this).val()).toFixed(2));
 })
 
+if($("#id_montoAceptado").val()!=""){
+  transform($("#id_montoAceptado"));
+}
+
+$("#id_montoAceptado").focusout(function() {
+  transform($(this));
+})
+$("#id_montoAceptado").focus(function() {
+const val=$(this).val();
+$(this).attr("type","number");
+$(this).val(parseFloat(val.replace(/,/g,"")));
+$(this).val(parseFloat($(this).val()).toFixed(2));
+})
+
+if($("#id_montoEjecutado").val()!=""){
+  transform($("#id_montoEjecutado"));
+}
+
+$("#id_montoEjecutado").focusout(function() {
+  transform($(this));
+})
+$("#id_montoEjecutado").focus(function() {
+const val=$(this).val();
+$(this).attr("type","number");
+$(this).val(parseFloat(val.replace(/,/g,"")));
+$(this).val(parseFloat($(this).val()).toFixed(2));
+})
+
+if($("#id_montoPorEjecutarse").val()!=""){
+  transform($("#id_montoPorEjecutarse"));
+}
+
+$("#id_montoPorEjecutarse").focusout(function() {
+  transform($(this));
+})
+$("#id_montoPorEjecutarse").focus(function() {
+const val=$(this).val();
+$(this).attr("type","number");
+$(this).val(parseFloat(val.replace(/,/g,"")));
+$(this).val(parseFloat($(this).val()).toFixed(2));
+})
+
 
 function transform(input){
-  $(input).val(parseFloat($(input).val()).toFixed(2));
+  if($(input).val()!=""){
+    $(input).val(parseFloat($(input).val()).toFixed(2));
   $(input).attr("type","text");
   console.log($(input).val())
   var numeroe=$(input).val().split(".")
@@ -138,5 +181,7 @@ function transform(input){
         }
   }
   console.log(newnum+"."+numeroe[1]);
-  $(input).val(newnum+"."+numeroe[1])
+  $(input).val(newnum+"."+numeroe[1]);
+  }
+  
 }

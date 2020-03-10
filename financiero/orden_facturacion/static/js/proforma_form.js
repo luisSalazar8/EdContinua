@@ -190,5 +190,29 @@ $(document).on('click', ".hack", function (e) {
   $("#id_montoProforma").attr("type","number");
   $("#id_montoProforma").val(parseFloat(val.replace(/,/g,"")));
   $("#id_montoProforma").val(parseFloat($("#id_montoProforma").val()).toFixed(2));
-  $
+  
+  const valmd=$("#id_montoDesc").val();
+  $("#id_montoDesc").attr("type","number");
+  $("#id_montoDesc").val(parseFloat(valmd.replace(/,/g,"")));
+  $("#id_montoDesc").val(parseFloat($("#id_montoDesc").val()).toFixed(2));
+  
+
+  const valmq=$("#id_montoAceptado").val();
+  $("#id_montoAceptado").attr("type","number");
+  $("#id_montoAceptado").val(parseFloat(valmq.replace(/,/g,"")));
+  $("#id_montoAceptado").val(parseFloat($("#id_montoAceptado").val()).toFixed(2));
+ // $("#id_montoAceptado").prop('disabled', false);
+  
+  const valmeo=$("#id_montoEjecutado").val();
+  $("#id_montoEjecutado").attr("type","number");
+  $("#id_montoEjecutado").val(parseFloat(valmeo.replace(/,/g,"")));
+  $("#id_montoEjecutado").val(parseFloat($("#id_montoEjecutado").val()).toFixed(2));
+  //$("#id_montoEjecutado").prop('disabled', false);
+
+  const valmee=$("#id_montoPorEjecutarse").val();
+  $("#id_montoPorEjecutarse").attr("type","number");
+  $("#id_montoPorEjecutarse").val(parseFloat(valmee.replace(/,/g,"")));
+  $("#id_montoPorEjecutarse").val(parseFloat($("#id_montoPorEjecutarse").val()).toFixed(2));
+ // $("#id_montoPorEjecutarse").prop('disabled', false);
+  
 });

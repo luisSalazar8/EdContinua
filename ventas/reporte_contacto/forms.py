@@ -1,6 +1,6 @@
 from django import forms
 from .models import ReporteContacto, Capacitacion,Asesoria
-from ventas.validaciones import validate_horarios
+from ventas.validaciones import validate_horarios,validate_fecha
 from dal import autocomplete
 
 
@@ -172,4 +172,8 @@ class AsesoriaForm(forms.ModelForm):
             'fecha_fin':forms.DateInput(attrs={'type':'date'}),
 
         }
+    def clean_fecha_fin(self):
+        fecha_inicio = self.cleaned_data["fecha_inicio"]
+        fecha_fin = self.cleaned_data["fecha_fin"]
+        return validate_fecha(fecha_inicio,fecha_fin)
    

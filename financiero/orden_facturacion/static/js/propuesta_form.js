@@ -1,24 +1,24 @@
 var p_url = "";
 var sector="";
 
-$('.select3').select2({
-  minimumInputLength: 2,
-  language: {
+// $('.select3').select2({
+//   minimumInputLength: 2,
+//   language: {
 
-    noResults: function () {
-      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-      return "No hay resultados";
-    },
-    searching: function () {
+//     noResults: function () {
+//       $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+//       return "No hay resultados";
+//     },
+//     searching: function () {
 
-      return "Buscando...";
-    },
-    inputTooShort: function (e) {
-      var t = e.minimum - e.input.length;
-      return "Ingresa " + t + " caractéres para buscar";
-    }
-  }
-});
+//       return "Buscando...";
+//     },
+//     inputTooShort: function (e) {
+//       var t = e.minimum - e.input.length;
+//       return "Ingresa " + t + " caractéres para buscar";
+//     }
+//   }
+// });
 
 // $("#field-ruc-ci [data-select2-id=3]").remove();
 // $("#field-ruc-ci [data-select2-id=4]").remove();
@@ -283,7 +283,7 @@ $(document).on('click', "#hack2", function (e) {
 
 // $("#div_id_ruc_ci span[class='select2-selection select2-selection--single']").each(function(){
 //   const ca=$(this).attr("class")
-//   $(this).attr("class",ca+" col-md-9")
+//   $(this).attr("class",ca+" col-12 col-md-9")
 // });
 
 // $("#div_id_razon_nombres span[class='select2-selection select2-selection--single']").each(function(){

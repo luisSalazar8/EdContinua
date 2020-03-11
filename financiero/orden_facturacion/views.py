@@ -11,12 +11,12 @@ from .filters import OrdenFacturacionFilter
 # Create your views here.
 
 def index(request):
-	if (request.GET.get('estado',None)!=None and 'ANLD' in request.GET['estado']):
-		ordFac_lista = OrdenFacturacion.objects.all()
-	else:
-		ordFac_lista = OrdenFacturacion.objects.all().exclude(estado='ANLD')
-	ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=ordFac_lista)
-	return render(request, "orden_facturacion.html", {"filter":ordFac_filter})
+    if (request.GET.get('estado',None)!=None and 'ANLD' in request.GET['estado']):
+        ordFac_lista = OrdenFacturacion.objects.all()
+    else:
+        ordFac_lista = OrdenFacturacion.objects.all().exclude(estado='ANLD')
+    ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=ordFac_lista)
+    return render(request, "orden_facturacion.html", {"filter":ordFac_filter})
 
 class OrdenFacturacionCreate(CreateView):
     model=OrdenFacturacion
@@ -63,6 +63,9 @@ class OrdenFacturacionUpdate(UpdateView):
         pk=self.kwargs.get('pk',0)
         orden=self.model.objects.get(id=pk)
         participantes=self.participantes_class.objects.filter(orden_id=pk)
+        prueba=OrdenFacturacion.objects.all()
+        for ori in prueba:
+            print(ori.contacto)
         if 'form' in context:
             if orden.estado=='ACTV':
                 context['form']=self.second_form_class(instance=orden)

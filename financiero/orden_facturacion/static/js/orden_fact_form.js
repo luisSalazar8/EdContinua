@@ -1,5 +1,6 @@
 var p_url = "";
 console.log("valor de la wea "+$('#cont').val())
+
 $('.select2').select2({
   minimumInputLength: 2,
   language: {
@@ -72,6 +73,11 @@ function load_info() {
           success: function (data) {
             $("#id_contacto").html(data.contacto);
             $("#id_contacto").prop("disabled",false);
+            if($('#cont').val()!=undefined){
+              $('#id_contacto').val($('#cont').val());
+              $('#id_contacto').trigger('change');
+            }
+            
           }
         });
 
@@ -98,8 +104,6 @@ function load_data() {
         $('#id_razon_nombres').val($('#rn').val());
         $('#id_ruc_ci').trigger('change.select2');
         $('#id_razon_nombres').trigger('change.select2');
-        $('#id_contacto').val($('#cont').val());
-        $('#id_contacto').trigger('change.select3');
         //$('#select2-id_ruc_ci-container').text($('#rc').val());
         //$('#select2-id_razon_nombres-container').text($('#rn').val());
       }
@@ -137,9 +141,14 @@ function load_data() {
 };
 
 function load_mail() {
+  console.log("entro")
   var url = $('#form-fact').attr("data-mail-url");
-  var cedula = $("#id_contacto").val();
-
+  var cedula ="";
+  if($("#id_contacto").val()!=undefined){
+    cedula = $("#id_contacto").val();
+  }else{
+    cedula = $("#cont").val();
+  }
     $.ajax({
       url: url,
       data: {

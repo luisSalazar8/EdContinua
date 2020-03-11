@@ -113,18 +113,18 @@
                     <td scope="row">
 
                         
-                        <a class="btn btn-light btn-sm" href="{% url 'orden_facturacion_editar' orden.id %}">
-                            <i class="fas fa-edit darkgreen-text"></i></a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'orden_facturacion_editar' orden.id %}">
+                            <i class="fas fa-edit"></i></a>
                         
 
                         {% if orden.estado == 'ACTV' %}
-                        <a onclick='eliminar({{ orden.id }});' class="btn btn-light btn-sm" data-toggle='modal'
+                        <a onclick='eliminar({{ orden.id }});' class="btn btn-danger btn-sm" data-toggle='modal'
                             data-target="#ordenEliminarCenter" href='#'>
-                            <i class="fas fa-trash darkgreen-text"></i></a>
+                            <i class="fas fa-trash"></i></a>
                         {% endif%}
-                        <a class="btn btn-light btn-sm" href="#" data-toggle="tooltip" data-placement="top"
+                        <a class="btn btn-secondary btn-sm" href="#" data-toggle="tooltip" data-placement="top"
                             title="Imprimir">
-                            <i class="fas fa-print darkgreen-text"></i></a>
+                            <i class="fas fa-print"></i></a>
                         <!--
                             {% if orden.anexo_factura %}
                             <a class="btn btn-secondary btn-sm" href="{{orden.anexo_factura.url}}" target="_blank">

@@ -26,7 +26,7 @@ urlpatterns = [
     path('ventas/proformas/',include("ventas.proformas.urls")),
     path('ventas/interesados/',include("ventas.interesados.urls")),
     path('financiero/perfiles/', include('financiero.perfiles.urls')),
-    path('financiero/ordenIngreso/',include('financiero.orden_ingreso.urls')),
+    path('financiero/orden_Ingreso/',include('financiero.orden_ingreso.urls')),
     path('financiero/orden_facturacion/',include('financiero.orden_facturacion.urls')),
     path("financiero/presupuestos/",include("financiero.presupuestos.urls")),
     path("financiero/orden_pago/",include("financiero.orden_pago.urls")),

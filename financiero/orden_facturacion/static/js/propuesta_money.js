@@ -41,6 +41,9 @@ if($("#ac").val()=="True"){
   $("#id_version").prop('disabled', true);
 }
 
+
+
+
 if($("#id_monto_propuesta").val()!=""){
   transform($("#id_monto_propuesta"));
 }

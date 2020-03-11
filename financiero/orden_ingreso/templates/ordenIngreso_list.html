@@ -1,6 +1,8 @@
 {% extends "base_financiero.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load humanize %}
+{% load l10n %}
 
 {% block content %}
 <div class="row mb-2 d-flex white-bg">
@@ -43,11 +45,19 @@
         <table id="dtBasicExample" class="table table-responsive-md border-bottom">
             <thead class="darkgreen-bg white-text">
                 <tr>
+                    <th>Código de orden</th>
+                    <th>Código de facturación</th>
                     <th>Fecha</th>
+                    <th>RUC  CI</th>
                     <!--<th>Anexo</th>-->
                     <th>Cliente</th>
+                    <th>Códigos del evento</th>
+                    <th>Nombre del evento</th>
+                    <th>Total factura</th>
                     <th>Forma de Pago</th>
                     <th>Valor</th>
+                    <th>Estado</th>
+                    <th>Saldo</th>
                     <th>Acciones</th>
 
                 </tr>
@@ -59,7 +69,10 @@
 
                 {% for ordenIngreso in filter.qs %}
                 <tr class="text-center">
+                    <td>{{ordenIngreso.pk}}</td>
+                    <td></td>
                     <td>{{ordenIngreso.fecha}}</td>
+                    <td></td>
                     <!--
                     <td>
                         {% if ordenIngreso.anexo %}
@@ -72,8 +85,13 @@
                     </td>
                     -->
                     <td>{{ordenIngreso.razon_nombres}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td>{{ordenIngreso.formaPago}}</td>
-                    <td>{{ordenIngreso.valor}}</td>
+                    <td>{{ordenIngreso.valor|floatformat:2|intcomma}}</td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <a class="btn btn-secondary btn-sm"
                             href="{% url 'ordenIngreso_editar' ordenIngreso.id %}"><i class="fas fa-edit"></i></a>
@@ -117,6 +135,7 @@
             }
         });
     };
+
 
 </script>
 {% endblock extrafooter %}

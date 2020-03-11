@@ -21,6 +21,7 @@ class OrdenIngresoForm(forms.ModelForm):
 			'numeroDocumento':'N° Documento',
 			'banco':"Banco",
 			'emisoraTarjeta':"Emisora TC",
+			'orden_facturacion':"Orden facturación",
 		}
 
 		widgets={
@@ -30,7 +31,7 @@ class OrdenIngresoForm(forms.ModelForm):
             'ruc_ci':forms.Select(attrs={'class':'form-control select2'}),
 			'descripcion':forms.Textarea(attrs={'rows':2}),
 			'valor':forms.NumberInput(attrs={'class':'form-control'}),
-			'anexo':forms.ClearableFileInput(attrs={'class':'form-control'}),
+			'anexo':forms.ClearableFileInput(attrs={'class':'form-control',"accept":".pdf"}),
 			'numeroDocumento':forms.NumberInput(attrs={'class':'form-control'}),
 			'banco':forms.TextInput(attrs={'class':'form-control'}),
 			'emisoraTarjeta':forms.Select(attrs={'class':'select form-control'}),
@@ -39,11 +40,14 @@ class OrdenIngresoForm(forms.ModelForm):
 	def clean(self):
 		
 		cd = self.cleaned_data
-		if(cd.get('valor')==None):
-			self.add_error('valor', 'Valor excede máxima cantidad soportada')
-		elif ((cd.get('orden_facturacion').valor_pendiente - cd.get('valor')) <0) :
-			self.add_error('valor', 'El valor a pagar excede el valor pendiente de la orden de facturación, pendiente: $'+str(cd.get('orden_facturacion').valor_pendiente))
-		return cd
+		try:
+			if(cd.get('valor')==None):
+				self.add_error('valor', 'Valor excede máxima cantidad soportada')
+			elif ((cd.get('orden_facturacion').valor_pendiente - cd.get('valor')) <0) :
+				self.add_error('valor', 'El valor a pagar excede el valor pendiente de la orden de facturación, pendiente: $'+str(cd.get('orden_facturacion').valor_pendiente))
+			return cd
+		except :
+			self.add_error('orden_facturacion',"El campo de orden de facturación no puede ser vacío")	
 
 
 class OrdenIngresoUpdateForm(forms.ModelForm):

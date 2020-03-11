@@ -1,5 +1,5 @@
 from django.db import models
-from ventas.personas_juridicas.models import Juridica
+from ventas.personas_juridicas.models import Juridica, Contacto_natural
 from ventas.personas_naturales.models import Persona_Natural
 
 import ventas.validaciones as val
@@ -36,16 +36,17 @@ class OrdenFacturacion(models.Model):
     fecha=models.CharField(max_length=30)
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
+    contacto=models.CharField(max_length=200,blank=True, null=True)
     #contacto=models.CharField(max_length=200)
     #direccion=models.CharField(max_length=200)
     #telefono=models.CharField(max_length=15)
-    concepto=models.CharField(max_length=300)
+    
 
     centro_costos = models.ForeignKey(Centro_Costos, on_delete=models.SET_NULL, blank=False, null=True)
     n_participantes=models.PositiveIntegerField(blank=True, default=0, null=True)
 
-    observaciones=models.CharField(max_length=500)
-    comentarios=models.CharField(max_length=500, blank=True, null=True)
+    observaciones=models.CharField(max_length=500,blank=True, null=True)
+    
     estado = models.CharField(max_length=5,default='ACTV',choices=ESTADO_CHOICES, blank=True, null=True)
     #participantes=models.ManyToManyField(Persona_Natural)
     subtotal=models.FloatField(blank=True, null=True ,default=0.0)

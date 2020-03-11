@@ -6,8 +6,7 @@
 {% load my_tags %}
 <div class="row mb-2">
     <div class="col-12">
-        <h2 class="text-uppercase">Autorizar <span class="darkgreen-text ">Orden de Facturación
-                {{form.cod_orden_fact.value}}</span> </h2>
+        <h2 class="text-uppercase pr-2">Autorizar  </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
     </div>
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}

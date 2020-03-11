@@ -5,8 +5,8 @@
 {% block editar%}
 {% load my_tags %}
 <div class="row mb-2">
-    <div class="col-12">
-        <h2 class="darkgreen-text text-uppercase">edición Orden de Facturación {{form.cod_orden_fact.value}} </h2>
+    <div class="col-12 row">
+        <h2 class="darkgreen-text text-uppercase pr-2 pl-3">edición Orden de Facturación </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
     </div>
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}

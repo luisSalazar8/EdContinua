@@ -1,7 +1,7 @@
 from django.shortcuts import render,  redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-from .models import OrdenFacturacion, Persona_Natural, Juridica, OrdenFacturacionParticipante
+from .models import OrdenFacturacion, Persona_Natural, Juridica, OrdenFacturacionParticipante, Contacto_natural
 from .forms import OrdenFacturacionForm, OrdenFacturacionUpdateForm, OrdenFacturacionFinalForm, OrdenFacturacionParticipanteForm
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponseRedirect
@@ -31,6 +31,9 @@ class OrdenFacturacionCreate(CreateView):
             sec='0'*(4-len(pre))+pre
         except self.model.DoesNotExist:
             sec='0001'      
+        print("jojo")
+        print(form.instance.contacto)
+        print("jeje")
         form.instance.cod_orden_fact=sec+'-'+str(date.today().year)
         form.instance.valor_pendiente = form.instance.valor_total
         return super().form_valid(form)
@@ -125,6 +128,19 @@ def load_personas(request):
         razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})    
     return JsonResponse({'ruc_ci': identificacion, 'razon_nombre': razon_nombre})
 
+def load_contactos(request):
+    id = request.GET.get("id")
+    contactos=Contacto_natural.objects.filter(empresa=id)
+    
+    listnatid=[]
+    for c in contactos:
+        listnatid.append(c.contacto.cedula)
+        
+    contactosN=Persona_Natural.objects.filter(cedula__in=listnatid)
+    
+    contlist=render_to_string("dropdown_contacto.html",{"contactos":contactosN})  
+    return JsonResponse({'contacto': contlist})
+
 def load_info(request):
     id = request.GET.get("id")
     persona= request.GET.get("persona")
@@ -155,7 +171,46 @@ def load_info(request):
             tipo= cliente.tipo_empresa.nombre
 
     return JsonResponse({'direccion': direccion, 'telefono': telefono, 'contacto': contacto, 'sector': sector, 'tipo': tipo,'email':email,'celular':celular,'cargo':cargo})
-    
+
+def load_info_veris(request):
+    id = request.GET.get("id")
+    persona= request.GET.get("persona")
+    direccion=""
+    telefono=""
+    contacto=""
+    sector=""
+    tipo=""
+    ##Para Natural
+    email =""
+    celular = ""
+    cargo = ""
+
+    if id!="":
+        if persona=="Natural":
+            cliente=Persona_Natural.objects.get(pk=id)
+            direccion=cliente.dir_domicilio
+            telefono=cliente.tel_domicilio
+            celular=cliente.celular
+            email = cliente.email
+            cargo = cliente.cargo
+        elif persona=="Jurídica":
+            
+            cliente=Juridica.objects.get(ruc=id)
+            direccion= cliente.direccion
+            telefono= cliente.telefono
+            email= cliente.correo
+            sector= cliente.sector.nombre
+            tipo= cliente.tipo_empresa.nombre
+    return JsonResponse({'direccion': direccion, 'telefono': telefono, 'contacto': contacto, 'sector': sector, 'tipo': tipo,'email':email,'celular':celular,'cargo':cargo})
+
+def load_mail(request):
+    cedula = request.GET.get("cedula")
+    print(cedula)
+    email=""
+    if cedula!="":
+        email=Persona_Natural.objects.get(cedula=cedula).email
+    return JsonResponse({"email": email})
+
 def load_info_ci(request):
     pk = request.GET.get("pk")
     ci=""

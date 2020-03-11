@@ -1,5 +1,5 @@
 from django.db import models
-from ventas.personas_juridicas.models import Juridica
+from ventas.personas_juridicas.models import Juridica, Contacto_natural
 from ventas.personas_naturales.models import Persona_Natural
 
 import ventas.validaciones as val
@@ -36,6 +36,7 @@ class OrdenFacturacion(models.Model):
     fecha=models.CharField(max_length=30)
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
+    contacto=models.CharField(max_length=200,blank=True, null=True)
     #contacto=models.CharField(max_length=200)
     #direccion=models.CharField(max_length=200)
     #telefono=models.CharField(max_length=15)

@@ -1,5 +1,5 @@
 var p_url = "";
-
+console.log("valor de la wea "+$('#cont').val())
 $('.select2').select2({
   minimumInputLength: 2,
   language: {
@@ -19,6 +19,24 @@ $('.select2').select2({
   }
 });
 
+$('.select3').select2({
+  minimumInputLength: 0,
+  language: {
+
+    noResults: function () {
+      return "No hay resultados";
+    },
+    searching: function () {
+
+      return "Buscando...";
+    }
+    // ,
+    // inputTooShort: function (e) {
+    //   var t = e.minimum - e.input.length;
+    //   return "Ingresa " + t + " caractéres para buscar";
+    // }
+  }
+});
 
 function load_info() {
   var url = $('#form-fact').attr("data-info-url");
@@ -36,9 +54,29 @@ function load_info() {
     },
     success: function (data) {
       flag=false;
-      $("#contacto").val(data.contacto);
-      $("#telefono").val(data.telefono);
-      $("#direccion").val(data.direccion);
+      if( $("#id_tipo_cliente").val()=="Natural"){
+        console.log("entro a natural")
+        
+        $("#telefono").val(data.telefono);
+        $("#direccion").val(data.direccion);
+        $("#email").val(data.email);
+        
+      }else if($("#id_tipo_cliente").val()=="Jurídica"){
+        $("#telefono").val(data.telefono);
+        $("#direccion").val(data.direccion);
+        $.ajax({
+          url: $('#form-fact').attr("data-contacto-url"),
+          data: {
+            'id': id
+          },
+          success: function (data) {
+            $("#id_contacto").html(data.contacto);
+            $("#id_contacto").prop("disabled",false);
+          }
+        });
+
+      }
+      
     }
   })
 }
@@ -58,8 +96,10 @@ function load_data() {
         $("#id_razon_nombres").html(data.razon_nombre)
         $('#id_ruc_ci').val($('#rc').val());
         $('#id_razon_nombres').val($('#rn').val());
-        $('#id_ruc_ci').trigger('change.select2')
-        $('#id_razon_nombres').trigger('change.select2')
+        $('#id_ruc_ci').trigger('change.select2');
+        $('#id_razon_nombres').trigger('change.select2');
+        $('#id_contacto').val($('#cont').val());
+        $('#id_contacto').trigger('change.select3');
         //$('#select2-id_ruc_ci-container').text($('#rc').val());
         //$('#select2-id_razon_nombres-container').text($('#rn').val());
       }
@@ -70,21 +110,46 @@ function load_data() {
     if (persona == "Natural") {
       $('#ruc_ci').text('CI');
       $('#ra_nom').text('Nombre');
+      $("#id_contacto").prop("disabled",true);
+      $("#id_contacto").html("");
       p_url = $('#form-fact').attr("data-natural-url");
     }
     else if (persona == "Jurídica") {
       $('#ruc_ci').text('RUC');
       $('#ra_nom').text('Razón Social');
+      $("#id_contacto").prop("disabled",true)
       p_url = $('#form-fact').attr("data-juridica-url");
     }
-    $("#contacto").val("");
+    $("#id_contacto").html("");
     $("#telefono").val("");
     $("#direccion").val("");
+    $("#email").val("");
   }
   else {
+    $("#id_contacto").prop("disabled",true)
     $('#field-razon').hide();
     $('#field-ruc-ci').hide();
+    $("#id_contacto").html("");
+    $("#telefono").val("");
+    $("#direccion").val("");
+    $("#email").val("");
   }
+};
+
+function load_mail() {
+  var url = $('#form-fact').attr("data-mail-url");
+  var cedula = $("#id_contacto").val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'cedula': cedula
+      },
+      success: function (data) {
+        $("#email").val(data.email);
+      }
+    });
+    
 };
 
 //Autocompleta de un select a otro usando el id
@@ -121,6 +186,10 @@ $(document).on('change', '#id_ruc_ci', function () {
   autocomplete($(this), 'id_razon_nombres');
 });
 
+$(document).on('change', '#id_contacto', function () {
+  load_mail();
+});
+
 
 /*
 $(document).on('change', '.select2-participantes', function () {
@@ -155,11 +224,13 @@ $(document).on('click', "#pnuevo", function () {
 $(document).on('click', "#div_id_ruc_ci span.selection", function (e) {
   $("#rc").val("");
   $("#rn").val("");
+  $("#id_contacto").html("");
   load_data();
 });
 
 $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
   $("#rc").val("");
   $("#rn").val("");
+  $("#id_contacto").html("");
   load_data();
 });

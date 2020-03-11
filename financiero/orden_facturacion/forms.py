@@ -28,6 +28,7 @@ class OrdenFacturacionForm(forms.ModelForm):
             'descuento_total': '$ Descuento total',
             'valor_total': '$ Valor total',
             "motivo_anular":"Motivo de Anulación",
+            "contacto":"Contacto",
         }
 
         widgets = {
@@ -40,6 +41,7 @@ class OrdenFacturacionForm(forms.ModelForm):
             'fecha': forms.DateInput(attrs={'type': 'date', 'value': date.today, 'readonly': True}),
             'razon_nombres': forms.Select(attrs={'class': 'form-control select2'}),
             'ruc_ci': forms.Select(attrs={'class': 'form-control select2'}),
+            "contacto":forms.Select(attrs={'class': 'form-control select3'}),
             'n_tramite': forms.TextInput(attrs={'class': 'form-control textinput textInput form-control'}),
             'n_factura': forms.TextInput(attrs={'class': 'form-control textinput textInput form-control'}),
             'subtotal': forms.HiddenInput(),#NumberInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),

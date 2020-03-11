@@ -153,7 +153,9 @@ def validate_horarios(hora_inicio,hora_fin):
 		return hora_fin
 
 def validate_porcentaje(valor):
-	if(valor<0):
+	if(valor==None):
+		return valor
+	elif(valor<0):
 		raise forms.ValidationError("El porcentaje no puede ser negativo")
 	elif(valor>100):
 		raise forms.ValidationError("El porcentaje no puede ser mayor a 100")

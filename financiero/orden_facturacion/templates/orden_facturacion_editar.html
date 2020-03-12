@@ -81,12 +81,12 @@
                     <thead class="darkgreen-bg white-text">
                         <tr>
                             <th>Participante</th>
-                            <th>Nombre del evento</th>
                             <th>Código del evento</th>
+                            <th>Nombre del evento</th>
                             <th>Valor Evento</th>
                             <th>Descuento</th>
                             <th>Valor total</th>
-                            <th></th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     {% if participantes %}
@@ -96,19 +96,19 @@
                         {% for p in participantes %}
                         <tr class="text-center">
                             <td>{{ p.participante }}</td>
-                            <td>{{ p.nombre_evento }}</td>
                             <td>{{ p.cod_evento }}</td>
+                            <td>{{ p.nombre_evento }}</td>
                             <td class="sum">{{ p.valor_evento|currency}}</td>
                             <td>{{ p.descuento|porcentaje }}</td>
                             <td class="sum">{{ p.valor|currency }}</td>
                             <td>
                                 {% if form.estado.value == "ACTV" %}
 
-                                <a class="btn btn-light btn-sm" href="{% url 'participante_editar' p.id orden_id %}"><i
-                                        class="fas fa-edit darkgreen-text"></i></a>
-                                <a onclick='eliminar({{ p.id }});' class="btn btn-light btn-sm" data-toggle='modal'
+                                <a class="btn btn-secondary btn-sm" href="{% url 'participante_editar' p.id orden_id %}"><i
+                                        class="fas fa-edit"></i></a>
+                                <a onclick='eliminar({{ p.id }});' class="btn btn-danger btn-sm" data-toggle='modal'
                                     data-target="#ordenEliminarCenter" href='#'><i
-                                        class="fas fa-trash darkgreen-text"></i></a>
+                                        class="fas fa-trash"></i></a>
                                 {% endif %}
 
                             </td>

@@ -1,7 +1,7 @@
 from django import forms
 from financiero.orden_facturacion.models import OrdenFacturacion, OrdenFacturacionParticipante
 from datetime import date
-
+from financiero.validaciones import validate_porcentaje
 
 class OrdenFacturacionForm(forms.ModelForm):
     class Meta:
@@ -166,3 +166,7 @@ class OrdenFacturacionParticipanteForm(forms.ModelForm):
             "valor_evento": forms.NumberInput(attrs={'min': 0.0}),
             "valor": forms.NumberInput(attrs={'min': 0.0, 'max': 100.0, 'readonly': True}),
         }
+
+    def clean_descuento(self):
+        descuento = self.cleaned_data["descuento"]
+        return validate_porcentaje(descuento)

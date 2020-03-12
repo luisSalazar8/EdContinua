@@ -23,7 +23,7 @@ class ReporteContacto(models.Model):
 	canal_de_contacto= models.CharField(max_length=50, verbose_name="Medio de contacto", choices=MEDIOS_CHOICES, default='Correo Electrónico')
 	motivo_de_contacto=models.CharField(max_length=500)
 	lugar=models.CharField(max_length=100)
-	fecha=models.CharField(max_length=12)
+	fecha=models.DateField()
 	hora_inicio=models.TimeField()
 	hora_fin=models.TimeField()
 	nombre_contacto=models.CharField(max_length=100)
@@ -126,7 +126,7 @@ class Capacitacion(models.Model):
 									choices=EDAD_PROMEDIO_CHOICES)
 	lugar=models.CharField(max_length=50)
 	ciudad=models.CharField(max_length=25,choices=CIUDADES_CHOICES)
-	fecha_evento=models.CharField(max_length=12)
+	fecha_evento=models.DateField()
 	horario_evento_inicio=models.TimeField()
 	horario_evento_fin=models.TimeField()
 	observaciones=models.CharField(max_length=500)
@@ -150,8 +150,8 @@ class Asesoria(models.Model):
 	con_sin_imple=models.CharField(max_length=25,
 									choices=IMPLEMENTACION_CHOICES,
 									default='CI')
-	fecha_inicio=models.CharField(max_length=12)
-	fecha_fin=models.CharField(max_length=12)
+	fecha_inicio=models.DateField()
+	fecha_fin=models.DateField()
 	proveedor=models.CharField(max_length=25)
 	entregables=models.CharField(max_length=500)
 	observaciones=models.CharField(max_length=500)

@@ -1,4 +1,4 @@
-from .models import OrdenIngreso
+from .models import OrdenIngreso,OrdenFacturacion
 import django_filters
 from django import forms
 
@@ -11,7 +11,7 @@ class OrdenIngresoFilter(django_filters.FilterSet):
     numeroFactura=django_filters.CharFilter(lookup_expr='icontains',label='Número de Factura')
     class Meta:
         model = OrdenIngreso
-        
+        model2 = OrdenFacturacion
         fields=[
             'fecha',
             'n_tramite',

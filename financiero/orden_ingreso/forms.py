@@ -1,6 +1,7 @@
 from django import forms
 from .models import OrdenIngreso
 from datetime import date
+from django.core.exceptions import ObjectDoesNotExist
 
 class OrdenIngresoForm(forms.ModelForm):
 
@@ -49,6 +50,15 @@ class OrdenIngresoForm(forms.ModelForm):
 		except :
 			self.add_error('orden_facturacion',"El campo de orden de facturación no puede ser vacío")	
 
+	def genera_codigo(self):
+		sec = "vacio"
+		try:
+			pre=str(int(self.Meta.model.objects.latest('pk').pk+1))
+			sec='0'*(4-len(pre))+pre
+		except ObjectDoesNotExist :
+			sec='0001'
+		print(sec)
+		self.instance.cod_orden_ing= sec +'-'+str(date.today().year)
 
 class OrdenIngresoUpdateForm(forms.ModelForm):
 

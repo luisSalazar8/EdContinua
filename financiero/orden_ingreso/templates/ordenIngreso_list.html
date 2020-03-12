@@ -35,31 +35,33 @@
 
     </div>
 </div>
-
-<div class="row mt-4">
-    <div class="col-12">
+<br>
+<div class="row mt-2">
+    <div class="col-12 col-xl-12">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
                 data-placement="top" title="Exportar a excel"></i></a>
-        <table id="dtBasicExample" class="table table-responsive-md border-bottom">
+        <table id="dtBasicExample" class="table table-responsive border-bottom">
+        
+          
             <thead class="darkgreen-bg white-text">
                 <tr>
-                    <th>Código de orden</th>
-                    <th>Código de facturación</th>
-                    <th>Fecha</th>
-                    <th>RUC  CI</th>
-                    <!--<th>Anexo</th>-->
-                    <th>Cliente</th>
-                    <th>Códigos del evento</th>
-                    <th>Nombre del evento</th>
-                    <th>Total factura</th>
-                    <th>Forma de Pago</th>
-                    <th>Valor</th>
-                    <th>Estado</th>
-                    <th>Saldo</th>
-                    <th>Acciones</th>
-
+                     <th scope="col">Código orden</th>
+                    
+                     <th scope="col">Fecha</th>
+                     <th scope="col">RUC CI</th>
+                     <th scope="col">Cliente</th>
+                     <th scope="col">Código evento</th>
+                     <th scope="col">Nombre evento</th>
+                     <th scope="col">Total factura</th>
+                     <th scope="col">Forma Pago</th>
+                     <th scope="col">Valor</th>
+                     <th scope="col">Código facturación</th>
+                     <th scope="col">Saldo Orden Facturación</th>
+                     <th scope="col">Estado Orden Facturación</th>
+                     <th scope="col"> Acciones</th>
+                    
                 </tr>
             </thead>
             {% if filter.qs %}
@@ -69,37 +71,29 @@
 
                 {% for ordenIngreso in filter.qs %}
                 <tr class="text-center">
-                    <td>{{ordenIngreso.pk}}</td>
-                    <td></td>
-                    <td>{{ordenIngreso.fecha}}</td>
-                    <td></td>
-                    <!--
-                    <td>
-                        {% if ordenIngreso.anexo %}
-                            <a class="btn btn-secondary" href="{{ordenIngreso.anexo.url}}" target="_blank">
-                                Descargar
-                            </a>
-                        {% else %}
-                            No anexo
-                        {% endif %}
-                    </td>
-                    -->
-                    <td>{{ordenIngreso.razon_nombres}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ordenIngreso.formaPago}}</td>
-                    <td>{{ordenIngreso.valor|floatformat:2|intcomma}}</td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <a class="btn btn-secondary btn-sm"
-                            href="{% url 'ordenIngreso_editar' ordenIngreso.id %}"><i class="fas fa-edit"></i></a>
+                    <td scope="row">{{ordenIngreso.cod_orden_ing}}</td>
+                    
+                  
+                    <td scope="row" class="">{{ordenIngreso.fecha}}</td>
+                    <td scope="row">{{ordenIngreso.ruc_ci}}</td>
+                    <td scope="row">{{ordenIngreso.razon_nombres}}</td>
+                    <td scope="row"></td>
+                    <td scope="row"></td>
+                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_total}}</td>
+                    <td scope="row">{{ordenIngreso.formaPago}}</td>
+                    <td scope="row">{{ordenIngreso.valor|floatformat:2|intcomma}}</td>
+                    <td scope="row">{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
+                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_pendiente}}</td>
+                    <td scope="row">{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
+                    
+                    <td scope="row">
+                        <a class="btn btn-secondary btn-sm " href="{% url 'ordenIngreso_editar' ordenIngreso.id %}">
+                            <i class="fas fa-edit"></i></a>
                         <a onclick='eliminar({{ ordenIngreso.id }});' class="btn btn-danger btn-sm"
                             data-toggle='modal' data-target="#ordenEliminarCenter" href='#'><i
                                 class="fas fa-trash"></i></a> 
                         <a class="btn btn-secondary btn-sm"
-                        href="{% url 'ordenIngreso_print' ordenIngreso.id %}"><i class="fas fa-print"></i></a>
+                        href="{% url 'ordenIngreso_print' ordenIngreso.id %}"><i class="fas fa-print"></i></a> 
                     </td>
                 </tr>
                 {% endfor %}

@@ -20,12 +20,21 @@ class OrdenIngreso(models.Model):
 		("Discover","Discover"),
 	]
 	TIPO_CHOICES=[('Natural','Natural'),('Jurídica','Jurídica'),]
+	ESTADO_CHOICES = [  
+        ('ACTV','Activa'),
+        ('ANLD','Anulada'),
+	]
 
 	
 	cod_orden_ing=models.CharField(max_length=15, blank=True)
 	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
 	fecha=models.CharField(max_length=12)
 	n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
+
+	fecha_tramite=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de Trámite")
+	fecha_anulacion=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de anulación")
+	estado = models.CharField(max_length=5,default='ACTV',choices=ESTADO_CHOICES, blank=True, null=True)
+
 	n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 	ruc_ci=models.CharField(max_length=13)
 	orden_facturacion = models.ForeignKey(OrdenFacturacion, on_delete=models.SET_NULL, blank=False, null=True)

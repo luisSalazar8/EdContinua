@@ -88,6 +88,9 @@ class OrdenIngresoUpdateForm(forms.ModelForm):
 			'fecha':forms.DateInput(attrs={'readonly':True,'class':'form-control-plaintext','type':'date','value':date.today}),
 			'fechaPago':forms.DateInput(attrs={'readonly':True,'class':'form-control-plaintext','type':'date','value':date.today}),
 			'n_tramite':forms.TextInput(attrs={'class':'form-control'}),
+			
+			'fechaPago':forms.DateInput(attrs={'class':'form-control','type':'date'}),
+
 			'tipo_cliente':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'razon_nombres':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
             'ruc_ci':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),

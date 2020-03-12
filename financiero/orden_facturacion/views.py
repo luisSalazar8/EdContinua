@@ -72,7 +72,6 @@ class OrdenFacturacionUpdate(UpdateView):
             elif orden.estado=='PNDP':
                 context['form']=self.third_form_class(instance=orden)
             else:
-                
                 context['form']=self.form_class(instance=orden)
         context['orden_id']=pk
         #selected_participantes=[]

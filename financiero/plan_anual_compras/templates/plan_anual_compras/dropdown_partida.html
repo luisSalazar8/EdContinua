@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for partida in partidas %}
+<option value="{{ partida.partida }}" name="{{ partida.codigo }}" >{{ partida.partida }}</option>
+{% endfor %}

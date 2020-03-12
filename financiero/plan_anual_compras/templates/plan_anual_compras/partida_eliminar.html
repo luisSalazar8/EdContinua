@@ -1,18 +1,20 @@
-{% extends 'base_financiero.html' %}
-
-{% block content %}
-<div class="row justify-content-md-center mt-5">
-    <form method="POST">
-        {% csrf_token %}
-        <h3>¿Está seguro que desea eliminar el siguiente producto/servicio?</h3>
-        <h3>Partida Presupuestaria: {{ object.partida }}</h3>
-        <h3>Producto/Servicio {{ object.producto }}</h3>
-        <div class="col">
-            <div class="row justify-content-center">
-                    <a class="btn btn-secondary " href="{% url 'pac_editar' pac_id %}">Cancelar</a>
-                    <button class="btn btn-secondary green-bg ml-3" type="submit">Confirmar</button>
-            </div>
-        </div>
-    </form>
+<div class="modal-header">
+	<h5 class="modal-title" id="productoDeleteModalCenterTitle">Eliminar Producto/Servicio</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
 </div>
-{% endblock content %}
+<form method="post" action="{% url 'partida_eliminar' pk fk %}">
+	{% csrf_token %}
+	<div class="modal-body">
+        ¿Está seguro que desea eliminar el siguiente producto/servicio?
+        <br>
+        Código: {{ form.codigo }}
+        <br>
+        Partida Presupuestaria: {{ form.partida }}
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		<button type="submit" class="btn btn-danger">Eliminar</button>
+	</div>
+</form>

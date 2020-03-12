@@ -1,0 +1,63 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-header">
+	<h5 class="modal-title" id="productoUpdateModalCenterTitle">Actualizar Producto/Servicio</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<form method="post" action="{% url 'partida_editar' pk fk %}">
+	{% csrf_token %}
+	<div class="modal-body">
+		<div class="form-row">
+			<div class="col-6 col-xl-3">
+				{{ form.codigo |as_crispy_field}}
+			</div>
+			<div class="col-6 col-xl-9">
+				{{ form.partida|as_crispy_field }}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-6 col-xl-3">
+				{{ form.tipo_compra |as_crispy_field}}
+			</div>
+			<div class="col-6 col-xl-9">
+				{{ form.periodo |as_crispy_field}}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-12 col-xl-12">
+				{{ form.producto |as_crispy_field}}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-4 col-xl-4">
+				{{ form.unidad_medida |as_crispy_field}}
+			</div>
+			<div class="col-4 col-xl-4">
+				{{ form.cantidad_anual |as_crispy_field}}
+			</div>
+			<div class="col-4 col-xl-4">
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-12 col-xl-8">
+				<div class="row">
+					<div class="col">
+						{{ form.subtotal|as_crispy_field }}
+					</div>
+					<div class="col-auto v-align">
+						{{ form.iva|as_crispy_field }}
+					</div>
+					<div class="col">
+						{{ form.total|as_crispy_field }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
+	</div>
+</form>

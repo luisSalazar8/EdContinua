@@ -6,41 +6,176 @@
 {% load staticfiles %}
 {% block title %}{{ "EC - Plan Anual de Compras Registro" }}{% endblock title %}
 
-{% block content %}
+{% block extraheader %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" />
+{% endblock extraheader %}
 
-<form method="post" novalidate>
+
+{% block content %}
+<form id="form" method="post" data-tipo-url="{% url 'ajax_load_partida'%}" novalidate>
 	{% csrf_token %}
 	<div class="row mb-2">
-		<div class="col-12 col-xl-12">
+		<div class="col-12 col-xl-5">
 			<h2 class="text-uppercase darkgreen-text">
 				{% block regedit %}
 				Registro Plan Anual de Compras
 				{% endblock regedit %}
 			</h2>
 		</div>
+		<div class="col-xl-7 col-12">
+			<div class="form-row">
+				<div class="col-xl-5 col"></div>
+				<input type="hidden" name="estado" value="{{form.estado.value}}">
+				<div class="col-xl-4 col">{{ form.estado |as_crispy_field}}</div>
+				<div class="col-xl-3 col">{{ form.fecha |as_crispy_field}}</div>
+				{{form.fecha_envio}}
+				{{form.fecha_aprobado}}
+			</div>
+		</div>
 	</div>
-	<div class="row darkwhite-bg py-2 pb-3">
+	<div class="row">
 		<div class="mt-2 campo p-2 pl-3 col-12">
 			<h5 class="black-text text-uppercase mb-0">Información básica</h5>
 		</div>
 	</div>
 	<div class="row darkwhite-bg py-2">
-		<div class="col-2 col-xl-2">
-			{{ form.año|as_crispy_field }}
-		</div>
-		<div class="col-10 col-xl-10">
-			{{ form.nombre|as_crispy_field }}
+		<div class="col-12">
+			<div class="form-row">
+				<div class="col-3 col-xl-2">
+					<input type="hidden" name="año" value="{{form.año.value}}">
+					{{ form.año|as_crispy_field }}
+				</div>
+				<div class="col-12 col-xl-8">
+					{{ form.nombre|as_crispy_field }}
+				</div>
+				<div class="col-12 col-xl-2">
+					<input type="hidden" name="centro_costos" value="{{form.centro_costos.value}}">
+					{{ form.centro_costos|as_crispy_field }}
+				</div>
+			</div>
 		</div>
 	</div>
 	{% block tablas %}
+
+	<div class="row">
+		<div class=" campo p-2 pl-3 col-12">
+			<h5 class="black-text text-uppercase mb-0">Producto/Servicio</h5>
+		</div>
+	</div>
+	<div class="row mt-4">
+		<div class="col-12">
+			<table id="dtBasicExample" class="table table-responsive table-sm border-bottom">
+				<thead class="white-text darkgreen-bg">
+					<tr>
+						<th>#</th>
+						<th>Código</th>
+						<th>Partida Presupuestaria</th>
+						<th>Tipo de Compra</th>
+						<th>Detalle del Producto</th>
+						<th>Cantidad Anual</th>
+						<th>Unidad de Medida</th>
+						<th>Costo Unitario</th>
+						<th>Subtotal</th>
+						<th>Valor Total</th>
+						<th>Periodo</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+			</table>
+			<a class="btn btn-secondary green-bg" data-toggle="modal" href="#"
+				data-target="#productoModalCenter">Agregar Producto/servicio</a>
+		</div>
+	</div>
+	<div class="modal fade" id="productoModalCenter" tabindex="-1" role="dialog"
+		aria-labelledby="productoModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="productoModalCenterTitle">Nuevo Producto/Servicio</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-row">
+						<div class="col-6 col-xl-3">
+							{{ formset.codigo |as_crispy_field}}
+						</div>
+						<div class="col-6 col-xl-9">
+							{{ formset.partida|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-6 col-xl-3">
+							{{ formset.tipo_compra|as_crispy_field }}
+						</div>
+						<div class="col-6 col-xl-9">
+							{{ formset.periodo|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-12 col-xl-12">
+							{{ formset.producto|as_crispy_field }}
+						</div>
+
+					</div>
+					<div class="form-row">
+						<div class="col-4 col-xl-4">
+							{{ formset.unidad_medida|as_crispy_field }}
+						</div>
+						<div class="col-4 col-xl-4">
+							{{ formset.cantidad_anual|as_crispy_field }}
+						</div>
+						<div class="col-4 col-xl-4">
+							{{ formset.costo_unitario|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-12 col-xl-8">
+							<div class="row">
+								<div class="col">
+									{{ formset.subtotal|as_crispy_field }}
+								</div>
+								<div class="col-auto v-align">
+									{{ formset.iva|as_crispy_field }}
+								</div>
+								<div class="col">
+									{{ formset.total|as_crispy_field }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row mt-3">
-	    <div class="col-12">
-	      	<button type="submit" class="btn btn-secondary green-bg">Siguiente</button>
-	      	<a class="btn btn-secondary" href="{% url 'pac_index' %}"> Cancelar </a>
-	    </div>
+		<div class="col-12">
+			<a class="btn btn-secondary" href="{% url 'pac_index' %}"> Cancelar </a>
+		</div>
 	</div>
 	{% endblock tablas %}
+	<div class="col-12 v-align d-none">
+		<div class="form-group">
+			{{form.motivo_anular|as_crispy_field}}
+		</div>
+	</div>
 	{{ form.media }}
 </form>
 
-{% endblock %}
+{%block forms%}
+{%endblock forms%}
+{% endblock content %}
+
+
+{%block extrafooter%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/dynamic-formset.js' %}"></script>
+{%endblock extrafooter%}

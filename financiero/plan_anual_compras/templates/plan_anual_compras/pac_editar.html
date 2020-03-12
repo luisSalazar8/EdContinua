@@ -1,5 +1,8 @@
 {% extends 'plan_anual_compras/pac_nuevo.html' %}
-
+{% load my_tags %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load staticfiles %}
 {% block regedit %}
 Edición Plan Anual de Compras
 {% endblock regedit %}
@@ -11,60 +14,204 @@ Edición Plan Anual de Compras
 		<h5 class="black-text text-uppercase mb-0">Producto/Servicio</h5>
 	</div>
 </div>
-<div class="row my-3">
-  	<div id="tabla" class="table-container col-12">
-    	<table class="table border-bottom table-responsive table-sm">
-      		<thead class="white-text darkgreen-bg">
-        		<tr>
-        			<th>Acciones</th>
-		          	<th>Código</th>
-		          	<th>Año</th>
-		          	<th>Centro de Costos</th>
-		          	<th>Partida Presupuestaria</th>
-		          	<th>Tipo de Compra</th>
-		          	<th>Detalle del Producto</th>
-		          	<th>Cantidad Anual</th>
-		          	<th>Unidad de Medida</th>
-		          	<th>Costo Unitario</th>
-		          	<th>Subtotal</th>
-		          	<th>Valor Total</th>
-        		</tr>
-      		</thead>
+<div class="row mt-4">
+	<div id="tabla" class="col-12">
+		<table id="dtBasicExample" class="table table-responsive-sm table-sm">
+			<thead class="white-text darkgreen-bg">
+				<tr>
+					<th>#</th>
+					<th>Código</th>
+					<th>Partida Presupuestaria</th>
+					<th>Tipo de Compra</th>
+					<th>Detalle del Producto</th>
+					<th>Cantidad Anual</th>
+					<th>Unidad de Medida</th>
+					<th>Costo Unitario</th>
+					<th>Subtotal</th>
+					<th>Valor Total</th>
+					<th>Periodo</th>
+					{% if form.estado.value == "Grabado" %}
+					<th>Acciones</th>
+					{%endif%}
+				</tr>
+			</thead>
 
-      		{% if partidas %}
-      		<tbody>
+			{% if partidas %}
+			<tbody>
 				{% for p in partidas %}
-        			<tr class="text-center">
-        				<td>
-				            <a class="btn btn-light btn-block btn-sm" href="{% url 'partida_editar' p.id pac_id %}"><i
-				                class="fas fa-edit darkgreen-text"></i></a>
-				            <a class="btn btn-light btn-block btn-sm" href="{% url 'partida_eliminar' p.id pac_id %}"><i
-				                class="fas fa-trash darkgreen-text"></i></a>
-			          	</td>
-			          	<td>{{ p.codigo }}</td>
-			          	<td>{{ p.año }}</td>
-			          	<td>{{ p.centro_costos }}</td>
-			          	<td>{{ p.partida }}</td>
-			          	<td>{{ p.tipo_compra }}</td>
-			          	<td>{{ p.producto }}</td>
-			          	<td>{{ p.cantidad_anual }}</td>
-			          	<td>{{ p.unidad_medida }}</td>
-			          	<td>{{ p.costo_unitario }}</td>
-			          	<td>{{ p.subtotal }}</td>
-			          	<td>{{ p.total }}</td>
-        		</tr>
-        		{% endfor%}
-      		</tbody>
-      		{% endif %}
-    	</table>
-    	<a class="btn btn-secondary green-bg" href="{% url 'partida_nuevo' pac_id %}">Agregar Producto/servicio</a>
-  	</div>
+				<tr class="text-center">
+					<td>{{forloop.counter}}</td>
+					<td>{{ p.codigo }}</td>
+					<td>{{ p.partida }}</td>
+					<td>{{ p.tipo_compra }}</td>
+					<td>{{ p.producto }}</td>
+					<td>{{ p.cantidad_anual }}</td>
+					<td>{{ p.unidad_medida }}</td>
+					<td>${{ p.costo_unitario }}</td>
+					<td>${{ p.subtotal }}</td>
+					<td>${{ p.total }}</td>
+					<td>{{ p.periodo }}</td>
+					{% if form.estado.value == "Grabado" %}
+					<td>
+						<a class="btn btn-secondary btn-block btn-sm" href='javascript:;'
+							onclick='update({{ p.id }},{{pac_id}});' data-toggle='modal'
+							data-target="#productoUpdateModalCenter"><i class="fas fa-edit"></i></a>
+
+						<a class="btn btn-danger btn-block btn-sm"  href='javascript:;'
+							onclick='eliminar({{ p.id }},{{pac_id}});' data-toggle='modal'
+							data-target="#productoDeleteModalCenter"><i class="fas fa-trash"></i></a>
+					</td>
+					{%endif%}
+				</tr>
+				{% endfor%}
+			</tbody>
+			{% endif %}
+		</table>
+		<a class="btn btn-secondary green-bg" data-toggle="modal" href="#" data-target="#productoModalCenter">Agregar
+			Producto/servicio</a>
+
+		<!-- <a class="btn btn-secondary green-bg" href="{% url 'partida_nuevo' pac_id %}">Agregar Producto/servicio</a> -->
+	</div>
 </div>
 <div class="row mt-5">
 	<div class="col-12">
 		<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
-	    <a class="btn btn-secondary" href="{% url 'pac_index' %}">Cancelar</a>
+		<a class="btn btn-secondary" href="{% url 'pac_index' %}">Cancelar</a>
+		{% if form.estado.value == "Grabado" %}
+		<button id="env-sol" class="btn btn-success darkgreen-bg float-right">Enviar solicitud</button>
+		{%endif%}
 	</div>
 </div>
 
+
 {% endblock tablas %}
+
+{%block forms%}
+<div class="modal fade" id="productoModalCenter" tabindex="-1" role="dialog" aria-labelledby="productoModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="productoModalCenterTitle">Nuevo Producto/Servicio</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" action="{% url 'partida_nuevo' pac_id %}">
+				{% csrf_token %}
+				<div class="modal-body">
+
+					<div class="form-row">
+						<div class="col-6 col-xl-3">
+							{{ formset.codigo|as_crispy_field }}
+						</div>
+						<div class="col-6 col-xl-9">
+							{{ formset.partida|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-6 col-xl-3">
+							{{ formset.tipo_compra|as_crispy_field }}
+						</div>
+						<div class="col-6 col-xl-9">
+							{{ formset.periodo|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-12 col-xl-12">
+							{{ formset.producto|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-4 col-xl-4">
+							{{ formset.unidad_medida|as_crispy_field }}
+						</div>
+						<div class="col-4 col-xl-4">
+							{{ formset.cantidad_anual|as_crispy_field }}
+						</div>
+						<div class="col-4 col-xl-4">
+							{{ formset.costo_unitario|as_crispy_field }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-12 col-xl-8">
+							<div class="row">
+								<div class="col">
+									{{ formset.subtotal|as_crispy_field }}
+								</div>
+								<div class="col-auto v-align">
+									{{ formset.iva|as_crispy_field }}
+								</div>
+								<div class="col">
+									{{ formset.total|as_crispy_field }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="productoUpdateModalCenter" tabindex="-1" role="dialog"
+	aria-labelledby="productoUpdateModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content" id="contenido">
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="productoDeleteModalCenter" tabindex="-1" role="dialog"
+	aria-labelledby="productoDeleteModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" id="contenidoDel">
+		</div>
+	</div>
+</div>
+{%endblock forms%}
+
+{%block extrafooter%}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="{% static 'js/dynamic-formset.js' %}"></script>
+<script>
+	$('#env-sol').click(function (e) {
+		e.preventDefault();
+		$("#id_estado").val("Solicitud Enviada");
+		$('#id_fecha_envio').val(GetCurrentDate());
+		$("#form").trigger("submit");
+	});
+	function update(id, fk) {
+		$.ajax({
+			url: "{% url 'partida_editar' %}",
+			data: {
+				'pk': id,
+				'fk': fk
+			},
+			success: function (data) {
+				$("#contenido").html(data);
+				// $('.select2').select2("destroy");
+				initSelect2();
+			}
+		});
+	};
+
+	function eliminar(id, fk) {
+		$.ajax({
+			url: "{% url 'partida_eliminar' %}",
+			data: {
+				'pk': id,
+				'fk': fk
+			},
+			success: function (data) {
+				$("#contenidoDel").html(data);
+			}
+		});
+	};
+</script>
+{%endblock extrafooter%}

@@ -84,13 +84,13 @@ class TarifarioPrecio(models.Model):
 		return self.descripcion
 
 
-class TarifarioAportacion(models.Model):
-	descripcion = models.CharField(max_length=100)
-	costo = models.DecimalField(max_digits=10,decimal_places=2,validators=[financiero.validaciones.validate_positivo])
-	version = models.IntegerField(null=True,blank=True)
-	porcentaje_facultades = models.BooleanField(default=False)
-	def __str__(self):
-		return self.descripcion
+# class TarifarioAportacion(models.Model):
+# 	descripcion = models.CharField(max_length=100)
+# 	costo = models.DecimalField(max_digits=10,decimal_places=2,validators=[financiero.validaciones.validate_positivo])
+# 	version = models.IntegerField(null=True,blank=True)
+# 	porcentaje_facultades = models.BooleanField(default=False)
+# 	def __str__(self):
+# 		return self.descripcion
 
 
 class TarifarioProducto(models.Model):
@@ -128,63 +128,51 @@ class TarifarioOtroSuministro(models.Model):
 ESTADO_CHOICES = [  
         ('Grabado','Grabado'),
         ('Solicitud Enviada','Solicitud Enviada'),
-	    ('Autorizada por Financiero', 'Autorizada por Financiero'),
+	    ('Autorizada sin evento', 'Autorizada sin evento'),
+	    ('Autorizada con evento', 'Autorizada con evento'),
         ('Anulada','Anulada'),
 	]
 
-GENERICO=[
-	(0,'No aplica'),
-	(100,'Aplica')
-]
+TIPO_CHOICES=[('Abierto','Abierto'),('Corporativo','Corporativo'),]
 
-CARPETA=[
-	(0,'No aplica'),
-	(1,'Aplica')
-]
-BLOCK=[
-	(0,'No aplica'),
-	(2,'Aplica')
-]
-LAPIZ=[
-	(0,'No aplica'),
-	(3,'Aplica')
-]
-PLUMA=[
-	(0,'No aplica'),
-	(4,'Aplica')
-]
-CERTIFICADOS=[
-	(0,'No aplica'),
-	(5,'Aplica')
-]
-PENDRIVE=[
-	(0,'No aplica'),
-	(7,'Aplica')
-]
-
-FACULTAD=[
-	(4,'No aplica'),
-	(5,'Aplica')
-]
-
-CAFETERIA=[(1,'No aplica'),(2,'Aplica')]
 
 class PresupuestoEvento(models.Model):
-
+	GENERICO=[(0,'No aplica'),(100,'Aplica')]
+	CARPETA=[(0,'No aplica'),(1,'Aplica')]
+	BLOCK=[(0,'No aplica'),(2,'Aplica')]
+	LAPIZ=[(0,'No aplica'),(3,'Aplica')]
+	PLUMA=[(0,'No aplica'),(4,'Aplica')]
+	CERTIFICADOS=[(0,'No aplica'),(5,'Aplica')]
+	PENDRIVE=[(0,'No aplica'),(7,'Aplica')]
+	CAFETERIA=[(1,'No aplica'),(2,'Aplica')]
+	ultimo=models.BooleanField(default=True)
+	last_id=models.PositiveIntegerField(default=1)
+	tipo=models.CharField(max_length=15, choices=TIPO_CHOICES)
 	#evento = models.ForeignKey(Eventos, on_delete=models.SET_NULL)
 	estado = models.CharField(max_length=100,default='Grabado',choices=ESTADO_CHOICES)
+	version=models.PositiveIntegerField(default=1)
+	active=models.BooleanField(default = True)
 	codigo = models.CharField(max_length=200,verbose_name="Código", blank=True, null=True)
-	fecha= models.CharField(max_length=30)
-	empresa = models.ForeignKey(Juridica,on_delete=models.SET_NULL, null=True,verbose_name="Empresa")
-	hora_inicio=models.TimeField(verbose_name="Hora de inicio")
-	hora_fin=models.TimeField(verbose_name="Hora de fin")
+	codigo_propuesta=models.CharField(max_length=200,verbose_name="Código Propuesta", blank=True, null=True)
+	
+	fecha= models.DateField()
+	fecha_envio= models.DateField(null=True, blank=True)
+	fecha_aprobada_sin= models.DateField(null=True, blank=True)
+	fecha_aprobada_con= models.DateField(null=True, blank=True)
+	
+	codigo_evento=models.CharField(max_length=13,null=True,blank=True,verbose_name="Código del Evento")
+	nombre_evento=models.CharField(max_length=200,null=True,blank=True,verbose_name="Nombre del Evento")
+
+	ruc_ci=models.CharField(max_length=13,null=True,blank=True)
+	razon_nombres=models.CharField(max_length=200,null=True,blank=True)
+	#empresa = models.ForeignKey(Juridica,on_delete=models.SET_NULL, null=True,blank=True,verbose_name="Empresa")
+	hora_inicio=models.TimeField(verbose_name="Hora de inicio", null=True, blank=True)
+	hora_fin=models.TimeField(verbose_name="Hora de fin", null=True, blank=True)
 	n_horas = models.IntegerField(verbose_name="No. Horas",validators=[financiero.validaciones.validate_positivo])
 	n_dias = models.IntegerField(verbose_name="No. Dias",validators=[financiero.validaciones.validate_positivo])
 	n_participantes = models.IntegerField(verbose_name="No. Participantes",validators=[financiero.validaciones.validate_positivo])
 	centro_costos = models.ForeignKey(Centro_Costos, on_delete=models.SET_NULL, null=True)
-	costo_hora_instructores = models.CharField(max_length=100)
-	costo_instructores=models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Costo instructor/es")
-	
+
 	ingreso_individual_sin_desc=models.DecimalField(max_digits=10, decimal_places=2)
 	ingreso_total_sin_desc=models.DecimalField(max_digits=10, decimal_places=2)
 	descuento_maximo=models.DecimalField(max_digits=10, decimal_places=2)
@@ -196,12 +184,27 @@ class PresupuestoEvento(models.Model):
 
 	porcentaje_honorario_instructor = models.DecimalField(max_digits=3,decimal_places=0)
 	honorario_total_evento=models.DecimalField(max_digits=10, decimal_places=2)
+	honorario_total_evento_impuesto=models.DecimalField(max_digits=10, decimal_places=2)
 	
-	impuesto_select=models.CharField(max_length=10)
-	impuesto_unitario=models.CharField(max_length=10)
-	impuesto_total=models.CharField(max_length=10)
+	#suma de la lista de costo/horas
+	costo_instructores=models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Costo instructor/es")
 
-	pasaje_instructor=models.ForeignKey(TarifarioServicioAereo, on_delete=models.SET_NULL,null=True)
+	honorario_instructores=models.CharField(max_length=100)
+	
+	horas_instructores=models.CharField(max_length=100)
+
+	costo_hora_instructores = models.CharField(max_length=100)
+
+	valor_total=models.CharField(max_length=100)
+
+	impuesto_select = models.CharField(max_length=100)
+
+	impuesto_total = models.CharField(max_length=100)
+
+	impuesto_porcentaje = models.CharField(max_length=100)
+
+	#pasaje_instructor=models.ForeignKey(TarifarioServicioAereo, on_delete=models.SET_NULL,null=True)
+	pasaje_instructor_cantidad=models.PositiveIntegerField()
 	pasaje_instructor_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	pasaje_instructor_total=models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -223,7 +226,7 @@ class PresupuestoEvento(models.Model):
 	almuerzo_instructor_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	almuerzo_instructor_total=models.DecimalField(max_digits=10, decimal_places=2)
 
-	pasaje_personal=models.ForeignKey(TarifarioServicioAereo, on_delete=models.SET_NULL, null=True, related_name="pasaje_personal")
+	pasaje_personal_cantidad=models.PositiveIntegerField()
 	pasaje_personal_dias=models.PositiveIntegerField(blank=True, null=True)
 	pasaje_personal_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	pasaje_personal_total=models.DecimalField(max_digits=10, decimal_places=2)
@@ -240,6 +243,10 @@ class PresupuestoEvento(models.Model):
 	instalaciones= models.ForeignKey(TarifarioInstalacion,on_delete=models.SET_NULL,null=True,blank=True)
 	instalaciones_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	instalaciones_total=models.DecimalField(max_digits=10, decimal_places=2)
+
+	provision_mejoras_porcentaje=models.DecimalField(max_digits=10,decimal_places=2)
+	provision_mejoras_total=models.DecimalField(max_digits=10,decimal_places=2)
+
 
 	publicidad_unitario=models.DecimalField(max_digits=10,decimal_places=2)
 	publicidad_total=models.DecimalField(max_digits=10,decimal_places=2)
@@ -320,8 +327,12 @@ class PresupuestoEvento(models.Model):
 	aportacion_ministerio_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	aportacion_ministerio_total=models.DecimalField(max_digits=10, decimal_places=2)
 
-	aportacion_facultad=models.IntegerField(choices=FACULTAD)
-	aportacion_facultad_porcentaje_unitario=models.DecimalField(max_digits=3, decimal_places=0)
+	aportacion_fundaespol_porcentaje=models.DecimalField(max_digits=10, decimal_places=2)
+	aportacion_fundaespol_unitario=models.DecimalField(max_digits=10, decimal_places=2)
+	aportacion_fundaespol_total=models.DecimalField(max_digits=10, decimal_places=2)
+
+	aportacion_facultad=models.IntegerField(choices=GENERICO)
+	aportacion_facultad_porcentaje_unitario=models.DecimalField(max_digits=3, decimal_places=0, null=True, blank=True)
 	aportacion_facultad_unitario=models.DecimalField(max_digits=10, decimal_places=2)
 	aportacion_facultad_total=models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -342,16 +353,17 @@ class PresupuestoEvento(models.Model):
 	egreso_variable_unit=models.DecimalField(max_digits=10,decimal_places=2)
 	utilidad=models.DecimalField(max_digits=10,decimal_places=2)
 	margen_contribucion=models.DecimalField(max_digits=10,decimal_places=2)
-	punto_equilibrio=models.DecimalField(max_digits=10,decimal_places=2)
+	punto_equilibrio=models.PositiveIntegerField()
 
 	n_cursos=models.PositiveIntegerField()
 	participacion_total=models.DecimalField(max_digits=10,decimal_places=2)
 
-	pago_docente_total=models.DecimalField(max_digits=10,decimal_places=2, null=True, blank=True)
+	pago_docente_total=models.DecimalField(max_digits=10,decimal_places=2)
+	pago_docente_unitario=models.DecimalField(max_digits=10,decimal_places=2)
 
 	motivo_anular = models.CharField(max_length=500, null=True,blank=True)
 
-	observaciones=models.CharField(max_length=500)
+	observaciones=models.CharField(max_length=500, null=True, blank=True)
 
 	def __str__(self):
 		return self.codigo+" - "+self.estado

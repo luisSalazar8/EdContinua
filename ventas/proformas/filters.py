@@ -16,8 +16,8 @@ class ProformaFilter(django_filters.FilterSet):
     asesor = django_filters.CharFilter(label="", lookup_expr='icontains', widget=forms.TextInput(attrs={'placeholder': 'Asesor'}))
 
 
-    fechaSolicitud=django_filters.DateFilter(field_name='fechaSolicitud', label='', widget=forms.DateInput(attrs={'placeholder':'Fecha de Solicitud',"class":"textbox-n","type":"text", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
-    fechaEnvio=django_filters.DateFilter(field_name='fechaEnvio',label='', widget=forms.DateInput(attrs={'placeholder':'Fecha de Envío',"class":"textbox-n","type":"text", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
+    fechaSolicitud=django_filters.DateFilter(field_name='fechaSolicitud', label='', widget=forms.DateInput(attrs={'placeholder':'Fecha de Solicitud',"class":"textbox-n", "onfocus":"(this.type='date')"}))
+    fechaEnvio=django_filters.DateFilter(field_name='fechaEnvio',label='', widget=forms.DateInput(attrs={'placeholder':'Fecha de Envío',"class":"textbox-n", "onfocus":"(this.type='date')"}))
     estado=django_filters.ChoiceFilter(label="", empty_label="Estado", choices=ESTADO_CHOICES)
     class Meta:
         model = Proforma

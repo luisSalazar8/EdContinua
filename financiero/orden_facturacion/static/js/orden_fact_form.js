@@ -145,9 +145,9 @@ function load_mail() {
   var url = $('#form-fact').attr("data-mail-url");
   var cedula ="";
   if($("#id_contacto").val()!=undefined){
-    cedula = $("#id_contacto").val();
+    cedula = $("#id_contacto").val().split("-")[0];
   }else{
-    cedula = $("#cont").val();
+    cedula = $("#cont").val().split("-")[0];
   }
     $.ajax({
       url: url,
@@ -243,3 +243,4 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
   $("#id_contacto").html("");
   load_data();
 });
+

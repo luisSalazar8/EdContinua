@@ -19,7 +19,7 @@ class Persona_Natural(models.Model):
 	cedula = models.CharField(max_length=10, primary_key=True, verbose_name="Cédula", validators=[ventas.validaciones.validate_cedula])
 	apellidos = models.CharField(max_length=75, validators=[ventas.validaciones.validate_letras])
 	nombres = models.CharField(max_length=75, validators=[ventas.validaciones.validate_letras])
-	fecha_nacimiento = models.CharField(max_length=30,verbose_name="Fecha de Nacimiento")
+	fecha_nacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
 	tel_domicilio = models.CharField(max_length=20,blank=True, null=True, verbose_name="Teléfono Domicilio", validators=[ventas.validaciones.validate_fono_convencional])
 	celular = models.CharField(max_length=20, validators=[ventas.validaciones.validate_celular])
 	celular2 = models.CharField(max_length=20, blank=True, null=True, verbose_name="Celular Alternativo", validators=[ventas.validaciones.validate_celular])

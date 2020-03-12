@@ -58,7 +58,8 @@
             <thead class="white-text darkgreen-bg">
                 <tr>
                     <th scope="col">Código propuesta</th>
-                    <th scope="col">Version</th>
+                    <th scope="col">Versión</th>
+                    <th scope="col">RUC</th>
                     <th scope="col">Empresa</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Fecha Solicitud</th>
@@ -74,7 +75,8 @@
                 <tr class="text-center">
                     <td scope="row">{{propuesta.cod_propuesta}}</td>
                     <td scope="row">{{propuesta.version}}</td>
-                    <td scope="row">{{propuesta.ruc_ci}} {{propuesta.razon_nombres}}</td>
+                    <td scope="row">{{propuesta.ruc_ci}}</td>
+                    <td scope="row">{{propuesta.razon_nombres}}</td>
                     <td scope="row">{{propuesta.get_estado_display}}</td>
                     <td scope="row">{{propuesta.fecha_solicitud}}</td>
                     <td scope="row">{{propuesta.fecha_solicitud}}</td>

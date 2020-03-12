@@ -19,7 +19,7 @@ class Persona_Natural(models.Model):
 	cedula = models.CharField(max_length=10, primary_key=True, verbose_name="Cédula", validators=[ventas.validaciones.validate_cedula])
 	apellidos = models.CharField(max_length=75, validators=[ventas.validaciones.validate_letras])
 	nombres = models.CharField(max_length=75, validators=[ventas.validaciones.validate_letras])
-	fecha_nacimiento = models.CharField(max_length=30,verbose_name="Fecha de Nacimiento")
+	fecha_nacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
 	tel_domicilio = models.CharField(max_length=20,blank=True, null=True, verbose_name="Teléfono Domicilio", validators=[ventas.validaciones.validate_fono_convencional])
 	celular = models.CharField(max_length=20, validators=[ventas.validaciones.validate_celular])
 	celular2 = models.CharField(max_length=20, blank=True, null=True, verbose_name="Celular Alternativo", validators=[ventas.validaciones.validate_celular])
@@ -27,26 +27,34 @@ class Persona_Natural(models.Model):
 	email = models.EmailField(max_length=100)
 	email2 = models.EmailField(blank=True, null=True, max_length=100,verbose_name="Email Alternativo")
 
-	ci_domicilio = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Domicilio", choices=CIUDADES_CHOICES)
+	ci_domicilio = models.CharField(max_length=25,verbose_name="Ciudad Domicilio", choices=CIUDADES_CHOICES)
 	dir_domicilio = models.CharField(max_length=75, verbose_name="Dirección Domicilio")
 	nivel_estudio = models.CharField(choices=ESTUDIOS_CHOICES, default="Primaria", max_length=50, verbose_name="Nivel de Estudio")
-	progreso = models.CharField(max_length=50, verbose_name="Progreso",blank=True, null=True, choices=PROGRESO_CHOICES)
-	tercer_progreso = models.CharField(max_length=50,blank=True, null=True, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
-
-	pais = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
-	pais_estudio = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
-
-	institucion = models.CharField(max_length=100, blank=True, null=True, verbose_name="Institución")
-
+	
+	
+	progreso_primaria = models.CharField(max_length=50, verbose_name="Progreso",blank=True, null=True, choices=PROGRESO_CHOICES)
+	institucion_primaria = models.CharField(max_length=100, blank=True, null=True, verbose_name="Institución")	
+	progreso_secundaria = models.CharField(max_length=50, verbose_name="Progreso",blank=True, null=True, choices=PROGRESO_CHOICES)
+	institucion_secundaria = models.CharField(max_length=100, blank=True, null=True, verbose_name="Institución")
 	ti_tercernivel = models.CharField(max_length=100, blank=True, null=True, verbose_name="Título Tercer Nivel")
 	un_tercernivel = models.CharField(max_length=75, blank=True, null=True, verbose_name="Universidad Tercer Nivel")
+	tercer_progreso = models.CharField(max_length=50,blank=True, null=True, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
+	pais_estudio_tercer = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
 	ti_postgrado = models.CharField(max_length=100, blank=True, null=True, verbose_name="Titulo Postgrado")
-	un_postgrado = models.CharField(max_length=75, blank=True, null=True, verbose_name="Universidad Postgrado")
+	un_postgrado = models.CharField(max_length=75, blank=True, null=True, verbose_name="Universidad Postgrado")	
+	postgrado_progreso = models.CharField(max_length=50,blank=True, null=True, verbose_name="Progreso", choices=PROGRESO_TERCER_CHOICES)
+	pais_estudio_postgrado = models.CharField(max_length=25,blank=True, null=True,verbose_name="País", choices=PAISES_CHOICES)
+
+
+	pais = models.CharField(max_length=25,verbose_name="País", choices=PAISES_CHOICES)
+
 	profesion = models.CharField(max_length=100, verbose_name="Profesión")
+	
+	
 	forma_trabajo = models.CharField(choices=TRABAJO_CHOICES, max_length=100, verbose_name="Tipo de Trabajo")
 	empresa = models.CharField(max_length=75, blank=True, null=True)
 	cargo = models.CharField(max_length=50, blank=True, null=True)
-	email_empresa = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Correo Electronico")
+	email_empresa = models.EmailField(blank=True, null=True, max_length=254,verbose_name="Correo Electrónico")
 	ci_trabajo = models.CharField(max_length=25,blank=True, null=True,verbose_name="Ciudad Trabajo", choices=CIUDADES_CHOICES)
 	area = models.CharField(max_length=50, blank=True, null=True, verbose_name="Área/Departamento")
 	dir_trabajo = models.CharField(max_length=75, blank=True, null=True, verbose_name="Dirección Trabajo")
@@ -57,4 +65,4 @@ class Persona_Natural(models.Model):
 	motivo_eliminacion = models.CharField(max_length=200, verbose_name="Motivo", blank=True, null=True)
 
 	def __str__(self):
-		return self.nombres+" "+self.apellidos+" - "+self.cedula
+		return self.cedula+" - "+self.nombres+" "+self.apellidos

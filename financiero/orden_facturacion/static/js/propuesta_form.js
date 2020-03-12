@@ -1,33 +1,34 @@
 var p_url = "";
 var sector="";
 
-$('.select3').select2({
-  minimumInputLength: 2,
-  language: {
+// $('.select3').select2({
+//   minimumInputLength: 2,
+//   language: {
 
-    noResults: function () {
-      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-      return "No hay resultados";
-    },
-    searching: function () {
+//     noResults: function () {
+//       $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+//       return "No hay resultados";
+//     },
+//     searching: function () {
 
-      return "Buscando...";
-    },
-    inputTooShort: function (e) {
-      var t = e.minimum - e.input.length;
-      return "Ingresa " + t + " caractéres para buscar";
-    }
-  }
-});
+//       return "Buscando...";
+//     },
+//     inputTooShort: function (e) {
+//       var t = e.minimum - e.input.length;
+//       return "Ingresa " + t + " caractéres para buscar";
+//     }
+//   }
+// });
 
-$("#field-ruc-ci [data-select2-id=3]").remove();
-$("#field-ruc-ci [data-select2-id=4]").remove();
-$("#field-razon [data-select2-id=4]").remove();
-$("#field-razon [data-select2-id=5]").remove();
+// $("#field-ruc-ci [data-select2-id=3]").remove();
+// $("#field-ruc-ci [data-select2-id=4]").remove();
+// $("#field-razon [data-select2-id=4]").remove();
+// $("#field-razon [data-select2-id=5]").remove();
 $("#id_ruc_ci").prop('disabled', true);
 $("#id_razon_nombres").prop('disabled', true);
 
-$(document).on('change', "#id_reporte", function (e) {
+
+$(document).on('change', "#select2-id_reporte-container", function (e) {
   console.log("se hizo");
   var reporte=$("#select2-id_reporte-container").attr("title");
   console.log(reporte);
@@ -67,11 +68,12 @@ function load_info() {
     console.log(1)
   }
   else{
-    var id= $('#id_ruc_ci').val();
+    var id= $('#rc').val();
     per="Jurídica";
     console.log(2)
   }
   console.log($('#rc').val());
+  console.log(flag)
   console.log(id);
   console.log(per);
   $.ajax({
@@ -231,6 +233,16 @@ $(document).on('click', "#hack", function (e) {
   $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+
+  const valmp=$("#id_monto_propuesta").val();
+  $("#id_monto_propuesta").attr("type","number");
+  $("#id_monto_propuesta").val(parseFloat(valmp.replace(/,/g,"")));
+  $("#id_monto_propuesta").val(parseFloat($("#id_monto_propuesta").val()).toFixed(2));
+
+  const value=$("#id_utilidad_esperada").val();
+  $("#id_utilidad_esperada").attr("type","number");
+  $("#id_utilidad_esperada").val(parseFloat(value.replace(/,/g,"")));
+  $("#id_utilidad_esperada").val(parseFloat($("#id_utilidad_esperada").val()).toFixed(2));
   
 });
 
@@ -238,6 +250,16 @@ $(document).on('click', "#hack2", function (e) {
   $("#id_version").prop('disabled', false);
   $("#id_ruc_ci").prop('disabled', false);
   $("#id_razon_nombres").prop('disabled', false);
+
+  const valmp=$("#id_monto_propuesta").val();
+  $("#id_monto_propuesta").attr("type","number");
+  $("#id_monto_propuesta").val(parseFloat(valmp.replace(/,/g,"")));
+  $("#id_monto_propuesta").val(parseFloat($("#id_monto_propuesta").val()).toFixed(2));
+
+  const value=$("#id_utilidad_esperada").val();
+  $("#id_utilidad_esperada").attr("type","number");
+  $("#id_utilidad_esperada").val(parseFloat(value.replace(/,/g,"")));
+  $("#id_utilidad_esperada").val(parseFloat($("#id_utilidad_esperada").val()).toFixed(2));
   
 });
 
@@ -259,15 +281,15 @@ $(document).on('click', "#hack2", function (e) {
 //   $(this).attr("class",ca+" col-md-10")
 // });
 
-$("#div_id_ruc_ci span[class='select2-selection select2-selection--single']").each(function(){
-  const ca=$(this).attr("class")
-  $(this).attr("class",ca+" col-md-9")
-});
+// $("#div_id_ruc_ci span[class='select2-selection select2-selection--single']").each(function(){
+//   const ca=$(this).attr("class")
+//   $(this).attr("class",ca+" col-12 col-md-9")
+// });
 
-$("#div_id_razon_nombres span[class='select2-selection select2-selection--single']").each(function(){
-  const ca=$(this).attr("class")
-  $(this).attr("class",ca+" col-md-9")
-});
+// $("#div_id_razon_nombres span[class='select2-selection select2-selection--single']").each(function(){
+//   const ca=$(this).attr("class")
+//   $(this).attr("class",ca+" col-md-9")
+// });
 
 //para eliminar el modal cuando sea editar
 if($("[name=cod_propuesta]").val()!=""){

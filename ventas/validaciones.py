@@ -111,8 +111,21 @@ def validate_celular(value):
             params={'value': value},
 		)		
 
-def validate_fecha(value):
-	"""ToDo"""
+def validate_fecha(fecha_inicio,fecha_fin):
+	i = str(fecha_inicio)
+	f = str(fecha_fin)
+	valores_inicio = i.split("-")
+	valores_fin = f.split("-")
+	print(valores_fin)
+	print(valores_inicio)
+	if (valores_fin[0] < valores_inicio[0]):
+		raise forms.ValidationError("La fecha de fin es menor que la fecha de inicio")
+	elif (valores_fin[0] ==  valores_inicio[0] and valores_fin[1] < valores_inicio[1]):
+		raise forms.ValidationError("La fecha de fin es menor que la fecha de inicio")
+	elif (valores_fin[0] ==  valores_inicio[0] and valores_fin[1] == valores_inicio[1] and valores_fin[2] < valores_inicio[2]):
+		raise forms.ValidationError("La fecha de fin es menor que la fecha de inicio")
+	else:
+		return fecha_fin
 
 def validate_positive(value):
 	print(value)
@@ -140,7 +153,9 @@ def validate_horarios(hora_inicio,hora_fin):
 		return hora_fin
 
 def validate_porcentaje(valor):
-	if(valor<0):
+	if(valor==None):
+		return valor
+	elif(valor<0):
 		raise forms.ValidationError("El porcentaje no puede ser negativo")
 	elif(valor>100):
 		raise forms.ValidationError("El porcentaje no puede ser mayor a 100")

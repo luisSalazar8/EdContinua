@@ -46,7 +46,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                     </div>
                   </div>
           
-                  <div class="col-6 col-md-2 mb-0" id="field-razon">
+                  <div class="col-6 col-md-4 mb-0" id="field-razon">
                     <div id="div_id_razon_nombres" class="form-group">
                       <label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField" id="ra_nom">Razón
                         Social</label><span class="asteriskField">*</span>
@@ -68,7 +68,7 @@ data-info-url="{% url 'ajax_info_id' %}">
                 
                   
                 <div class="col-6 col-md-2 mb-0">{{ form.sector|as_crispy_field }}</div>
-                <div class="col-12 col-md-3 mb-0"></div>
+                <div class="col-12 col-md-1 mb-0"></div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_solicitud|as_crispy_field }}</div>
                 <div class="col-6 col-md-2 mb-0">{{ form.fecha_envio|as_crispy_field }}</div>
                 
@@ -170,6 +170,9 @@ data-info-url="{% url 'ajax_info_id' %}">
     
 </form>
 
+<script src="{% static 'js/propuesta_reporte.js' %}"></script> 
+{% endblock content %}
+
 {% block extrafooter %}
 <script type="text/javascript">
     window.onload = function () {
@@ -181,6 +184,5 @@ data-info-url="{% url 'ajax_info_id' %}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/propuesta_money.js' %}"></script>
 <script src="{% static 'js/propuesta_form.js' %}"></script>
-
+<script src="{% static 'js/propuesta_files.js' %}"></script> 
 {% endblock extrafooter %}
-{% endblock content %}

@@ -29,14 +29,8 @@ class OrdenIngresoCreate(CreateView):
         except:
             pass
         return initial
-    def form_valid(self, form):
-        try:
-            pre=str(int(self.model.objects.latest('pk').pk+1))
-            sec='0'*(4-len(pre))+pre
-        except self.model.DoesNotExist:
-            sec='0001'
-        form.instance.cod_orden_ing=sec+'-'+str(date.today().year)
-        return super().form_valid(form)
+   
+
     def post(self, request,*args,**kwargs):
         self.object =self.get_object
         form=self.form_class(request.POST)
@@ -46,6 +40,7 @@ class OrdenIngresoCreate(CreateView):
             if(obj.valor_pendiente==0):
                 obj.estado='CNCL'
             obj.save()
+            self.form_class.genera_codigo(form)
             form.save()
            
             return HttpResponseRedirect(self.get_success_url())

@@ -1,7 +1,8 @@
 {% extends "base_ventas.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-
+{% load humanize %}
+{% load l10n %}
 {% block content %}
 <div class="row mb-2 d-flex white-bg">
     <div class="col-9 v-align">
@@ -61,15 +62,17 @@
         <table id="dtBasicExample" class="table table-responsive-md border-bottom">
             <thead class="white-text darkgreen-bg">
                 <tr>
-                    <th>Código</th>
-                    
-                    <th>Empresa</th>
-                    <th>Asesor</th>
-                    <th>Fecha Solicitud</th>
-                    <th>Fecha Envío</th>
-                    <th>Monto</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Versión</th>
+                    <th scope="col">Ruc</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Asesor</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Fecha Envío</th>
+                    <th scope="col">Fecha Respuesta</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             {% if filter.qs %}
@@ -79,16 +82,18 @@
 
                 {% for proforma in filter.qs %}
                 <tr class="text-center">
-                    <td>{{proforma.codigo}}</td>
+                    <td scope="row">{{proforma.codigo}}</td>
+                    <td scope="row">{{proforma.version}}</td>
+                    <td scope="row"> {{proforma.ruc_ci}}</td>
+                    <td scope="row">{{proforma.razon_nombres}}</td>
                     
-                    <td>{{proforma.ruc_ci}}-{{proforma.razon_nombres}}</td>
-                    
-                    <td>{{proforma.asesor}}</td>
-                    <td>{{proforma.fechaSolicitud}}</td>
-                    <td>{{proforma.fechaEnvio}}</td>
-                    <td>{{proforma.montoProforma}}</td>
-                    <td>{{proforma.estado}}</td>
-                    <td>
+                    <td scope="row">{{proforma.asesor}}</td>
+                    <td scope="row">{{proforma.fechaSolicitud}}</td>
+                    <td scope="row">{{proforma.fechaEnvio}}</td>
+                    <td scope="row">{{proforma.fechaRespuesta}}</td>
+                    <td scope="row">{{proforma.montoProforma|floatformat:2|intcomma}}</td>
+                    <td scope="row">{{proforma.estado}}</td>
+                    <td scope="row">
                         <a class="btn btn-secondary btn-sm" href="{% url 'proforma_editar' proforma.id%}"><i
                                 class="fas fa-edit"></i></a>
                        <!-- <a class="btn btn-danger btn-sm" href="{% url 'proforma_eliminar' proforma.id%}"><i
@@ -107,4 +112,5 @@
 {% endblock content %}
 {% block extrafooter%}
 <script src="{% static 'js/table.js' %}"></script>
+<script src="{% static 'js/proforma_fecha.js' %}"></script>
 {% endblock extrafooter %}

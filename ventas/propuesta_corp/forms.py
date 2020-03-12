@@ -78,7 +78,7 @@ class PropuestaCorporativoForm(forms.ModelForm):
         
         widgets={
             'reporte':autocomplete.ModelSelect2(url='reporte-autocomplete'),
-            'razon_nombres': forms.Select(attrs={'class': ' select3'}),
+            'razon_nombres': forms.Select(attrs={'class': 'form-control select3'}),
             'ruc_ci': forms.Select(attrs={'class': 'form-control select3'}),
             'observacion':forms.Textarea(attrs={'rows':2}),
             'fecha_solicitud':forms.DateInput(attrs={'type':'date'}),
@@ -175,7 +175,7 @@ class PropuestaCorporativoUpdateForm(forms.ModelForm):
         
         widgets={
             'reporte':autocomplete.ModelSelect2(url='reporte-autocomplete'),
-            'razon_nombres': forms.Select(attrs={'class': ' select3'}),
+            'razon_nombres': forms.Select(attrs={'class': 'form-control select3'}),
             'ruc_ci': forms.Select(attrs={'class': 'form-control select3'}),
             'observacion':forms.Textarea(attrs={'rows':2}),
             'fecha_solicitud':forms.DateInput(attrs={'type':'date'}),

@@ -72,8 +72,11 @@
       </div>
       <div class="form-row">
         <div class="col-12 col-md-3">
-          <label for="contacto" class="col-form-label">Contacto</label>
-          <input type="text" id="contacto" class="form-control" disabled>
+          {{ form.contacto|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-2">
+          <label for="Email" class="col-form-label">Email</label>
+          <input type="text" id="email" class="form-control" disabled>
         </div>
         <div class="col-12 col-md-6">
           <label for="direccion" class="col-form-label">Dirección</label>
@@ -90,9 +93,7 @@
         {% endblock n_par %}
       </div>
       <div class="form-row">
-        <div class="col-12 col-md-6">{{ form.concepto|as_crispy_field }}</div>
         <div class="col-12 col-md-6">{{ form.observaciones|as_crispy_field }}</div>
-        <div class="col-12 col-md-6">{{ form.comentarios|as_crispy_field }}</div>
       </div>
 
     </div>

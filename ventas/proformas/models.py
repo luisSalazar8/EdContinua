@@ -18,21 +18,22 @@ class Proforma(models.Model):
 	razon_nombres=models.CharField(max_length=200)
 
 	sector=models.ForeignKey(Sector, on_delete=models.CASCADE,null=True,blank=True)
-	fechaSolicitud=models.CharField(max_length=30)
-	fechaEnvio=models.CharField(max_length=30)
+	fechaSolicitud=models.DateField()
+	fechaEnvio=models.DateField()
 	numeroParticipantes=models.PositiveIntegerField()
 	horas=models.PositiveIntegerField()
 	cantidadCursos=models.PositiveIntegerField()
 	estado=models.CharField(max_length=30,verbose_name="")
 	porcentExito=models.FloatField()
-	porcentDesc=models.FloatField()
+	porcentDesc=models.FloatField(blank=True, null=True)
 	montoProforma=models.FloatField()
-	montoDesc=models.FloatField()
-	observacion=models.CharField(max_length=500)
-	fechaRespuesta=models.CharField(max_length=30,blank=True, null=True)
+	montoDesc=models.FloatField(blank=True, null=True)
+	observacion=models.CharField(max_length=500,blank=True, null=True)
+	fechaRespuesta=models.DateField(blank=True, null=True)
 	montoAceptado=models.FloatField(blank=True,null=True)
 	montoEjecutado=models.FloatField(blank=True,null=True)
 	montoPorEjecutarse=models.FloatField(blank=True,null=True)
+	active=models.BooleanField(default = True)
 
 
 class ProformaFile(models.Model):

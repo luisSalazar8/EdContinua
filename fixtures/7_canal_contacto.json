@@ -59,7 +59,7 @@
 		"model":"interesados.CanalContacto",
 		"pk": 9,
 		"fields": {
-			"nombre": "Pagina Web"
+			"nombre": "Página Web"
 		}
 	}
 ]

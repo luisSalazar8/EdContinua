@@ -40,3 +40,65 @@ if($("#ac").val()=="True"){
 }else{
   $("#id_version").prop('disabled', true);
 }
+
+
+
+
+if($("#id_monto_propuesta").val()!=""){
+  transform($("#id_monto_propuesta"));
+}
+
+$("#id_monto_propuesta").focusout(function() {
+  transform($(this));
+})
+$("#id_monto_propuesta").focus(function() {
+const val=$(this).val();
+$(this).attr("type","number");
+$(this).val(parseFloat(val.replace(/,/g,"")));
+$(this).val(parseFloat($(this).val()).toFixed(2));
+})
+
+if($("#id_utilidad_esperada").val()!=""){
+  transform($("#id_utilidad_esperada"));
+}
+
+$("#id_utilidad_esperada").focusout(function() {
+  transform($(this));
+})
+$("#id_utilidad_esperada").focus(function() {
+const val=$(this).val();
+$(this).attr("type","number");
+$(this).val(parseFloat(val.replace(/,/g,"")));
+$(this).val(parseFloat($(this).val()).toFixed(2));
+})
+
+function transform(input){
+  if($(input).val()!=""){
+    $(input).val(parseFloat($(input).val()).toFixed(2));
+  $(input).attr("type","text");
+  console.log($(input).val())
+  var numeroe=$(input).val().split(".")
+  const long= numeroe[0].length;
+  console.log(long)
+  var newnum="";
+  cont=0;
+  for(var i=(long-1);i>=0;i--){
+        if(cont%3==0 && cont!=0){
+          newnum=numeroe[0].charAt(i)+","+newnum;
+          console.log("coma");
+          console.log(i);
+          console.log(numeroe[0].charAt(i));
+          cont+=1;
+        }else{
+          console.log("no coma");
+          console.log(i);
+          console.log(numeroe[0].charAt(i));
+          newnum=numeroe[0].charAt(i)+newnum;
+          cont+=1;
+        }
+  }
+  console.log(newnum+"."+numeroe[1]);
+  $(input).val(newnum+"."+numeroe[1]);
+  }
+  
+}

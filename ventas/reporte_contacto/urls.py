@@ -1,12 +1,14 @@
 from django.urls import path
 from django_filters.views import FilterView
 from . import views
+from . import models
 from .filters import ReporteContactoFilter
 
 
 urlpatterns = [
     path('nuevo', views.ReporteContactoCreate.as_view(), name='reporte_nuevo'),
-    path('', FilterView.as_view(filterset_class=ReporteContactoFilter,template_name="reporte_list.html"), name='reporte_contacto'),
+    
+    path('', FilterView.as_view(filterset_class=ReporteContactoFilter,template_name="reporte_list.html",queryset= models.ReporteContacto.objects.all().order_by("cod_reporte")), name='reporte_contacto'),
     path('editar/<pk>/', views.ReporteContactoUpdate.as_view(), name='reporte_editar'),    
     path('eliminar/<pk>/', views.ReporteContactoDelete.as_view(), name='reporte_eliminar'),
     path('ajax/load-modal-orden-fact',views.reportcontacto_conf_elim,name='reportecontacto_confirmar_eliminar'),

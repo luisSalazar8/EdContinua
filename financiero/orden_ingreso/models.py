@@ -20,19 +20,28 @@ class OrdenIngreso(models.Model):
 		("Discover","Discover"),
 	]
 	TIPO_CHOICES=[('Natural','Natural'),('Jurídica','Jurídica'),]
+	ESTADO_CHOICES = [  
+        ('ACTV','Activa'),
+        ('ANLD','Anulada'),
+	]
 
 	
 	cod_orden_ing=models.CharField(max_length=15, blank=True)
 	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
 	fecha=models.CharField(max_length=12)
 	n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
+
+	fecha_tramite=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de Trámite")
+	fecha_anulacion=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de anulación")
+	estado = models.CharField(max_length=5,default='ACTV',choices=ESTADO_CHOICES, blank=True, null=True)
+
 	n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 	ruc_ci=models.CharField(max_length=13)
 	orden_facturacion = models.ForeignKey(OrdenFacturacion, on_delete=models.SET_NULL, blank=False, null=True)
 	razon_nombres=models.CharField(max_length=50)
 	descripcion=models.CharField(max_length=150)
 	formaPago=models.CharField(max_length=30, choices=FORMAS_PAGO,default='cheque')
-	valor=models.DecimalField(max_digits=15,decimal_places=3,validators=[val_fin.validate_positivo])
+	valor=models.DecimalField(max_digits=15,decimal_places=2,validators=[val_fin.validate_positivo])
 	anexo=models.FileField(upload_to='uploads/', blank=True)
 	fechaPago=models.CharField(max_length=12)
 	numeroDocumento=models.PositiveIntegerField()

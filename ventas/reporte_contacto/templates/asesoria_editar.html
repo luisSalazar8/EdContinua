@@ -51,41 +51,14 @@
       </div>
     </div>
   </div>
-  <!-- <div class="row mt-3">
+  <div class="row mt-3">
     <div class="col-12">
       <button type="submit" class="btn btn-secondary green-bg">Guardar</button>
       <a class="btn btn-secondary" href="{% url 'reporte_editar' reporte_id%}"> Cancelar </a>
     </div>
-  </div> -->
+  </div>
 
-  <div class="row mt-3">
-    <div class="col-12">
-      <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#asesoria_confirmar"
-      href='#'>Siguiente</a>
-      <a class="btn btn-secondary" href="{% url 'reporte_editar' reporte_id%}"> Cancelar </a>
-     </div>
-   </div>
-
-  <div class="modal fade" id="asesoria_confirmar" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
-				aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="reporteTitle">Confirmación</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body" id="modal-confirmacion">
-								¿Está seguro/a que desea continuar? Verifíque los datos ingresados antes de proceder.
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-								<button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
-							</div>
-						</div>
-					</div>
-				</div>
+  
 </form>
 
 {% endblock content %}

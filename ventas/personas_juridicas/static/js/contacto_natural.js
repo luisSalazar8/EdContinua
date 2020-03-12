@@ -130,13 +130,25 @@ function Agregar_Contacto(){
         partes = valor_nombres.split(" ")
         $("#id_ruc_ci").html("");
         $("#id_razon_nombres").html("");
-
+      
         var nuevo_contacto = $("<tr></tr>")
         nuevo_contacto.addClass("text-center")
+        
+        
 
         var td_cedula = $("<td></td>").html(valor_cedula)
-        var td_nombres = $("<td></td>").html(partes[0] +" " + partes[1])
-        var td_apellidos = $("<td></td>").html(partes[2] +" " + partes[3])
+        if (partes.length <= 3){
+          var td_nombres = $("<td></td>").html(partes[0])
+          console.log("Le puse solo un nombre");
+          var td_apellidos = $("<td></td>").html(partes[1])
+        }
+        else{
+          var td_nombres = $("<td></td>").html(partes[0] +" " + partes[1])
+          var td_apellidos = $("<td></td>").html(partes[2] +" " + partes[3])
+        }
+        console.log(partes[0]);
+
+        
         var td_cargo = $("<td></td>").html(cargo)
         var td_telefono= $("<td></td>").html(telefono)
         var td_celular = $("<td></td>").html(celular)

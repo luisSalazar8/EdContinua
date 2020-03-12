@@ -37,7 +37,7 @@ class PropuestaCorporativo(models.Model):
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
     sector=models.ForeignKey(Sector, on_delete=models.SET_NULL, null=True, blank=True)
-    fecha_solicitud=models.CharField(max_length=12)
+    fecha_solicitud=models.DateField()
     numero_participantes=models.PositiveIntegerField()
     total_horas=models.PositiveIntegerField()
     cantidad_cursos=models.PositiveIntegerField()
@@ -49,9 +49,9 @@ class PropuestaCorporativo(models.Model):
     servicios_incluidos=MultiSelectField(choices=SERVICIOS_CHOICES,
                                             blank=True,
                                             null=True)
-    fecha_inicio_estimada=models.CharField(max_length=12)
-    fecha_envio=models.CharField(max_length=12)
-    fecha_respuesta=models.CharField(max_length=12)
+    fecha_inicio_estimada=models.DateField()
+    fecha_envio=models.DateField()
+    fecha_respuesta=models.DateField()
     observacion=models.CharField(max_length=250,blank=True,null=True)
 
     area_capacitacion= models.CharField(max_length=50, blank=True)

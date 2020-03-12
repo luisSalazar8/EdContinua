@@ -112,7 +112,7 @@ class CapacitacionCreate(CreateView):
 class CapacitacionUpdate(UpdateView):
     model=Capacitacion
     form_class=CapacitacionForm
-    template_name='capacitacion_form.html'
+    template_name='capacitacion_editar.html'
     success_url='/ventas/reporte_contacto/editar'
 
     def get_context_data(self, **kwargs):
@@ -194,7 +194,7 @@ class AsesoriaCreate(CreateView):
 class AsesoriaUpdate(UpdateView):
     model=Asesoria
     form_class=AsesoriaForm
-    template_name='asesoria_form.html'
+    template_name='asesoria_editar.html'
     success_url='/ventas/reporte_contacto/editar'
     
     def get_context_data(self, **kwargs):

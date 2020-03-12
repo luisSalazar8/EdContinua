@@ -17,7 +17,7 @@ class ReporteContactoFilter(django_filters.FilterSet):
     tipo_empresa = django_filters.ModelChoiceFilter(label="", empty_label="Tipo de Empresa",queryset=TipoEmpresa.objects.all())
     canal_de_contacto = django_filters.ModelChoiceFilter(label="", empty_label="Canal de contacto",queryset=CanalContacto.objects.all())
     #canal_de_contacto = django_filters.CharFilter(label='', widget=forms.TextInput(attrs={'placeholder': 'Canal de contacto'}))
-    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha',"class":"textbox-n","type":"text", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
+    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha',"class":"textbox-n", "onfocus":"(this.type='date')"}))
 
 
 

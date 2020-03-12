@@ -147,7 +147,7 @@ function load_mail() {
   if($("#id_contacto").val()!=undefined){
     cedula = $("#id_contacto").val().split("-")[0];
   }else{
-    cedula = $("#cont").val().val().split("-")[0];
+    cedula = $("#cont").val().split("-")[0];
   }
     $.ajax({
       url: url,

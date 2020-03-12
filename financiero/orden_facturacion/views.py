@@ -68,10 +68,13 @@ class OrdenFacturacionUpdate(UpdateView):
             print(ori.contacto)
         if 'form' in context:
             if orden.estado=='ACTV':
+                print("actv")
                 context['form']=self.second_form_class(instance=orden)
             elif orden.estado=='PNDP':
+                print("pndp")
                 context['form']=self.third_form_class(instance=orden)
             else:
+                print("else")
                 context['form']=self.form_class(instance=orden)
         context['orden_id']=pk
         #selected_participantes=[]

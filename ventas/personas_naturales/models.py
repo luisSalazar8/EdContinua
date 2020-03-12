@@ -65,4 +65,4 @@ class Persona_Natural(models.Model):
 	motivo_eliminacion = models.CharField(max_length=200, verbose_name="Motivo", blank=True, null=True)
 
 	def __str__(self):
-		return self.nombres+" "+self.apellidos+" - "+self.cedula
+		return self.cedula+" - "+self.nombres+" "+self.apellidos

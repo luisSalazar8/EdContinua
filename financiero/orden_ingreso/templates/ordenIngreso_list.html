@@ -1,5 +1,6 @@
 {% extends "base_financiero.html" %}
 {% load static %}
+{% load my_tags %}
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% load l10n %}
@@ -81,9 +82,9 @@
                     <td scope="row"></td>
                     <td scope="row">{{ordenIngreso.orden_facturacion.valor_total}}</td>
                     <td scope="row">{{ordenIngreso.formaPago}}</td>
-                    <td scope="row">{{ordenIngreso.valor|floatformat:2|intcomma}}</td>
+                    <td scope="row">{{ordenIngreso.valor|currency}}</td>
                     <td scope="row">{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_pendiente}}</td>
+                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_pendiente|currency}}</td>
                     <td scope="row">{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
                     
                     <td scope="row">

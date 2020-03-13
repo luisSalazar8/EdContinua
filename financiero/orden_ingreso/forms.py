@@ -81,14 +81,17 @@ class OrdenIngresoUpdateForm(forms.ModelForm):
 			'numeroDocumento':'N° Documento',
 			'banco':"Banco",
 			'emisoraTarjeta':"Emisora TC",
+			'pk':'id',
 		}
 
 		widgets={
 			'cod_orden_ing':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'fecha':forms.DateInput(attrs={'readonly':True,'class':'form-control-plaintext','type':'date','value':date.today}),
 			'fechaPago':forms.DateInput(attrs={'readonly':True,'class':'form-control-plaintext','type':'date','value':date.today}),
-			'n_tramite':forms.TextInput(attrs={'class':'form-control'}),
 			
+			'n_tramite':forms.TextInput(attrs={'class':'form-control'}),
+			'fecha_tramite':forms.DateInput(attrs={'class':'form-control','type':'date'}),
+
 			'fechaPago':forms.DateInput(attrs={'class':'form-control','type':'date'}),
 
 			'tipo_cliente':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),

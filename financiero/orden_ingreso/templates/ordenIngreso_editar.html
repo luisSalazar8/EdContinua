@@ -1,5 +1,6 @@
 {% extends 'base_financiero.html' %}
 {% load static %}
+
 {% load crispy_forms_tags %}
 {% load index %}
 
@@ -26,6 +27,9 @@
 				</div>
 				<div class="col-3">
 					{{form.n_tramite|as_crispy_field}}
+				</div>
+				<div class="col-3">
+					{{form.fecha_tramite|as_crispy_field}}
 				</div>
 			</div>
 			<div class="form-row">
@@ -145,9 +149,17 @@
 		<div class="col-12 mb-3">
 			<button type="submit" class="btn btn-secondary green-bg ml-3 ">Guardar</button>
 			<a class="btn btn-secondary" href="{% url 'ordenIngreso' %}"> Cancelar </a>
+			<a onclick='eliminar({{ pk }});' class="btn btn-danger btn-sm"
+            data-toggle='modal' data-target="#ordenEliminarCenter" href='#'>Anular</a> 
 		</div>
 	</div>
-
+	<div class="modal fade" id="ordenEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 </form>
 
 {% endblock %}
@@ -155,4 +167,19 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="{% static 'js/ordenIngreso_money.js' %}"></script>
+<script>
+    function eliminar(id) {
+        $.ajax({
+            url: "{% url 'orden_ingreso_confirmar_eliminar' %}",
+            data: {
+                'pk': id
+            },
+            success: function (data) {
+                $(".modal-content").html(data)
+            }
+        });
+    };
+
+
+</script>
 {% endblock extrafooter %}

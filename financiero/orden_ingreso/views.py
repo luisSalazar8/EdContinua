@@ -4,7 +4,7 @@ from django.views.generic import CreateView,UpdateView,DeleteView
 from .models import OrdenIngreso
 from .forms import OrdenIngresoForm, OrdenIngresoUpdateForm, OrdenIngresoPrintForm
 from django.urls import reverse_lazy
-from datetime import date
+from datetime import date,datetime
 from financiero.orden_facturacion.models import OrdenFacturacion
 # Create your views here.
 
@@ -55,6 +55,11 @@ class OrdenIngresoUpdate(UpdateView):
     form_class=OrdenIngresoUpdateForm
     template_name='ordenIngreso_editar.html'
     success_url=reverse_lazy('ordenIngreso')
+    def get_context_data(self, **kwargs):
+        context = super(OrdenIngresoUpdate, self).get_context_data(**kwargs)
+        
+        context['pk'] = self.kwargs['pk']
+        return context
 
 class OrdenIngresoPrint(UpdateView):
     model=OrdenIngreso
@@ -66,6 +71,13 @@ class OrdenIngresoDelete(DeleteView):
     model=OrdenIngreso
     template_name='ordenIngreso_eliminar.html'
     success_url=reverse_lazy('ordenIngreso')
+    def post(self, request, *args, **kwargs):
+        self.object=self.get_object()
+        self.object.estado="ANLD" 
+        # self.object.fecha_anulacion = datetime.now()
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
 
 def orden_ing_conf_elim(request):
     orden_id=request.GET.get('pk')

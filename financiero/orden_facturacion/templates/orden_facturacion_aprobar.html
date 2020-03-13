@@ -5,8 +5,8 @@
 {% block editar%}
 {% load my_tags %}
 <div class="row mb-2">
-    <div class="col-12">
-        <h2 class="text-uppercase pr-2">Autorizar  </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
+    <div class="col-12 row">
+        <h2 class="darkgreen-text text-uppercase pr-2 pl-3">Autorizar  </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
     </div>
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}
@@ -106,11 +106,35 @@
             </div>
         </div>
 
-        <div id="summary" class="form-row">
+        <!-- <div id="summary" class="form-row">
             <div class="col-6 col-md-3">{{ form.subtotal|as_crispy_field }}</div>
             <div class="col-6 col-md-3">{{ form.descuento_fact|as_crispy_field }}</div>
             <div class="col-6 col-md-3">{{ form.descuento_total|as_crispy_field }}</div>
             <div class="col-6 col-md-3">{{ form.valor_total|as_crispy_field }}</div>
+        </div> -->
+        <div id="summary" class="form-row">
+            <div class="col-6 col-md-3">
+                {{ form.subtotal|as_crispy_field }}
+                <label for="subtotal">Subtotal</label>
+                <input type="text" id="subtotal" class="form-control-plaintext form-control" readonly>
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.descuento_fact|as_crispy_field }}
+                <label for="descuento_fact">% Descuentos</label>
+                <input type="text" id="descuento_fact" class="form-control-plaintext form-control" readonly>
+
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.descuento_total|as_crispy_field }}
+                <label for="descuento_total">$ Descuento total</label>
+                <input type="text" id="descuento_total" class="form-control-plaintext form-control" readonly>
+
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form.valor_total|as_crispy_field }}
+                <label for="valor_total">$ Valor total</label>
+                <input type="text" id="valor_total" class="form-control-plaintext form-control" readonly>
+            </div>
         </div>
         <div class="row my-3">
             <div class="mt-2 campo p-2 pl-3 col-12">

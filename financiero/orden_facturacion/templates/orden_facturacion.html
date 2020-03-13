@@ -86,10 +86,15 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Identificación</th>
                     <th scope="col">Cliente</th>
+                    <th scope="col">Nombre Evento</th>
+                    <th scope="col">Código Evento</th>
                     <th scope="col">Cant. Particip.</th>
-                    <th scope="col">Costo</th>
+                    <th scope="col">Valor Evento</th>
+                    <th scope="col">Descuento</th>
+                    <th scope="col">Valor Total</th>
                     <th scope="col">Estado</th>
                     <th scope="col">N° trámite</th>
+                    <th scope="col">Asesor</th>
                     <th scope="col">N° factura</th>
                     <th scope="col">Acciones</th>
                     
@@ -105,10 +110,42 @@
                     <td scope="row">{{orden.fecha}}</td>
                     <td scope="row">{{orden.ruc_ci}}</td>
                     <td scope="row">{{orden.razon_nombres}}</td>
-                    <td scope="row">{{orden.n_participantes}}</td>
-                    <td scope="row">{{orden.valor_total|currency}}</td>
+
+                    <td scope="row">
+                    {% for p in orden.ordenfacturacionparticipante_set.all%}
+                        <span class={{p.cod_evento}}>{{p.nombre_evento}}</span>
+                        <br>
+					{% endfor %}
+                    </td>
+                    <td class="cod_evento" scope="row">
+                        {% for p in orden.ordenfacturacionparticipante_set.all%}
+                        <span>{{p.cod_evento}}</span>
+                        <br>
+					{% endfor %}
+                    </td>
+                    <td scope="row">    
+                    </td>
+                    <td scope="row">
+                        {% for p in orden.ordenfacturacionparticipante_set.all%}
+                        <span>{{p.valor_evento}}</span>
+                        <br>
+					{% endfor %}
+                    </td>
+                    <td scope="row">
+                        {% for p in orden.ordenfacturacionparticipante_set.all%}
+                        <span class="{{p.cod_evento}}">{{p.descuento}}</span>
+                        <br>
+					    {% endfor %}
+                    </td>
+                    <td scope="row">
+                        {% for p in orden.ordenfacturacionparticipante_set.all%}
+                        <span class="{{p.cod_evento}}">{{p.valor}}</span>
+                        <br>
+                        {% endfor %}
+                    </td>
                     <td scope="row">{{orden.get_estado_display}}</td>
                     <td scope="row">{{orden.n_tramite}}</td>
+                    <td scope="row">Falta agregar asesor</td>
                     <td scope="row">{{orden.n_factura}}</td>
                     <td scope="row">
 
@@ -161,6 +198,7 @@
 {% block extrafooter %}
 
 <script src="{% static 'js/table.js' %}"></script>
+<script src="{% static 'js/orden_tabla.js' %}"></script>
 <script>
 
     function eliminar(id) {
@@ -178,10 +216,10 @@
 <script>
     $(document).on("change",'#id_motivo_anular', function(){
         if ($(this).val().length>20){
-            $('#anular').attr('disabled',false);
+            $('#anular').prop('disabled',false);
         }
         else{
-            $('#anular').attr('disabled',true);
+            $('#anular').prop('disabled',true);
         }
     })
 </script>

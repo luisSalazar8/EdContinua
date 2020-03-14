@@ -104,6 +104,14 @@
 				</div>
 				<div class="col-3">
 					{{form.valor|as_crispy_field}}
+					 {% comment %} {% if form.valor.errors %}
+							{% for error in form.valor.errors %}
+							<p class="invalid-feedback d-block">
+								<strong>{{ error }}</strong>
+							</p>
+							{% endfor %}
+					{% endif %} {% endcomment %} 
+
 				</div>
 			</div>
 			<div class="row">

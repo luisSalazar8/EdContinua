@@ -37,7 +37,19 @@ class OrdenIngresoForm(forms.ModelForm):
 			'banco':forms.TextInput(attrs={'class':'form-control'}),
 			'emisoraTarjeta':forms.Select(attrs={'class':'select form-control'}),
 			'formaPago':forms.Select(attrs={'id':'seleccion',"onchange":"run()"})
-			}
+		}
+	
+
+	def genera_codigo(self):
+		sec = "vacio"
+		try:
+			pre=str(int(self.Meta.model.objects.latest('pk').pk+1))
+			sec='0'*(4-len(pre))+pre
+		except ObjectDoesNotExist :
+			sec='0001'
+		print(sec)
+		self.instance.cod_orden_ing= sec +'-'+str(date.today().year)
+
 	def clean(self):
 		
 		cd = self.cleaned_data
@@ -50,15 +62,15 @@ class OrdenIngresoForm(forms.ModelForm):
 		except :
 			self.add_error('orden_facturacion',"El campo de orden de facturación no puede ser vacío")	
 
-	def genera_codigo(self):
-		sec = "vacio"
-		try:
-			pre=str(int(self.Meta.model.objects.latest('pk').pk+1))
-			sec='0'*(4-len(pre))+pre
-		except ObjectDoesNotExist :
-			sec='0001'
-		print(sec)
-		self.instance.cod_orden_ing= sec +'-'+str(date.today().year)
+		
+
+		
+		# if(cd['valor']==None):
+		# 	raise forms.ValidationError('Valor excede máxima cantidad soportada')
+		# elif (cd['orden_facturacion'].valor_pendiente - cd.get('valor') <0):
+		# 	raise forms.ValidationError('El valor a pagar excede el valor pendiente de la orden de facturación, pendiente: $'+str(cd.get('orden_facturacion').valor_pendiente))
+		# else:
+		# 	return cd['valor']
 
 class OrdenIngresoUpdateForm(forms.ModelForm):
 
@@ -91,15 +103,18 @@ class OrdenIngresoUpdateForm(forms.ModelForm):
 			
 			'n_tramite':forms.TextInput(attrs={'class':'form-control'}),
 			'fecha_tramite':forms.DateInput(attrs={'class':'form-control','type':'date'}),
+			'estado':forms.HiddenInput(),
+			
+
+
 
 			'fechaPago':forms.DateInput(attrs={'class':'form-control','type':'date'}),
-
+			 
 			'tipo_cliente':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'razon_nombres':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
             'ruc_ci':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
 			'descripcion':forms.Textarea(attrs={'readonly':True,'rows':2,'class':'form-control-plaintext'}),
 			'valor':forms.NumberInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
-			'anexo':forms.ClearableFileInput(attrs={'class':'form-control'}),
 			'numeroDocumento':forms.NumberInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
 			'banco':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'emisoraTarjeta':forms.TextInput(attrs={'readonly':True,'class':'select form-control-plaintext textinput textInput form-control'}),

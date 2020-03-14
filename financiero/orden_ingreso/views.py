@@ -35,6 +35,7 @@ class OrdenIngresoCreate(CreateView):
         self.object =self.get_object
         form=self.form_class(request.POST)
         if form.is_valid():
+            
             obj=(form.instance.orden_facturacion)
             obj.valor_pendiente-=form.instance.valor;
             if(obj.valor_pendiente==0):
@@ -46,9 +47,11 @@ class OrdenIngresoCreate(CreateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
-    def get_success_url(self, **kwargs):         
-            return reverse_lazy('ordenIngreso')
-
+            
+    # def get_success_url(self, **kwargs):         
+    #         return reverse_lazy('ordenIngreso')
+   
+        
 
 class OrdenIngresoUpdate(UpdateView):
     model=OrdenIngreso
@@ -57,8 +60,9 @@ class OrdenIngresoUpdate(UpdateView):
     success_url=reverse_lazy('ordenIngreso')
     def get_context_data(self, **kwargs):
         context = super(OrdenIngresoUpdate, self).get_context_data(**kwargs)
-        
         context['pk'] = self.kwargs['pk']
+        
+
         return context
 
 class OrdenIngresoPrint(UpdateView):
@@ -74,7 +78,7 @@ class OrdenIngresoDelete(DeleteView):
     def post(self, request, *args, **kwargs):
         self.object=self.get_object()
         self.object.estado="ANLD" 
-        # self.object.fecha_anulacion = datetime.now()
+        self.object.fecha_anulacion = datetime.now().strftime('%Y-%m-%d')
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
     

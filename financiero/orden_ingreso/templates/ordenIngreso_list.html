@@ -48,7 +48,7 @@
           
             <thead class="darkgreen-bg white-text">
                 <tr>
-                     <th scope="col">Código orden</th>
+                     <th scope="col" >Código orden</th>
                     
                      <th scope="col">Fecha</th>
                      <th scope="col">RUC CI</th>
@@ -61,6 +61,7 @@
                      <th scope="col">Código facturación</th>
                      <th scope="col">Saldo Orden Facturación</th>
                      <th scope="col">Estado Orden Facturación</th>
+                     <th scope="col">Estado Orden Ingreso</th>
                      <th scope="col"> Acciones</th>
                     
                 </tr>
@@ -72,30 +73,31 @@
 
                 {% for ordenIngreso in filter.qs %}
                 <tr class="text-center">
-                    <td scope="row">{{ordenIngreso.cod_orden_ing}}</td>
                     
-                  
-                    <td scope="row" class="">{{ordenIngreso.fecha}}</td>
-                    <td scope="row">{{ordenIngreso.ruc_ci}}</td>
-                    <td scope="row">{{ordenIngreso.razon_nombres}}</td>
-                    <td scope="row"></td>
-                    <td scope="row"></td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_total}}</td>
-                    <td scope="row">{{ordenIngreso.formaPago}}</td>
-                    <td scope="row">{{ordenIngreso.valor|currency}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_pendiente|currency}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.cod_orden_ing}}</td>
+                    <td scope="row" >{{ordenIngreso.fecha}}</td>
+                    <td scope="row" >{{ordenIngreso.ruc_ci}}</td>
+                    <td scope="row" >{{ordenIngreso.razon_nombres}}</td>
+                    <td scope="row" ></td>
+                    <td scope="row" ></td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.valor_total|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.formaPago}}</td>
+                    <td scope="row" >{{ordenIngreso.valor|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.valor_pendiente|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.get_estado_display}}</td>
                     
                     <td scope="row">
                         <a class="btn btn-secondary btn-sm " href="{% url 'ordenIngreso_editar' ordenIngreso.id %}">
-                            <i class="fas fa-edit"></i></a>
-                        <a onclick='eliminar({{ ordenIngreso.id }});' class="btn btn-danger btn-sm"
+                            <i class="fas fa-edit"></i></a> 
+                        {% comment %} <a onclick='eliminar({{ ordenIngreso.id }});' class="btn btn-danger btn-sm"
                             data-toggle='modal' data-target="#ordenEliminarCenter" href='#'><i
-                                class="fas fa-trash"></i></a> 
+                                class="fas fa-trash"></i></a>  {% endcomment %}
                         <a class="btn btn-secondary btn-sm"
                         href="{% url 'ordenIngreso_print' ordenIngreso.id %}"><i class="fas fa-print"></i></a> 
                     </td>
+                    
                 </tr>
                 {% endfor %}
 

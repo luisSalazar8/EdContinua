@@ -123,6 +123,7 @@ $(document).on('change','.select2-participantes',function(){
   });
 });
 
+
 //$('document').ready(function(){});
 
 $(document).ready(function(){

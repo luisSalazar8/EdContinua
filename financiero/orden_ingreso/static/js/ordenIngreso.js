@@ -1,3 +1,4 @@
+var p_url = "";
 
 window.onload = function() {
 
@@ -30,11 +31,27 @@ function run(){
 
   }
 }	
+$('.papu').select2({
+  language: {
+    noResults: function () {
+      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+      return "No hay resultados";
+    },
+  },
+  
+  minimunResultsForSearch: -1 
 
+})
 $('.select2').select2({
-  language: "es",
   minimunInputLength: 2,
-  minimunResultsForSearch: -1
+  language: {
+    noResults: function () {
+      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+      return "No hay resultados";
+    },
+  },
+  
+  minimunResultsForSearch: -1 
 });
 
 function load_data(url, persona) {
@@ -52,8 +69,8 @@ function load_data(url, persona) {
         $("#id_razon_nombres").html(data.razon_nombre)
         $('#id_ruc_ci').val($('#rc').val());
         $('#id_razon_nombres').val($('#rn').val());
-        $('#select2-id_ruc_ci-container').text($('#rc').val());
-        $('#select2-id_razon_nombres-container').text($('#rn').val());
+        // $('#select2-id_ruc_ci-container').text($('#rc').val());
+        // $('#select2-id_razon_nombres-container').text($('#rn').val());
       }
     });
     $('#field-razon').show();

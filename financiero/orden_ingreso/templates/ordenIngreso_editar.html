@@ -16,7 +16,7 @@
 	{% csrf_token %}
 	<div class="row mb-2">
 		<div class="col-12">
-			<h2 class="text-uppercase darkgreen-text">edición Orden de Ingreso</h2>
+			<h2 class="text-uppercase darkgreen-text">edición Orden de Ingreso  <strong class="black-text font-weight-bold"> N° {{form.cod_orden_ing.value}}</strong></h2>
 		</div>
 	</div>
 	<div class="row darkwhite-bg py-2">
@@ -152,7 +152,7 @@
 		<div class="col-12 mb-3">
 			<button type="submit" class="btn btn-secondary green-bg ml-3 ">Guardar</button>
 			<a class="btn btn-secondary" href="{% url 'ordenIngreso' %}"> Cancelar </a>
-			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn btn-danger btn-sm"
+			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn btn-danger "
             data-toggle='modal' data-target="#ordenEliminarCenter" href='#'>Anular</a> 
 		</div>
 	</div>

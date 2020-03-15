@@ -7,6 +7,7 @@ from .filters import OrdenIngresoFilter
 
 urlpatterns = [
     path('nuevo', views.OrdenIngresoCreate.as_view(), name='ordenIngreso_nuevo'),
+    path('ajax_orden_facturacion/', views.load_orden_facturacion, name='ajax_orden_facturacion'),
     path('nuevo/<pk>/', views.OrdenIngresoCreate.as_view(), name='ordenIngreso_nuevo'),
     path('', FilterView.as_view(filterset_class=OrdenIngresoFilter,template_name="ordenIngreso_list.html"), name='ordenIngreso'),
     path('editar/<pk>/', views.OrdenIngresoUpdate.as_view(), name='ordenIngreso_editar'),

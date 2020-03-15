@@ -32,8 +32,9 @@ class OrdenIngreso(models.Model):
 	n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 
 	fecha_tramite=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de Trámite")
-	fecha_anulacion=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de anulación")
+	fecha_anulacion=models.CharField(max_length=15, default="No aplica", blank=True, null=True, verbose_name="Fecha de anulación")
 	estado = models.CharField(max_length=5,default='ACTV',choices=ESTADO_CHOICES, blank=True, null=True)
+	saldo_facturacion=models.DecimalField(max_digits=10,decimal_places=2,validators=[val_fin.validate_positivo], blank=True, null=True,default=0)
 
 	n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 	ruc_ci=models.CharField(max_length=13)

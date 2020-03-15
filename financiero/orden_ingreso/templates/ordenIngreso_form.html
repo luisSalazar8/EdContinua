@@ -26,6 +26,12 @@
 					<small class="form-text text-muted">Seleccione el tipo de cliente</small>
 				</div>
 				<div class="col-6 col-md-3 mb-0">
+					<select class="papu" id="prueba">
+					<option value="Natural">Natural</option>
+					<option value="" selected="">---------</option>
+					</select>
+				</div>
+				<div class="col-6 col-md-3 mb-0">
 					{{ form.fecha|as_crispy_field }}
 				</div>
 				<div class="col-6 col-md-3 mb-0 " id="field-ruc-ci">
@@ -81,13 +87,13 @@
 			</div>
 
 			<div class="form-row">
-				<div class="col-3">
+				<div class="col-4">
 					{{form.formaPago|as_crispy_field}}
 				</div>
-				<div class="col-3">
+				<div class="col-4">
 					{{form.fechaPago|as_crispy_field}}
 				</div>
-				<div class="col-3">
+				<div class="col-2">
 					{{form.numeroDocumento|as_crispy_field}}
 				</div>
 			</div>

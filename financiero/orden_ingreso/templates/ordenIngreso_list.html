@@ -62,6 +62,7 @@
                      <th scope="col">Saldo Orden Facturación</th>
                      <th scope="col">Estado Orden Facturación</th>
                      <th scope="col">Estado Orden Ingreso</th>
+                     <th scope="col">Fecha de anulación</th>
                      <th scope="col"> Acciones</th>
                     
                 </tr>
@@ -84,9 +85,10 @@
                     <td scope="row" >{{ordenIngreso.formaPago}}</td>
                     <td scope="row" >{{ordenIngreso.valor|currency}}</td>
                     <td scope="row" >{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
-                    <td scope="row" >{{ordenIngreso.orden_facturacion.valor_pendiente|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.saldo_facturacion|currency}}</td>
                     <td scope="row" >{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
                     <td scope="row" >{{ordenIngreso.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.fecha_anulacion}}</td>
                     
                     <td scope="row">
                         <a class="btn btn-secondary btn-sm " href="{% url 'ordenIngreso_editar' ordenIngreso.id %}">

@@ -141,8 +141,9 @@ function load_data() {
 };
 
 function load_mail() {
-  console.log("entro")
+  console.log("entro al mail")
   var url = $('#form-fact').attr("data-mail-url");
+  console.log(url)
   var cedula ="";
   if($("#id_contacto").val()!=undefined){
     cedula = $("#id_contacto").val().split("-")[0];
@@ -155,6 +156,7 @@ function load_mail() {
         'cedula': cedula
       },
       success: function (data) {
+        
         $("#email").val(data.email);
       }
     });

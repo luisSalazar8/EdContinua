@@ -16,6 +16,7 @@ def index(request):
     else:
         ordFac_lista = OrdenFacturacion.objects.all().exclude(estado='ANLD')
     ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=ordFac_lista)
+    #ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=OrdenFacturacion.objects.all())
     return render(request, "orden_facturacion.html", {"filter":ordFac_filter})
 
 class OrdenFacturacionCreate(CreateView):

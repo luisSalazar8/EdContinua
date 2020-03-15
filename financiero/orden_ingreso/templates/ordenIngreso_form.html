@@ -11,7 +11,10 @@
 
 {% block content %}
 <form method="POST" novalidate id="form-fact" enctype="multipart/form-data" ,
-	data-persona-url="{% url 'ajax_load_personas' %}" , data-orden-url="{% url 'ajax_orden_ci' %}">
+	data-persona-url="{% url 'ajax_load_personas' %}" , data-orden-url="{% url 'ajax_orden_ci' %}"
+	orden-facturacion-url="{% url 'ajax_orden_facturacion' %}", ordenfact-url="{% url 'orden_facturacion_nuevo' %}"
+	
+	>
 	{% csrf_token %}
 	<div class="row mb-2">
 		<div class="col-12">
@@ -25,9 +28,9 @@
 					{{form.tipo_cliente|as_crispy_field}}
 					<small class="form-text text-muted">Seleccione el tipo de cliente</small>
 				</div>
-				<div class="col-6 col-md-3 mb-0">
+				<div id="div_prueba" class="col-6 col-md-3 mb-0">
 					<select class="papu" id="prueba">
-					<option value="Natural">Natural</option>
+					{% comment %} <option value="Natural">Natural</option> {% endcomment %}
 					<option value="" selected="">---------</option>
 					</select>
 				</div>

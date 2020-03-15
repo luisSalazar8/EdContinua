@@ -95,5 +95,6 @@ def orden_ing_conf_elim(request):
 def load_orden_facturacion(request):
     ordenes = OrdenFacturacion.objects.all()
     opciones=render_to_string("dropdown_orden_facturacion.html",{"orden_facturacion":ordenes})
+    print(opciones)
     return JsonResponse({'ordenes_facturacion': opciones})
         

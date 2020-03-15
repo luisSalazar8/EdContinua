@@ -38,7 +38,9 @@ class OrdenIngreso(models.Model):
 
 	n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 	ruc_ci=models.CharField(max_length=13)
+
 	orden_facturacion = models.ForeignKey(OrdenFacturacion, on_delete=models.SET_NULL, blank=False, null=True)
+	
 	razon_nombres=models.CharField(max_length=50)
 	descripcion=models.CharField(max_length=150)
 	formaPago=models.CharField(max_length=30, choices=FORMAS_PAGO,default='cheque')

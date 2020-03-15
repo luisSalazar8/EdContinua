@@ -31,17 +31,24 @@ function run(){
 
   }
 }	
-$('.papu').select2({
-  language: {
-    noResults: function () {
-      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-      return "No hay resultados";
-    },
-  },
-  
-  minimunResultsForSearch: -1 
 
-})
+
+function load_ordenes_facturas(){
+  // var opcion1 = $('<option value="primero">primero</option>')
+  // $('#prueba').html(opcion1);
+  var link = $('#form-fact').attr("orden-facturacion-url");
+  console.log(link);
+  $.ajax({
+    url: link,
+    success: function (data) {
+      console.log(data.ordenes_facturacion);
+      $("#prueba").html(data.ordenes_facturacion);
+    }
+  });
+}
+
+
+
 $('.select2').select2({
   minimunInputLength: 2,
   language: {
@@ -102,15 +109,38 @@ function autocomplete(from, to) {
   }
 }
 
-
+$(document).ready(function () {
+  cambiar_url();
+  $('.papu').select2({
+    language: {
+      noResults: function () {
+        $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+        return "No hay resultados";
+      },
+    },
+    })
+  load_ordenes_facturas();
+  
+});
 
 load_data();
+
 
 $("#id_tipo_cliente").on("change", load_data);
 
 $('#id_razon_nombres').on('change', function () {
   autocomplete($(this), 'id_ruc_ci');
 })
+
+
+function cambiar_url(){
+  $('#div_prueba').click(function (e) { 
+    p_url = $('#form-fact').attr("ordenfact-url");
+    console.log(p_url);
+    
+  });
+}
+
 
 $('#id_ruc_ci').on('change', function () {
   autocomplete($(this), 'id_razon_nombres');

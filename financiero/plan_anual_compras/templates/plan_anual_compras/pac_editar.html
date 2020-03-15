@@ -16,7 +16,7 @@ Edición Plan Anual de Compras
 </div>
 <div class="row mt-4">
 	<div id="tabla" class="col-12">
-		<table id="dtBasicExample" class="table table-responsive-sm table-sm">
+		<table id="dtBasicExample" class="table table-responsive-sm border-bottom">
 			<thead class="white-text darkgreen-bg">
 				<tr>
 					<th>#</th>
@@ -41,13 +41,13 @@ Edición Plan Anual de Compras
 				{% for p in partidas %}
 				<tr class="text-center">
 					<td>{{forloop.counter}}</td>
-					<td>{{ p.codigo }}</td>
-					<td>{{ p.partida }}</td>
+					<td>{{ p.egreso.codigo }}</td>
+					<td>{{ p.egreso.nombre }}</td>
 					<td>{{ p.tipo_compra }}</td>
-					<td>{{ p.producto }}</td>
+					<td>{{ p.producto.descripcion }}</td>
 					<td>{{ p.cantidad_anual }}</td>
-					<td>{{ p.unidad_medida }}</td>
-					<td>${{ p.costo_unitario }}</td>
+					<td>{{ p.producto.unidad_medida }}</td>
+					<td>${{ p.producto.costo_unitario }}</td>
 					<td>${{ p.subtotal }}</td>
 					<td>${{ p.total }}</td>
 					<td>{{ p.periodo }}</td>
@@ -55,7 +55,7 @@ Edición Plan Anual de Compras
 					<td>
 						<a class="btn btn-secondary btn-block btn-sm" href='javascript:;'
 							onclick='update({{ p.id }},{{pac_id}});' data-toggle='modal'
-							data-target="#productoUpdateModalCenter"><i class="fas fa-edit"></i></a>
+							data-target="#productoModalCenter"><i class="fas fa-edit"></i></a>
 
 						<a class="btn btn-danger btn-block btn-sm"  href='javascript:;'
 							onclick='eliminar({{ p.id }},{{pac_id}});' data-toggle='modal'
@@ -67,13 +67,23 @@ Edición Plan Anual de Compras
 			</tbody>
 			{% endif %}
 		</table>
-		<a class="btn btn-secondary green-bg" data-toggle="modal" href="#" data-target="#productoModalCenter">Agregar
-			Producto/servicio</a>
-
-		<!-- <a class="btn btn-secondary green-bg" href="{% url 'partida_nuevo' pac_id %}">Agregar Producto/servicio</a> -->
+		{% if form.estado.value == "Grabado" %}
+		<a class="btn btn-secondary green-bg" data-toggle="modal"  href='javascript:;'
+			onclick='update(-1,{{pac_id}});' data-target="#productoModalCenter">Agregar
+			Producto/Servicio</a>
+		{%endif%}
+		<div class="row">
+			<div class="col-3"></div>
+			<div class="col-6">
+				{% if form.estado.value == "Anulada" %}
+				{{form.motivo_anular|as_crispy_field}}
+				{% endif %}
+			</div>
+			<div class="col-3"></div>
+		</div>
 	</div>
 </div>
-<div class="row mt-5">
+<div class="row mt-3">
 	<div class="col-12">
 		<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
 		<a class="btn btn-secondary" href="{% url 'pac_index' %}">Cancelar</a>
@@ -87,78 +97,8 @@ Edición Plan Anual de Compras
 {% endblock tablas %}
 
 {%block forms%}
-<div class="modal fade" id="productoModalCenter" tabindex="-1" role="dialog" aria-labelledby="productoModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="productoModalCenterTitle">Nuevo Producto/Servicio</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form method="post" action="{% url 'partida_nuevo' pac_id %}">
-				{% csrf_token %}
-				<div class="modal-body">
 
-					<div class="form-row">
-						<div class="col-6 col-xl-3">
-							{{ formset.codigo|as_crispy_field }}
-						</div>
-						<div class="col-6 col-xl-9">
-							{{ formset.partida|as_crispy_field }}
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="col-6 col-xl-3">
-							{{ formset.tipo_compra|as_crispy_field }}
-						</div>
-						<div class="col-6 col-xl-9">
-							{{ formset.periodo|as_crispy_field }}
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="col-12 col-xl-12">
-							{{ formset.producto|as_crispy_field }}
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="col-4 col-xl-4">
-							{{ formset.unidad_medida|as_crispy_field }}
-						</div>
-						<div class="col-4 col-xl-4">
-							{{ formset.cantidad_anual|as_crispy_field }}
-						</div>
-						<div class="col-4 col-xl-4">
-							{{ formset.costo_unitario|as_crispy_field }}
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="col-12 col-xl-8">
-							<div class="row">
-								<div class="col">
-									{{ formset.subtotal|as_crispy_field }}
-								</div>
-								<div class="col-auto v-align">
-									{{ formset.iva|as_crispy_field }}
-								</div>
-								<div class="col">
-									{{ formset.total|as_crispy_field }}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-secondary green-bg">Guardar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="productoUpdateModalCenter" tabindex="-1" role="dialog"
+<div class="modal fade" id="productoModalCenter" tabindex="-1" role="dialog"
 	aria-labelledby="productoUpdateModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content" id="contenido">
@@ -186,6 +126,11 @@ Edición Plan Anual de Compras
 		$('#id_fecha_envio').val(GetCurrentDate());
 		$("#form").trigger("submit");
 	});
+
+	if("{{form.estado.value}}"=="Anulada"){
+		$("#id_motivo_anular").attr("readonly",true);
+	}
+
 	function update(id, fk) {
 		$.ajax({
 			url: "{% url 'partida_editar' %}",
@@ -197,6 +142,8 @@ Edición Plan Anual de Compras
 				$("#contenido").html(data);
 				// $('.select2').select2("destroy");
 				initSelect2();
+    			load_data_descripcion();
+    			load_data_producto();
 			}
 		});
 	};

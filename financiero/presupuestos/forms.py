@@ -203,6 +203,7 @@ class PresupuestoEventoForm(forms.ModelForm):
             'ruc_ci': 'RUC',
         }
         widgets = {
+            'evento':forms.HiddenInput(),
             'impuesto_porcentaje':forms.HiddenInput(),
             'ultimo':forms.HiddenInput(),
             'last_id':forms.HiddenInput(),
@@ -860,6 +861,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
         widgets = {
             'impuesto_porcentaje':forms.HiddenInput(),
             'ultimo':forms.HiddenInput(),
+            'evento':forms.HiddenInput(),
             'last_id':forms.HiddenInput(),
             'active':forms.HiddenInput(),
             'version':forms.NumberInput(attrs={'readonly':True,"class":'px-2 text-center'}),

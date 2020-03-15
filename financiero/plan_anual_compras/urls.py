@@ -14,4 +14,6 @@ urlpatterns = [
 	path('ajax/partida-eliminar',views.partida_eliminar,name='partida_eliminar'),
 	path('partida/eliminar/<pk>/<fk>/',views.PartidaDelete.as_view(),name='partida_eliminar'),
 	path('ajax/load-partida',views.load_partida,name='ajax_load_partida'),
+	path('ajax/load-producto',views.load_producto,name='ajax_load_producto'),
+    path('aprobar/<pk>',views.PACAprobar.as_view(), name="pac_aprobar"),
 ]

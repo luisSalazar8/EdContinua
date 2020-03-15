@@ -2,6 +2,7 @@ from django.db import models
 import financiero.validaciones
 from decimal import Decimal
 
+
 # MODELO PARA FUNDESPOL
 class Fundespol(models.Model):
 	ESTADO_CHOICES = [("GRBD","Grabado"),("ENVD","Enviado"),("AUTR","Autorizado"),("ANLD","Anulado"),]

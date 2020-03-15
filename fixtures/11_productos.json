@@ -1,0 +1,46 @@
+[
+    {
+        "model": "plan_anual_compras.Producto",
+        "pk": 1,
+        "fields": {
+            "tipo":"Bien",
+            "descripcion":"Bien 1",
+            "unidad_medida":"Caja",
+            "costo_unitario":1000.00,
+            "iva":20.00
+        }
+    },
+    {
+        "model": "plan_anual_compras.Producto",
+        "pk": 2,
+        "fields": {
+            "tipo":"Servicios",
+            "descripcion":"Servicio 1",
+            "unidad_medida":"Otros",
+            "costo_unitario":100.00,
+            "iva":17.00
+        }
+    },
+    {
+        "model": "plan_anual_compras.Producto",
+        "pk": 3,
+        "fields": {
+            "tipo":"Bien",
+            "descripcion":"Bien 2",
+            "unidad_medida":"Litro",
+            "costo_unitario":120.00,
+            "iva":0.00
+        }
+    },
+    {
+        "model": "plan_anual_compras.Producto",
+        "pk": 4,
+        "fields": {
+            "tipo":"Servicios",
+            "descripcion":" Servicio 2",
+            "unidad_medida":"Otros",
+            "costo_unitario":300.00,
+            "iva":50.00
+        }
+    }
+]

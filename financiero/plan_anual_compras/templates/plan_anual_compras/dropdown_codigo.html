@@ -1,4 +1,4 @@
 <option value="">---------</option>
 {% for partida in partidas %}
-<option value="{{ partida.codigo }}" name="{{ partida.partida }}">{{ partida.codigo }}</option>
+<option value="{{ partida.pk }}" name="{{ partida.nombre }}">{{ partida.codigo }}</option>
 {% endfor %}

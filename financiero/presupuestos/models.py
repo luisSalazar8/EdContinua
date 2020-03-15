@@ -135,6 +135,13 @@ ESTADO_CHOICES = [
 
 TIPO_CHOICES=[('Abierto','Abierto'),('Corporativo','Corporativo'),]
 
+class Evento(models.Model):
+	codigo_evento=models.IntegerField(primary_key=True)
+	nombre=models.CharField(max_length=100)
+	modalidad=models.CharField(max_length=100)
+	fecha_inicio=models.DateField(null=True,blank=True)
+	fecha_fin=models.DateField(null=True,blank=True)
+
 
 class PresupuestoEvento(models.Model):
 	GENERICO=[(0,'No aplica'),(100,'Aplica')]
@@ -145,10 +152,11 @@ class PresupuestoEvento(models.Model):
 	CERTIFICADOS=[(0,'No aplica'),(5,'Aplica')]
 	PENDRIVE=[(0,'No aplica'),(7,'Aplica')]
 	CAFETERIA=[(1,'No aplica'),(2,'Aplica')]
+
+	evento=models.ForeignKey(Evento,on_delete=models.SET_NULL,null=True,blank=True)
 	ultimo=models.BooleanField(default=True)
 	last_id=models.PositiveIntegerField(default=1)
 	tipo=models.CharField(max_length=15, choices=TIPO_CHOICES)
-	#evento = models.ForeignKey(Eventos, on_delete=models.SET_NULL)
 	estado = models.CharField(max_length=100,default='Grabado',choices=ESTADO_CHOICES)
 	version=models.PositiveIntegerField(default=1)
 	active=models.BooleanField(default = True)
@@ -159,9 +167,6 @@ class PresupuestoEvento(models.Model):
 	fecha_envio= models.DateField(null=True, blank=True)
 	fecha_aprobada_sin= models.DateField(null=True, blank=True)
 	fecha_aprobada_con= models.DateField(null=True, blank=True)
-	
-	codigo_evento=models.CharField(max_length=13,null=True,blank=True,verbose_name="Código del Evento")
-	nombre_evento=models.CharField(max_length=200,null=True,blank=True,verbose_name="Nombre del Evento")
 
 	ruc_ci=models.CharField(max_length=13,null=True,blank=True)
 	razon_nombres=models.CharField(max_length=200,null=True,blank=True)

@@ -10,11 +10,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" />
+<link rel="stylesheet" href="{% static 'css/pac.css' %}" />
 {% endblock extraheader %}
 
 
 {% block content %}
-<form id="form" method="post" data-tipo-url="{% url 'ajax_load_partida'%}" novalidate>
+<form id="form" method="post" data-tipo-url="{% url 'ajax_load_partida'%}"
+	data-producto-url="{% url 'ajax_load_producto'%}" novalidate>
 	{% csrf_token %}
 	<div class="row mb-2">
 		<div class="col-12 col-xl-5">
@@ -85,7 +87,7 @@
 				</thead>
 			</table>
 			<a class="btn btn-secondary green-bg" data-toggle="modal" href="#"
-				data-target="#productoModalCenter">Agregar Producto/servicio</a>
+				data-target="#productoModalCenter">Agregar Producto/Servicio</a>
 		</div>
 	</div>
 	<div class="modal fade" id="productoModalCenter" tabindex="-1" role="dialog"
@@ -100,11 +102,14 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-row">
+						{{formset.egreso}}
 						<div class="col-6 col-xl-3">
-							{{ formset.codigo |as_crispy_field}}
+							<label for="codigo" class="col-form-label  requiredField">Código</label>
+							<select class="select2 form-control" id="codigo"></select>
 						</div>
 						<div class="col-6 col-xl-9">
-							{{ formset.partida|as_crispy_field }}
+							<label for="partida" class="col-form-label  requiredField">Partida Presupuestaria</label>
+							<select class="select2 form-control" id="partida"></select>
 						</div>
 					</div>
 					<div class="form-row">
@@ -117,32 +122,55 @@
 					</div>
 					<div class="form-row">
 						<div class="col-12 col-xl-12">
-							{{ formset.producto|as_crispy_field }}
+							{{ formset.producto }}
+							<label for="producto" class="col-form-label  requiredField">Descripción</label>
+							<select class="select2 form-control" id="producto"></select>
 						</div>
 
 					</div>
-					<div class="form-row">
-						<div class="col-4 col-xl-4">
-							{{ formset.unidad_medida|as_crispy_field }}
-						</div>
-						<div class="col-4 col-xl-4">
-							{{ formset.cantidad_anual|as_crispy_field }}
-						</div>
-						<div class="col-4 col-xl-4">
-							{{ formset.costo_unitario|as_crispy_field }}
+					<div class="row">
+						<div class="col-12 col-xl-8">
+							<div class="form-row">
+								<div class="col-4 col-xl-4">
+									<label for="unidad_medida" class="col-form-label  requiredField">Unidad de
+										medida</label>
+									<input type="text" id="unidad_medida" class="form-control" readonly>
+								</div>
+								<div class="col-4 col-xl-4">
+									{{ formset.cantidad_anual|as_crispy_field }}
+								</div>
+								<div class="col-4 col-xl-4">
+									<label for="costo_unitario" class="col-form-label  requiredField">Costo
+										Unitario</label>
+									<div class="currency-wrap"><span class="currency-code">$</span>
+										<input type="number" id="costo_unitario"
+											class="form-control text-currency text-right" readonly>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="form-row">
+
+					<div class="row">
 						<div class="col-12 col-xl-8">
-							<div class="row">
+							<div class="form-row">
 								<div class="col">
-									{{ formset.subtotal|as_crispy_field }}
+									<label for="id_subtotal col-form-label ">Subtotal</label>
+									<div class="currency-wrap">
+										<span class="currency-code">$</span>
+										{{formset.subtotal | as_crispy_field}}
+									</div>
 								</div>
-								<div class="col-auto v-align">
-									{{ formset.iva|as_crispy_field }}
+								<div class="col-auto">
+									<label for="iva" class="col-form-label  requiredField">IVA</label>
+									<input type="number" id="iva" class="form-control text-right" readonly>
 								</div>
 								<div class="col">
-									{{ formset.total|as_crispy_field }}
+									<label for="id_subtotal col-form-label ">Valor Total</label>
+									<div class="currency-wrap">
+										<span class="currency-code">$</span>
+										{{ formset.total|as_crispy_field }}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -155,18 +183,13 @@
 			</div>
 		</div>
 	</div>
-
+	{{form.motivo_anular}}
 	<div class="row mt-3">
 		<div class="col-12">
 			<a class="btn btn-secondary" href="{% url 'pac_index' %}"> Cancelar </a>
 		</div>
 	</div>
 	{% endblock tablas %}
-	<div class="col-12 v-align d-none">
-		<div class="form-group">
-			{{form.motivo_anular|as_crispy_field}}
-		</div>
-	</div>
 	{{ form.media }}
 </form>
 

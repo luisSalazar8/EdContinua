@@ -22,8 +22,11 @@
 				<div class="col-2">
 					{{ filter.form.codigo|as_crispy_field }}
 				</div>
-				<div class="col-2"></div>
+				<div class="col-2">
+					{{ filter.form.evento__codigo_evento|as_crispy_field }}
+				</div>
 				<div class="col-8">
+					{{ filter.form.evento__nombre|as_crispy_field }}
 				</div>
 			</div>
 			<div class="form-row">
@@ -41,12 +44,20 @@
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-3"></div>
+				<div class="col-3">
+					{{ filter.form.evento__modalidad|as_crispy_field}}
+				</div>
 				<div class="col-2">
 					{{ filter.form.tipo|as_crispy_field}}
 				</div>
-				<div class="col-2"></div>
-				<div class="col-2"></div>
+				<div class="col-2">
+					{{ filter.form.evento__fecha_inicio|as_crispy_field}}
+
+				</div>
+				<div class="col-2">
+					{{ filter.form.evento__fecha_fin|as_crispy_field}}
+
+				</div>
 				<div class="col-3">
 					{{ filter.form.estado|as_crispy_field }}
 				</div>
@@ -93,9 +104,9 @@
 				<tr class="text-center">
 					<td scope="row">{{p.codigo}}</td>
 					<td scope="row">{{p.version}}</td>
-					<td scope="row"></td>
-					<td scope="row">{{p.codigo_propuesta}}</td>
-					<td scope="row"></td>
+					<td scope="row">{{p.evento.codigo_evento}}</td>
+					<td scope="row">{{p.codigo_propuesta|default_if_none:""}}</td>
+					<td scope="row">{{p.evento.nombre}}</td>
 					<td scope="row">{{p.tipo}}</td>
 					<td scope="row">{{p.fecha}}</td>
 					<td scope="row">{{p.margen_contribucion|porcentaje}}</td>
@@ -104,9 +115,9 @@
 					<td scope="row">{{p.ingreso_neto_total|currency}}</td>
 					<td scope="row">{{p.estado}}</td>
 					<td scope="row">{{p.centro_costos}}</td>
-					<td scope="row">{{p.fecha_envio}}</td>
-					<td scope="row">{{p.fecha_aprobada_sin}}</td>
-					<td scope="row">{{p.fecha_aprobada_con}}</td>
+					<td scope="row">{{p.fecha_envio|default_if_none:""}}</td>
+					<td scope="row">{{p.fecha_aprobada_sin|default_if_none:""}}</td>
+					<td scope="row">{{p.fecha_aprobada_con|default_if_none:""}}</td>
 					<td scope="row">
 						<a class="btn btn-secondary btn-sm btn-block" href="{% url 'editar_presupuestos' pk=p.id %}"><i
 								class="fas fa-edit"></i></a>

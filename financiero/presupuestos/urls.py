@@ -15,6 +15,7 @@ urlpatterns = [
     path('aprobar/<pk>',views.PresupuestoEventoAprobar.as_view(), name="presupuesto_aprobar"),
     path('anular/<pk>',views.anular_presupuesto, name="presupuesto_anular"),
     path('ajax/load-personas',views.load_personas,name='ajax_load_personas'),
+    path('ajax/load-eventos',views.load_eventos,name='ajax_load_eventos_presupuestos'),
 ]
     
 

@@ -79,18 +79,40 @@ function load_data(estado) {
     }
 };
 
+function load_data_eventos() {
+    var url = $('#form').attr("data-evento-url");
+    $.ajax({
+        url: url,
+        success: function (data) {
+            $("#codigo_evento").html(data.codigo);
+            $("#nombre_evento").html(data.nombre);
+            $('#codigo_evento').val($('#id_evento').val()).trigger('change.select2');
+            $('#nombre_evento').val($('#nombre_evento option[name='+$('#id_evento').val()+']').val()).trigger('change.select2');
+            $("#modalidad_evento").val($('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-modalidad"));
+            var finicio=$('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-finicio");
+            var ffin=$('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-ffin");
+            var ymd=finicio.split("/");
+            $("#fecha_inicio_evento").val(ymd[2]+"-"+ymd[1]+"-"+ymd[0]);
+            var ymd=ffin.split("/");
+            $("#fecha_fin_evento").val(ymd[2]+"-"+ymd[1]+"-"+ymd[0]);
+        }
+    });
+};
+
+
+
 //Autocompleta de un select a otro usando el id
 function autocomplete(from, to) {
     if (from.val() != "") {
-        $('#' + to).val($('#' + to + " option[name='" + from.val() + "']").val());
-        $('#select2-' + to + '-container').text($('#' + to).val());
+        var valor = $('#' + to + " option[name='" + from.val() + "']").val();
+        $('#' + to).val(valor).trigger('change.select2');
     }
     else {
-        $('#' + to).val("");
-        $('#select2-' + to + '-container').text("---------");
+        $('#' + to).val(null).trigger('change.select2');
+        $("#modalidad_evento").val($(this).attr("data-modalidad"));
+        $("#fecha_inicio_evento").val($(this).attr("data-finicio"));
+        $("#fecha_fin_evento").val($(this).attr("data-ffin"));
     }
-    $('#id_ruc_ci').select2('close');
-    $('#id_razon_nombres').select2('close');
 }
 
 /**
@@ -444,7 +466,7 @@ $('.impuesto-select').change(function (event) {
     var valor = (+$("#" + event.target.dataset.depend).val() / 100);
     if ($(this).prop('checked')) {
         $("#" + event.target.dataset.field).val(valor);
-        if($("id_estado").val()==="Grabado")
+        if($("#id_estado").val()==="Grabado")
             $("#" + event.target.dataset.depend).attr("readonly", false);
     }
     else {
@@ -497,10 +519,12 @@ $(document).on('change', '#id_tipo', function (e) {
 
 $(document).on('change', '#id_razon_nombres', function () {
     autocomplete($(this), 'id_ruc_ci');
+    $('#id_razon_nombres').select2('close');
 });
 
 $(document).on('change', '#id_ruc_ci', function () {
     autocomplete($(this), 'id_razon_nombres');
+    $('#id_ruc_ci').select2('close');
 });
 
 $(document).on('click', "#div_id_ruc_ci span.selection", function (e) {
@@ -509,4 +533,15 @@ $(document).on('click', "#div_id_ruc_ci span.selection", function (e) {
 
 $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
     load_data();
+});
+
+
+$(document).on('change', '#nombre_evento', function () {
+    autocomplete($(this), 'codigo_evento');
+    $("#id_evento").val($('#codigo_evento').val());
+});
+
+$(document).on('change', '#codigo_evento', function () {
+    autocomplete($(this), 'nombre_evento');
+    $("#id_evento").val($('#codigo_evento').val());
 });

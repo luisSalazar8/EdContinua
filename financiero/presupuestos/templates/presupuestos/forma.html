@@ -38,6 +38,7 @@
 				{{form.fecha_envio}}
 				{{form.fecha_aprobada_sin}}
 				{{form.fecha_aprobada_con}}
+				{{form.evento}}
 			</div>
 		</div>
 	</div>
@@ -48,10 +49,6 @@
 	</div>
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
-			<div class="form-row">
-				{{form.codigo_evento | as_crispy_field}}
-				{{form.nombre_evento | as_crispy_field}}
-			</div>
 			<div class="form-row">
 				<div class="col-xl-2">{{form.tipo | as_crispy_field}}</div>
 				<div class="col-xl-3">{{ form.ruc_ci | as_crispy_field}}</div>

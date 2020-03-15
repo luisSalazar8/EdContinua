@@ -17,7 +17,8 @@
 
 <form method="post" data-info-url="{% url 'ajax_cargar_valor' %}"
 	data-confirmacion-url="{% url 'ajax_verificar_campos' %}" id="form"
-	data-persona-url="{% url 'ajax_load_personas' %}" data-juridica-url="{% url 'juridicas_view' %}" novalidate>
+	data-evento-url="{% url 'ajax_load_eventos_presupuestos' %}" data-persona-url="{% url 'ajax_load_personas' %}"
+	data-juridica-url="{% url 'juridicas_view' %}" novalidate>
 	{% csrf_token %}
 	<div class="row">
 		<div class="col-xl-5 col-12">
@@ -45,6 +46,8 @@
 				{{form.fecha_envio}}
 				{{form.fecha_aprobada_sin}}
 				{{form.fecha_aprobada_con}}
+				{{form.evento}}
+
 			</div>
 		</div>
 	</div>
@@ -56,21 +59,23 @@
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
 			<div class="form-row">
-				<input type="hidden" name="codigo_evento" value='{{form.codigo_evento.value}}' />
 				<div class="col-xl-3">
 					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
-					{{form.codigo_evento | as_crispy_field}}
+					<label for="codigo_evento" class="col-form-label">Código del Evento</label>
+					<select class="select2 form-control" id="codigo_evento"></select>
 					{%endif%}
 				</div>
-				<input type="hidden" name="nombre_evento" value='{{form.nombre_evento.value}}' />
 				<div class="col-xl-6">
-					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
-					{{form.nombre_evento | as_crispy_field}}
-					{%endif%}
+					<div class="form-group">
+						{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
+						<label for="nombre_evento" class="col-form-label">Nombre del Evento</label>
+						<select class="select2 form-control" id="nombre_evento"></select>
+						{%endif%}
+					</div>
 				</div>
 				<div class="col-xl-3">
 					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
-					<label for="modalidad_evento">Modalidad</label>
+					<label for="modalidad_evento" class="col-form-label">Modalidad</label>
 					<input type="text" readonly id="modalidad_evento" class="form-control textInput">
 					{%else%}
 					<input type="hidden" id="modalidad_evento" class="form-control textInput">
@@ -89,7 +94,7 @@
 
 				<div class="col-xl-2">
 					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
-					<label for="fecha_inicio_evento">Fecha Inicio</label>
+					<label for="fecha_inicio_evento" class="col-form-label">Fecha Inicio</label>
 					<input type="date" readonly id="fecha_inicio_evento" class="form-control textInput">
 					{%else%}
 					<input type="hidden" id="fecha_inicio_evento" class="form-control textInput">
@@ -97,7 +102,7 @@
 				</div>
 				<div class="col-xl-2">
 					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
-					<label for="fecha_fin_evento">Fecha Fin</label>
+					<label for="fecha_fin_evento" class="col-form-label">Fecha Fin</label>
 					<input type="date" readonly id="fecha_fin_evento" class="form-control textInput">
 					{%else%}
 					<input type="hidden" id="fecha_fin_evento" class="form-control textInput">
@@ -324,10 +329,10 @@
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir1"
 												data-label="total1" data-depend="impuesto_porcentaje_1">
 											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required disabled
-											id="impuesto_select_1" value=1 data-toggle="tooltip"
-											data-placement="top" title="¿Tiene impuesto?" data-field="ir1"
-											data-label="total1" data-depend="impuesto_porcentaje_1">
+											<input type="checkbox" class="form-check-input impuesto-select" required
+												disabled id="impuesto_select_1" value=1 data-toggle="tooltip"
+												data-placement="top" title="¿Tiene impuesto?" data-field="ir1"
+												data-label="total1" data-depend="impuesto_porcentaje_1">
 											{%endif%}
 
 										</div>
@@ -420,12 +425,12 @@
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir2"
 												data-label="total2" data-depend="impuesto_porcentaje_2">
 											{% else %}
-											<input type="checkbox" class="form-check-input impuesto-select" required disabled
-												id="impuesto_select_2" value=1 data-toggle="tooltip"
+											<input type="checkbox" class="form-check-input impuesto-select" required
+												disabled id="impuesto_select_2" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir2"
 												data-label="total2" data-depend="impuesto_porcentaje_2">
 											{% endif %}
-										
+
 										</div>
 									</div>
 									<div class="col-1">
@@ -437,8 +442,8 @@
 												placeholder="impuesto">
 											{%else%}
 											<input type="number" min="0" id="impuesto_porcentaje_2" required readonly
-											class='form-control porcentaje-impuesto text-currency'
-											placeholder="impuesto">
+												class='form-control porcentaje-impuesto text-currency'
+												placeholder="impuesto">
 											{%endif%}
 										</div>
 									</div>
@@ -517,8 +522,8 @@
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir3"
 												data-label="total3" data-depend="impuesto_porcentaje_3">
 											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required disabled
-												id="impuesto_select_3" value=1 data-toggle="tooltip"
+											<input type="checkbox" class="form-check-input impuesto-select" required
+												disabled id="impuesto_select_3" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir3"
 												data-label="total3" data-depend="impuesto_porcentaje_3">
 											{%endif%}
@@ -612,8 +617,8 @@
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir4"
 												data-label="total4" data-depend="impuesto_porcentaje_4">
 											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required disabled
-												id="impuesto_select_4" value=1 data-toggle="tooltip"
+											<input type="checkbox" class="form-check-input impuesto-select" required
+												disabled id="impuesto_select_4" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir4"
 												data-label="total4" data-depend="impuesto_porcentaje_4">
 											{%endif%}
@@ -681,7 +686,7 @@
 												data-depend="True" data-field="hora5" data-total="total5"
 												placeholder="Costo hora">
 											{%else%}
-												<input type="number" min="0" id="costo5" required readonly
+											<input type="number" min="0" id="costo5" required readonly
 												class='form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora5" data-total="total5"
 												placeholder="Costo hora">
@@ -707,8 +712,8 @@
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir5"
 												data-label="total5" data-depend="impuesto_porcentaje_5">
 											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required disabled
-												id="impuesto_select_5" value=1 data-toggle="tooltip"
+											<input type="checkbox" class="form-check-input impuesto-select" required
+												disabled id="impuesto_select_5" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir5"
 												data-label="total5" data-depend="impuesto_porcentaje_5">
 											{%endif%}
@@ -2166,13 +2171,14 @@
 		$("#form").trigger("submit");
 	});
 
-	$("#id_codigo_evento").change(CambiarEstado);
-	$("#id_nombre_evento").change(CambiarEstado);
+	$("#codigo_evento").change(CambiarEstado);
+	$("#nombre_evento").change(CambiarEstado);
 
 
 	function CambiarEstado() {
-		if ($("#id_codigo_evento").val() !== "" && $("#id_nombre_evento").val() !== "") {
+		if ($("#codigo_evento").val() !== null && $("#nombre_evento").val() !== null) {
 			$("#id_estado").val("Autorizada con evento");
+			$('#id_fecha_aprobada_con').val(GetCurrentDate());
 		}
 		else {
 			$("#id_estado").val("Autorizada sin evento");
@@ -2245,28 +2251,28 @@
 			$('#costo' + (index + 1)).val(value.toFixed(2)).trigger('change');
 		});
 
-		$.each({{ impuesto_select }}, function (index, value) {
-			$('#impuesto_select_' + (index + 1)).prop('checked', value == 1 ? true : false).trigger('change');;
-		});
+	$.each({{ impuesto_select }}, function (index, value) {
+		$('#impuesto_select_' + (index + 1)).prop('checked', value == 1 ? true : false).trigger('change');;
+	});
 
-		$.each({{ valor_total }}, function (index, value) {
-			$('#total' + (index + 1)).val(value).trigger('change');;
-		});
+	$.each({{ valor_total }}, function (index, value) {
+		$('#total' + (index + 1)).val(value).trigger('change');;
+	});
 
-		$.each({{ horas_instructores }}, function (index, value) {
-			$('#hora' + (index + 1)).val(value).trigger('change');;
-		});
+	$.each({{ horas_instructores }}, function (index, value) {
+		$('#hora' + (index + 1)).val(value).trigger('change');;
+	});
 
-		$.each({{ honorario_instructores }}, function (index, value) {
-			$('#porcentaje' + (index + 1)).val(value).trigger('change');;
-		});
+	$.each({{ honorario_instructores }}, function (index, value) {
+		$('#porcentaje' + (index + 1)).val(value).trigger('change');;
+	});
 
-		$.each({{ impuesto_total }}, function (index, value) {
-			$('#impuesto_total_' + (index + 1)).val(value.toFixed(2)).trigger('change');;
-		});
-		$.each({{ impuesto_porcentaje }}, function (index, value) {
-			$('#impuesto_porcentaje_' + (index + 1)).val(value).trigger('change');
-		});
+	$.each({{ impuesto_total }}, function (index, value) {
+		$('#impuesto_total_' + (index + 1)).val(value.toFixed(2)).trigger('change');;
+	});
+	$.each({{ impuesto_porcentaje }}, function (index, value) {
+		$('#impuesto_porcentaje_' + (index + 1)).val(value).trigger('change');
+	});
 	};
 
 
@@ -2286,8 +2292,13 @@
 		CostoImpuesto();
 		ResumenValores();
 		load_data("{{form.estado.value}}" === "Grabado" ? 0 : 1);
+		load_data_eventos();
 		$("input[type=number]").addClass('text-right');
 
+		if ("{{form.estado.value}}" === "Autorizada con evento") {
+			$("#codigo_evento").attr("disabled", true);
+			$("#nombre_evento").attr("disabled", true);
+		}
 	});
 </script>
 {%endblock extrafooter%}

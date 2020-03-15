@@ -1,6 +1,7 @@
 from django.db import models
 import financiero.validaciones
 from financiero.orden_pago.models import Centro_Costos
+from financiero.orden_pago.models import Egresos
 from datetime import date
 # Create your models here.
 
@@ -8,6 +9,7 @@ from datetime import date
 ESTADO_CHOICES = [  
         ('Grabado','Grabado'),
         ('Solicitud Enviada','Solicitud Enviada'),
+        ('Autorizada','Autorizada'),
         ('Anulada','Anulada'),
 	]
 
@@ -22,21 +24,26 @@ class PlanAnualCompras(models.Model):
 	motivo_anular = models.CharField(max_length=500, null=True,blank=True)
 
 
+#	UNIDAD_CHOICES = [("Caja","Caja"),("Paquete","Paquete"),("Litro","Litro"),("Galón","Galón"),("Caneca","Caneca"),("Resma","Resma"),("Otros","Otros"),]
+
+class Producto(models.Model):
+	tipo=models.CharField(max_length=100)
+	descripcion=models.CharField(max_length=500)
+	unidad_medida=models.CharField(max_length=100)
+	costo_unitario=models.DecimalField(max_digits=10,decimal_places=2)
+	iva=models.DecimalField(max_digits=10,decimal_places=2)
+
 class Partida(models.Model):
 	TIPO_COMPRAS_CHOICES = [("Bien","Bien"), ("Servicios","Servicios"),]
 
-	codigo = models.CharField(max_length=15)
-	partida = models.CharField(max_length=200)
+	pac = models.ForeignKey(PlanAnualCompras, on_delete=models.CASCADE, null=True, blank=True)
+	egreso=models.ForeignKey(Egresos,on_delete=models.SET_NULL,null=True)
 	tipo_compra = models.CharField(max_length=10, choices=TIPO_COMPRAS_CHOICES)
 	#FK a la tabla de productos del modulo Administrativo, CAMBIAR LUEGO
-	producto = models.CharField(max_length=200)
+	producto = models.ForeignKey(Producto, on_delete=models.SET_NULL,null=True)
 	cantidad_anual = models.PositiveIntegerField()
-	unidad_medida = models.CharField(max_length=10)
-	costo_unitario = models.DecimalField(max_digits=10 ,decimal_places=2, validators=[financiero.validaciones.validate_positivo])
 	subtotal = models.DecimalField(max_digits=10 ,decimal_places=2,validators=[financiero.validaciones.validate_positivo])
-	iva=models.BooleanField(default=False)
 	total = models.DecimalField(max_digits=10 ,decimal_places=2, validators=[financiero.validaciones.validate_positivo])
-	pac = models.ForeignKey(PlanAnualCompras, on_delete=models.CASCADE, null=True, blank=True)
 	periodo=models.CharField(max_length=200)
 
 

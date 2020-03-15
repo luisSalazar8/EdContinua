@@ -18,7 +18,6 @@
 <div class="row darkwhite-bg py-2">
 	<div class="col-12">
 		<form method="GET">
-			{% csrf_token %}
 			<div class="form-row">
 				<div class="col-3 col-xl-2">
 					{{ filter.form.año|as_crispy_field }}
@@ -47,7 +46,7 @@
 <br>
 <div class="row mt-2">
 	<div class="col-12 col-xl-12">
-		<table id="dtBasicExample" class="table table-responsive-sm">
+		<table id="dtBasicExample" class="table table-responsive-sm border-bottom">
 			<thead class="white-text darkgreen-bg">
 				<tr>
 					<th scope="col">Año</th>
@@ -55,6 +54,8 @@
 					<th scope="col">Nombre</th>
 					<th scope="col">Centro de Costo</th>
 					<th scope="col">Estado</th>
+					<th scope="col">Fecha Envío</th>
+					<th scope="col">Fecha Aprobación</th>
 					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
@@ -67,6 +68,8 @@
 					<td scope="row">{{ pac.nombre }}</td>
 					<td scope="row">{{ pac.centro_costos }}</td>
 					<td scope="row">{{ pac.estado }}</td>
+					<td scope="row">{{ pac.fecha_envio |default_if_none:""}}</td>
+					<td scope="row">{{ pac.fecha_aprobado |default_if_none:""}}</td>
 					<td scope="row">
 						<a class="btn btn-secondary btn-block btn-sm" href="{% url 'pac_editar' pac.id %}"><i
 								class="fas fa-edit"></i></a>

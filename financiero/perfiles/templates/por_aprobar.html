@@ -176,6 +176,8 @@
 
 	</div>
 </div>
+<br>
+
 
 <div class="campo mt-2 p-2">
 	<h5 class="black-text text-uppercase mb-0">Presupuestos Anuales</h5>
@@ -225,6 +227,56 @@
 
 	</div>
 </div>
+<br>
+
+<div class="campo mt-2 p-2">
+	<h5 class="black-text text-uppercase mb-0">Plan Anual de Compra</h5>
+</div>
+<div class="row">
+	<div class="col-12 col-xl-12">
+		<div class="row">
+			<div class="col-12 col-xl-12">
+				<table class="table table-responsive-md border-bottom">
+					<thead class="white-text darkgreen-bg">
+						<tr>
+							<th scope="col">Ver Detalles</th>
+							<th scope="col">Año</th>
+							<th scope="col">Fecha Elaboración</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Centro de Costo</th>
+							<th scope="col">Estado</th>
+							<th scope="col">Fecha Envío</th>
+							<th scope="col">Fecha Aprobación</th>
+						</tr>
+					</thead>
+					{% if pac %}
+
+					<tbody>
+						{% for p in pac %}
+						<tr class="text-center">
+							<td scope="row"><a class="btn btn-secondary"
+								href="{% url 'pac_aprobar' pk=p.id %}"><i
+									class="fas fa-eye"></i></a></td>
+							<td scope="row">{{ p.año }}</td>
+							<td scope="row">{{ p.fecha }}</td>
+							<td scope="row">{{ p.nombre }}</td>
+							<td scope="row">{{ p.centro_costos }}</td>
+							<td scope="row">{{ p.estado }}</td>
+							<td scope="row">{{ p.fecha_envio |default_if_none:""}}</td>
+							<td scope="row">{{ p.fecha_aprobado |default_if_none:""}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+					{% else %}
+					<h2>No hay cambios de evento por aprobar</h2>
+					{% endif %}
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+<br>
 
 <div class="campo mt-2 p-2">
 	<h5 class="black-text text-uppercase mb-0">Cambio de evento</h5>
@@ -278,4 +330,6 @@
 
 	</div>
 </div>
+<br>
+
 {% endblock %}

@@ -50,15 +50,22 @@ function load_ordenes_facturas(){
 
 
 $('.select2').select2({
-  minimunInputLength: 2,
+  minimumInputLength: 2,
   language: {
+
     noResults: function () {
       $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
       return "No hay resultados";
     },
-  },
-  
-  minimunResultsForSearch: -1 
+    searching: function () {
+
+      return "Buscando...";
+    },
+    inputTooShort: function (e) {
+      var t = e.minimum - e.input.length;
+      return "Ingresa " + t + " caractéres para buscar";
+    }
+  }
 });
 
 function load_data(url, persona) {
@@ -86,10 +93,12 @@ function load_data(url, persona) {
     if (persona == "Natural") {
       $('#ruc_ci').text('CI');
       $('#ra_nom').text('Nombre');
+      p_url = $('#form-fact').attr("data-natural-url");
     }
     else if (persona == "Jurídica") {
       $('#ruc_ci').text('RUC');
       $('#ra_nom').text('Razón Social');
+      p_url = $('#form-fact').attr("data-juridica-url");
     }
   }
   else {
@@ -109,26 +118,17 @@ function autocomplete(from, to) {
   }
 }
 
+
+function cambiar_url(){
+  $('#div_id_orden_facturacion').click(function (e) { 
+    p_url = $('#form-fact').attr("ordenfact-url");
+    console.log(p_url);
+    
+  });
+}
+
 $(document).ready(function () {
-  // cambiar_url();
-  // $('.papu').select2({
-  //   language: {
-  //     noResults: function () {
-  //       $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-  //       return "No hay resultados";
-  //     },
-  //   },
-  //   })
-  // load_ordenes_facturas();
-  $('select#id_orden_facturacion').select2({
-      language: {
-        noResults: function () {
-          $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-          return "No hay resultados";
-        },
-      },
-      });
-  
+  cambiar_url();
 });
 
 load_data();
@@ -141,13 +141,6 @@ $('#id_razon_nombres').on('change', function () {
 })
 
 
-function cambiar_url(){
-  $('#div_prueba').click(function (e) { 
-    p_url = $('#form-fact').attr("ordenfact-url");
-    console.log(p_url);
-    
-  });
-}
 
 
 $('#id_ruc_ci').on('change', function () {

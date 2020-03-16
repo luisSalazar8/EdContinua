@@ -1,5 +1,6 @@
 from django import forms
 from .models import OrdenIngreso
+from financiero.orden_facturacion.models import OrdenFacturacion
 from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -30,6 +31,8 @@ class OrdenIngresoForm(forms.ModelForm):
 			'fechaPago':forms.DateInput(attrs={'class':'form-control','type':'date','value':date.today}),
 			'razon_nombres':forms.Select(attrs={'class':'form-control select2'}),
             'ruc_ci':forms.Select(attrs={'class':'form-control select2'}),
+			'orden_facturacion':forms.Select(attrs={'class':'form-control select2'}),
+			
 			'descripcion':forms.Textarea(attrs={'rows':2}),
 			'valor':forms.NumberInput(attrs={'class':'form-control'}),
 			'anexo':forms.ClearableFileInput(attrs={'class':'form-control',"accept":".pdf"}),
@@ -38,6 +41,10 @@ class OrdenIngresoForm(forms.ModelForm):
 			'emisoraTarjeta':forms.Select(attrs={'class':'select form-control'}),
 			'formaPago':forms.Select(attrs={'id':'seleccion',"onchange":"run()"})
 		}
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['orden_facturacion'].queryset = OrdenFacturacion.objects.filter(estado="PNDP")
+		
 	
 
 	def genera_codigo(self):
@@ -73,7 +80,11 @@ class OrdenIngresoForm(forms.ModelForm):
 		# 	return cd['valor']
 
 class OrdenIngresoUpdateForm(forms.ModelForm):
-
+	def __init__(self, *args, **kwargs):
+		super(OrdenIngresoUpdateForm, self).__init__(*args, **kwargs)
+		self.fields['orden_facturacion'].disabled = True
+		self.fields['centro_costos'].disabled = True
+		
 	class Meta:
 		model=OrdenIngreso
 		fields='__all__'
@@ -119,7 +130,6 @@ class OrdenIngresoUpdateForm(forms.ModelForm):
 			'banco':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'emisoraTarjeta':forms.TextInput(attrs={'readonly':True,'class':'select form-control-plaintext textinput textInput form-control'}),
 			'formaPago':forms.TextInput(attrs={'readonly':True,'id':'seleccion'}),
-			'orden_facturacion':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'})
 		}
 class OrdenIngresoPrintForm(forms.ModelForm):
 

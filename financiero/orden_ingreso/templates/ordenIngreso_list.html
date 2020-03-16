@@ -19,7 +19,15 @@
     <div class="col-12">
         <form action="" method="get">
             {% csrf_token %}
+            <div class="row mb-2">
+				<div class="campo p-2 pl-3 col-12">
+					<h5 class="black-text text-uppercase mb-0">Información Orden Ingreso</h5>
+				</div>
+			</div>
             <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.cod_orden_ing|as_crispy_field }}
+                </div>
                 <div class="col-4">
                     {{ filter.form.fecha|as_crispy_field }}
                 </div>
@@ -28,6 +36,44 @@
                 </div>
                 
             </div>
+            <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.ruc_ci|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.formaPago|as_crispy_field }}
+                </div>
+                
+            </div>
+            <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.estado|as_crispy_field }}
+                </div>
+            <div class="col-4">
+                    {{ filter.form.fecha_anulacion|as_crispy_field }}
+            </div>
+                {% comment %} <div class="col-4">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.formaPago|as_crispy_field }}
+                </div> {% endcomment %}
+                
+            </div>
+            <div class="row mb-2">
+				<div class="campo p-2 pl-3 col-12">
+					<h5 class="black-text text-uppercase mb-0">Información Orden Facturación</h5>
+				</div>
+			</div>
+            <div class="form-row ">
+                <div class="col-4">
+                        {{ filter.form.orden_facturacion__cod_orden_fact|as_crispy_field }}
+                </div>
+            </div>
+
             <div>
                 <button type="submit" class="btn btn-secondary green-bg float-right">
                     <span class="fas fa-search"></span> Buscar</button>

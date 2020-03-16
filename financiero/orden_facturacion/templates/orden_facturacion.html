@@ -45,6 +45,12 @@
                 <div class="col-6 col-md-3">
                     {{ filter.form.n_factura|as_crispy_field }}
                 </div>
+                <div class="col-6 col-md-3">
+                    {{ filter.form.asesor|as_crispy_field}}
+                </div>
+                <div class="col-6 col-md-3">
+                    {{ filter.form.tipo_evento|as_crispy_field}}
+                </div>
 
             </div>
             <button type="submit" class="btn btn-secondary green-bg float-right">
@@ -94,8 +100,9 @@
                     <th scope="col">Valor Total</th>
                     <th scope="col">Estado</th>
                     <th scope="col">N° trámite</th>
-                    <th scope="col">Asesor</th>
                     <th scope="col">N° factura</th>
+                    <th scope="col">Asesor</th>
+                    <th scope="col">Fecha factura</th>
                     <th scope="col">Acciones</th>
                     
                 </tr>
@@ -145,8 +152,9 @@
                     </td>
                     <td scope="row">{{orden.get_estado_display}}</td>
                     <td scope="row">{{orden.n_tramite}}</td>
-                    <td scope="row">Falta agregar asesor</td>
                     <td scope="row">{{orden.n_factura}}</td>
+                    <td scope="row">{{orden.asesor}}</td>
+                    <td scope="row">{{orden.fecha_factura}}</td>
                     <td scope="row">
 
                         

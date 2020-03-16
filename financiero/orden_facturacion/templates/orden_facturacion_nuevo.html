@@ -11,7 +11,7 @@
   data-persona-url="{% url 'ajax_load_personas' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}"
   data-natural-url="{% url 'natural_nuevo'%}" data-juridica-url="{% url 'juridicas_view' %}"
   data-info-url="{% url 'ajax_info_veris_id' %}" data-contacto-url="{% url 'ajax_load_contactos' %}"
-  data-mail-url="{% url 'ajax_load_mail' %}">
+  data-mail-url="{% url 'ajax_load_mail' %}" data-asesor-url="{% url 'ajax_load_usuarios_ventas' %}">
   {% csrf_token %}
   {% block editar %}
 
@@ -89,6 +89,8 @@
         </div>
         <input type="hidden" name="centro_costos" value='{{form.centro_costos.value}}' />
         <div class="col-6 col-md-2">{{ form.centro_costos|as_crispy_field }}</div>
+        <div class="col-6 col-md-2">{{ form.tipo_evento|as_crispy_field }}</div>
+        <div class="col-6 col-md-2">{{ form.asesor|as_crispy_field }}</div>
         {% block n_par %}
         {{ form.n_participantes}}
         {% endblock n_par %}
@@ -111,7 +113,13 @@
   </div>
   {% endblock tablas %}
 
-
+  {% if form.errors %}
+  <ul>
+    {% for error in form.errors %} 
+      <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+{% endif %} 
   {{ form.media }}
 </form>
 {% block confirmar%}

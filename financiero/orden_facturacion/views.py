@@ -131,7 +131,7 @@ def load_personas(request):
     elif persona=="Jurídica":
         personas=Juridica.objects.all()
         identificacion=render_to_string("dropdown_juridica_ruc.html",{"personas":personas})
-        razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})    
+        razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})
     return JsonResponse({'ruc_ci': identificacion, 'razon_nombre': razon_nombre})
 
 def load_contactos(request):

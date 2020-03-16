@@ -48,7 +48,7 @@ function load_data(estado) {
                 'persona': persona
             },
             success: function (data) {
-                if (persona === "Corporativo") {
+                if (persona === "Jurídica") {
                     if (estado == 0) {
                         $("#id_ruc_ci").attr('disabled', false)
                         $("#id_razon_nombres").attr('disabled', false)
@@ -514,7 +514,7 @@ $(document).on('click', "#pnuevo", function () {
 })
 
 $(document).on('change', '#id_tipo', function (e) {
-    load_data($(this).val() == "Corporativo" ? 0 : 1);
+    load_data($(this).val() == "Jurídica" ? 0 : 1);
 });
 
 $(document).on('change', '#id_razon_nombres', function () {

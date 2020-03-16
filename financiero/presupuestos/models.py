@@ -133,7 +133,7 @@ ESTADO_CHOICES = [
         ('Anulada','Anulada'),
 	]
 
-TIPO_CHOICES=[('Abierto','Abierto'),('Corporativo','Corporativo'),]
+TIPO_CHOICES=[('Abierto','Abierto'),('Jurídica','Corporativo'),]
 
 class Evento(models.Model):
 	codigo_evento=models.IntegerField(primary_key=True)

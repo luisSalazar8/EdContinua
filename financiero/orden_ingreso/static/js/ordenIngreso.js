@@ -110,16 +110,24 @@ function autocomplete(from, to) {
 }
 
 $(document).ready(function () {
-  cambiar_url();
-  $('.papu').select2({
-    language: {
-      noResults: function () {
-        $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
-        return "No hay resultados";
+  // cambiar_url();
+  // $('.papu').select2({
+  //   language: {
+  //     noResults: function () {
+  //       $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+  //       return "No hay resultados";
+  //     },
+  //   },
+  //   })
+  // load_ordenes_facturas();
+  $('select#id_orden_facturacion').select2({
+      language: {
+        noResults: function () {
+          $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+          return "No hay resultados";
+        },
       },
-    },
-    })
-  load_ordenes_facturas();
+      });
   
 });
 

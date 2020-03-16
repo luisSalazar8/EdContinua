@@ -8,7 +8,7 @@
 
 {% block content %}
 <form method="POST" novalidate id="form-fact" enctype="multipart/form-data" ,
-  data-persona-url="{% url 'ajax_load_personasof' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}"
+  data-persona-url="{% url 'ajax_load_personas' %}" data-confirmacion-url="{% url 'ajax_verificar_campos' %}"
   data-natural-url="{% url 'natural_nuevo'%}" data-juridica-url="{% url 'juridicas_view' %}"
   data-info-url="{% url 'ajax_info_veris_id' %}" data-mail-url="{% url 'ajax_load_mail' %}"
  >

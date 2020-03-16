@@ -6,13 +6,14 @@ from .filters import OrdenFacturacionFilter
 
 urlpatterns = [
     path('nuevo', views.OrdenFacturacionCreate.as_view(), name='orden_facturacion_nuevo'),
-    path('ajax/load-personas',views.load_personas,name='ajax_load_personas'),
+    path('ajax/load-personas',views.load_personas,name='ajax_load_personasof'),
     path('ajax/load-modal-orden-fact',views.orden_fact_conf_elim,name='orden_facturacion_confirmar_eliminar'),
     path('ajax/verificar-campos',views.verificar_campos,name='ajax_verificar_campos'),
     path('ajax/info-cliente',views.load_info,name='ajax_info_id'),
     path('ajax/info-cliente-veris',views.load_info_veris,name='ajax_info_veris_id'),
     path('ajax/load-contactos',views.load_contactos,name='ajax_load_contactos'),
     path('ajax/load-mail',views.load_mail,name='ajax_load_mail'),
+    path('ajax/load-usuarios-ventas',views.load_usuarios_ventas,name='ajax_load_usuarios_ventas'),
     path('ajax/orden-ci',views.load_info_ci,name="ajax_orden_ci"),
     path('', views.index, name='orden_facturacion'),
     path('editar/<pk>/', views.OrdenFacturacionUpdate.as_view(), name='orden_facturacion_editar'),    

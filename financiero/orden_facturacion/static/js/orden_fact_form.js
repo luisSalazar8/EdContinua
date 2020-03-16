@@ -98,6 +98,7 @@ function load_data() {
         'persona': persona
       },
       success: function (data) {
+        console.log(data)
         $("#id_ruc_ci").html(data.ruc_ci)
         $("#id_razon_nombres").html(data.razon_nombre)
         $('#id_ruc_ci').val($('#rc').val());
@@ -246,3 +247,24 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
   load_data();
 });
 
+//Asesor
+console.log($("#id_asesor").attr("readonly"));
+if($("#id_asesor").attr("readonly")!="readonly"){
+  $.ajax({
+    url: $('#form-fact').attr("data-asesor-url"),
+    data: {
+      'persona': ""
+    },
+    success: function (data) {
+      console.log(data)
+      $("#id_asesor").html(data.asesores);
+      $('#id_asesor').val($('#as').val());
+    }
+  });
+}
+
+if($("#est").val()=="ANLD"){
+    $("#id_n_factura").prop("readonly",true);
+    $("#id_fecha_factura").prop("readonly",true);
+    $("#id_anexo_factura").prop("disabled",true)
+}

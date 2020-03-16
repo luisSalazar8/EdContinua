@@ -126,10 +126,12 @@ def load_personas(request):
     razon_nombre=[]
     if persona=="Natural":
         personas=Persona_Natural.objects.all()
+        print(personas)
         identificacion=render_to_string("dropdown_natural_ci.html",{"personas":personas})
         razon_nombre=render_to_string("dropdown_natural_nombres.html",{"personas":personas})
     elif persona=="Jurídica":
         personas=Juridica.objects.all()
+        print(personas)
         identificacion=render_to_string("dropdown_juridica_ruc.html",{"personas":personas})
         razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})    
     return JsonResponse({'ruc_ci': identificacion, 'razon_nombre': razon_nombre})
@@ -216,6 +218,11 @@ def load_mail(request):
     if cedula!="":
         email=Persona_Natural.objects.get(cedula=cedula).email
     return JsonResponse({"email": email})
+
+def load_usuarios_ventas(request):
+    usuariosv=""
+    asesores=render_to_string("dropdown_usuarios_ventas.html",{"usuariosv":usuariosv})  
+    return JsonResponse({'asesores': asesores})
 
 def load_info_ci(request):
     pk = request.GET.get("pk")

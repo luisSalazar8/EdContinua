@@ -1,5 +1,5 @@
 from .models import OrdenFacturacion
-from financiero.orden_facturacion.models import OrdenFacturacion, ESTADO_CHOICES
+from financiero.orden_facturacion.models import OrdenFacturacion, ESTADO_CHOICES, TIPO_EVENTO
 import django_filters
 from django import forms
 
@@ -14,6 +14,12 @@ class OrdenFacturacionFilter(django_filters.FilterSet):
 		choices=ESTADO_CHOICES,
         label=""
     )
+    tipo_evento=django_filters.ChoiceFilter(
+        empty_label='Evento',
+		choices=TIPO_EVENTO,
+        label=""
+    )
+    asesor=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'Asesor'}))
     n_tramite=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'# Trámite'}))
     n_factura=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'# Factura'}))
     class Meta:
@@ -25,6 +31,9 @@ class OrdenFacturacionFilter(django_filters.FilterSet):
             'ruc_ci',
             'razon_nombres',
             'estado',
+            'asesor',
             'n_tramite',
             'n_factura',
+            'tipo_evento',
+            
         ]

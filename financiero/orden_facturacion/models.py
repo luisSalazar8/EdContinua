@@ -10,6 +10,7 @@ import ventas.validaciones
 
 
 
+TIPO_EVENTO=[('Abierto','Abierto'),('Corporativo','Corporativo')]
 
 # Create your models here.
 ESTADO_CHOICES = [  
@@ -31,16 +32,19 @@ class OrdenFacturacion(models.Model):
     tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
     cod_orden_fact=models.CharField(max_length=15, blank=True)
     n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
+    fecha_tramite=models.DateField(blank=True, null=True)
     n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
+    fecha_factura=models.DateField(blank=True, null=True)
     anexo_factura=models.FileField(upload_to='uploads/facturas/',blank=True, null=True)
-    fecha=models.CharField(max_length=30)
+    fecha=models.DateField()
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
     contacto=models.CharField(max_length=200,blank=True, null=True)
+    tipo_evento=models.CharField(max_length=15, choices=TIPO_EVENTO)
     #contacto=models.CharField(max_length=200)
     #direccion=models.CharField(max_length=200)
     #telefono=models.CharField(max_length=15)
-    
+    asesor=models.CharField(max_length=200,blank=True, null=True)
 
     centro_costos = models.ForeignKey(Centro_Costos, on_delete=models.SET_NULL, blank=False, null=True)
     n_participantes=models.PositiveIntegerField(blank=True, default=0, null=True)

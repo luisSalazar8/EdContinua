@@ -1,0 +1,162 @@
+{% extends 'plan_anual_compras/pac_nuevo.html' %}
+{% load my_tags %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load staticfiles %}
+{% block regedit %}
+Edición Plan Anual de Compras
+{% endblock regedit %}
+
+{% block tablas %}
+
+<div class="row">
+	<div class=" campo p-2 pl-3 col-12">
+		<h5 class="black-text text-uppercase mb-0">Producto/Servicio</h5>
+	</div>
+</div>
+<div class="row mt-4">
+	<div id="tabla" class="col-12">
+		<table id="dtBasicExample" class="table table-responsive-sm border-bottom">
+			<thead class="white-text darkgreen-bg">
+				<tr>
+					<th>#</th>
+					<th>Código</th>
+					<th>Partida Presupuestaria</th>
+					<th>Tipo de Compra</th>
+					<th>Detalle del Producto</th>
+					<th>Cantidad Anual</th>
+					<th>Unidad de Medida</th>
+					<th>Costo Unitario</th>
+					<th>Subtotal</th>
+					<th>Valor Total</th>
+					<th>Periodo</th>
+					{% if form.estado.value == "Grabado" %}
+					<th>Acciones</th>
+					{%endif%}
+				</tr>
+			</thead>
+
+			{% if partidas %}
+			<tbody>
+				{% for p in partidas %}
+				<tr class="text-center">
+					<td>{{forloop.counter}}</td>
+					<td>{{ p.egreso.codigo }}</td>
+					<td>{{ p.egreso.nombre }}</td>
+					<td>{{ p.tipo_compra }}</td>
+					<td>{{ p.producto.descripcion }}</td>
+					<td>{{ p.cantidad_anual }}</td>
+					<td>{{ p.producto.unidad_medida }}</td>
+					<td>${{ p.producto.costo_unitario }}</td>
+					<td>${{ p.subtotal }}</td>
+					<td>${{ p.total }}</td>
+					<td>{{ p.periodo }}</td>
+				</tr>
+				{% endfor%}
+			</tbody>
+			{% endif %}
+		</table>
+	</div>
+</div>
+<div class="row my-3">
+	<div class="mt-2 campo p-2 pl-3 col-12">
+		<h5 class="black-text text-uppercase mb-0">Autorizar plan anual de compras</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#plan-ap" href='#'>Aprobar</a>
+		<a class="btn btn-secondary" data-toggle='modal' data-target="#plan-rp" href='#'>Anular</a>
+	</div>
+</div>
+
+<div class="modal fade" id="plan-ap" tabindex="-1" role="dialog" aria-labelledby="planTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="planTitle">Confirmación de Aprobación</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="modal-confirmacion">
+				¿Está seguro/a que desea continuar? Verifíque los datos antes de proceder a la Aprobación.
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+				<button class="btn btn-secondary green-bg" type="submit" id="pac-ap">Aprobar <i
+						class="fas fa-check"></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="plan-rp" tabindex="-1" role="dialog" aria-labelledby="planTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="planTitle">Confirmación de Anulación</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="modal-confirmacion">
+				¿Está seguro/a que desea continuar? Verifíque los datos antes de proceder a la Anulación.
+				<br>
+				<br>
+				{{ form.motivo_anular|as_crispy_field }}
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				<button class="btn btn-secondary green-bg" type="submit" disabled id="pac-rp"><i
+						class="fas fa-check"></i> Anular </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock tablas %}
+
+{%block forms%}
+{%endblock forms%}
+
+{%block extrafooter%}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script>
+
+	function GetCurrentDate() {
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+
+		today = yyyy + '-' + mm + '-' + dd;
+		return today;
+	}
+
+	$('#pac-ap').click(function (e) {
+		e.preventDefault();
+		$("#id_estado").val("Autorizada");
+		$('#id_fecha_aprobado').val(GetCurrentDate());
+		$("#form").trigger("submit");
+	});
+
+	$('#pac-rp').click(function (e) {
+		e.preventDefault();
+		$("#id_estado").val("Anulada");
+		$("#form").trigger("submit");
+	});
+
+	$(document).on("change", '#id_motivo_anular', function () {
+		if ($(this).val().length > 20) {
+			$('#pac-rp').attr('disabled', false);
+		}
+		else {
+			$('#pac-rp').attr('disabled', true);
+		}
+	})
+</script>
+{%endblock extrafooter%}

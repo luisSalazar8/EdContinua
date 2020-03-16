@@ -5,6 +5,7 @@ from django import forms
 import django_filters
 from .models import *
 from datetime import date
+from ventas.validaciones import validate_horarios
 
 
 class DateInput(forms.DateInput):
@@ -12,7 +13,12 @@ class DateInput(forms.DateInput):
 
 
 class PresupuestoEventoForm(forms.ModelForm):
-    # estado=
+    
+    def __init__(self, *args, **kwargs):
+        super(PresupuestoEventoForm, self).__init__(*args, **kwargs)
+        self.fields['version'].disabled = True
+        self.fields['version'].initial = 1
+
     class Meta:
         model = PresupuestoEvento
 
@@ -20,8 +26,9 @@ class PresupuestoEventoForm(forms.ModelForm):
         labels = {
             'estado': '',
             'codigo': '',
+            'version':'',
             'fecha': '',
-            'motivo_anular':'Motivo de anulación',
+            'motivo_anular': 'Motivo de anulación',
             'ingreso_individual_sin_desc': '',
             'ingreso_total_sin_desc': '',
             'descuento_maximo': '',
@@ -35,10 +42,9 @@ class PresupuestoEventoForm(forms.ModelForm):
             'honorario_total_evento': '',
 
             'impuesto_select': '',
-            'impuesto_unitario': '',
             'impuesto_total': '',
 
-            'pasaje_instructor': '',
+            'pasaje_instructor_cantidad': '',
             'pasaje_instructor_unitario': '',
             'pasaje_instructor_total': '',
 
@@ -60,7 +66,7 @@ class PresupuestoEventoForm(forms.ModelForm):
             'almuerzo_instructor_unitario': '',
             'almuerzo_instructor_total': '',
 
-            'pasaje_personal': '',
+            'pasaje_personal_cantidad': '',
             'pasaje_personal_dias': '',
             'pasaje_personal_unitario': '',
             'pasaje_personal_total': '',
@@ -87,7 +93,8 @@ class PresupuestoEventoForm(forms.ModelForm):
             'prospecto_evento': '',
             'prospecto_evento_unitario': '',
             'prospecto_evento_total': '',
-
+            'provision_mejoras_porcentaje': '',
+            'provision_mejoras_total': '',
             'total_egresos_fijos': '',
 
             # Material del evento
@@ -157,6 +164,11 @@ class PresupuestoEventoForm(forms.ModelForm):
             'aportacion_ministerio_unitario': '',
             'aportacion_ministerio_total': '',
 
+            'aportacion_fundaespol': '',
+            'aportacion_fundaespol_porcentaje': '',
+            'aportacion_fundaespol_unitario': '',
+            'aportacion_fundaespol_total': '',
+
             'aportacion_facultad': '',
             'aportacion_facultad_porcentaje_unitario': '',
             'aportacion_facultad_unitario': '',
@@ -183,25 +195,47 @@ class PresupuestoEventoForm(forms.ModelForm):
 
             'n_cursos': '',
             'participacion_total': '',
-
+            'pago_docente_unitario': '',
             'pago_docente_total': '',
+            "costo_instructores":'',
+            "honorario_total_evento_impuesto":'',
+            'razon_nombres': 'Razón Social',
+            'ruc_ci': 'RUC',
         }
         widgets = {
-            'empresa': forms.Select(attrs={'class': 'form-control select2'}),
+            'evento':forms.HiddenInput(),
+            'impuesto_porcentaje':forms.HiddenInput(),
+            'ultimo':forms.HiddenInput(),
+            'last_id':forms.HiddenInput(),
+            'active':forms.HiddenInput(),
+            'version':forms.NumberInput(attrs={'readonly':True,"class":'px-2 text-center'}),
+            'fecha_envio': forms.HiddenInput(),
+			'fecha_aprobada_sin':forms.HiddenInput(),
+			'fecha_aprobada_con':forms.HiddenInput(),
+            'nombre_evento': forms.HiddenInput(),
+            'codigo_evento': forms.HiddenInput(),
+            'razon_nombres': forms.Select(attrs={'disabled': True, 'class': 'form-control select2'}),
+            'ruc_ci': forms.Select(attrs={'disabled': True, 'class': 'form-control select2'}),
             'centro_costos': forms.Select(attrs={'onchange': 'CargarAportacion("centro_costo",this.value)'}),
             'fecha': forms.DateInput(attrs={'type': 'date', 'value': date.today, 'readonly': True, 'class': 'form-control'}),
-            "pasaje_instructor": forms.Select(attrs={'onchange': 'CargarInfo("pasaje_instructor",this.value);', 'class': 'form-control'}),
+            "pasaje_instructor_cantidad": forms.NumberInput(attrs={'min': 0, 'placeholder': '# de pasajes',
+                                                                   'class': 'valor-total',
+                                                                   'data-total': 'id_pasaje_instructor_total',
+                                                                   'data-depend': 'True',
+                                                                   'data-field': 'id_pasaje_instructor_unitario'}),
             "estado": forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Estado'}),
             "codigo": forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Código'}),
             "costo_hora_instructores": forms.HiddenInput(),
-            "costo_instructores": forms.TextInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control'}),
+            "costo_instructores": forms.NumberInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control'}),
+            "honorario_total_evento_impuesto": forms.NumberInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control egreso-fijo'}),
+
             "hora_inicio": forms.TimeInput(attrs={'type': 'time'}),
             "hora_fin": forms.TimeInput(attrs={'type': 'time'}),
             "n_horas": forms.NumberInput(attrs={'min': 0}),
             "n_dias": forms.NumberInput(attrs={'min': 0}),
             "n_participantes": forms.NumberInput(attrs={'min': 0}),
             'ingreso_individual_sin_desc': forms.NumberInput(attrs={'placeholder': "Ingreso sin descuento individual", 'class': 'text-currency textInput form-control'}),
-            'descuento_maximo': forms.NumberInput(attrs={'placeholder': "Descuento máximo", 'step': 1, 'class': 'text-currency textInput form-control'}),
+            'descuento_maximo': forms.NumberInput(attrs={'placeholder': "Descuento máximo", 'step': 1, 'class': 'text-currency textInput form-control', 'min': 0, 'max': 100}),
             'descuento_individual': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Descuento individual", 'class': 'text-currency textInput form-control'}),
             "ingreso_total_sin_desc": forms.NumberInput(attrs={'readonly': True, 'placeholder': "Ingreso sin descuento total", 'class': 'text-currency textInput form-control'}),
             "descuento_total": forms.NumberInput(attrs={'readonly': True, 'placeholder': "Descuento max total", 'class': 'text-currency textInput form-control'}),
@@ -210,27 +244,27 @@ class PresupuestoEventoForm(forms.ModelForm):
             'porcentaje_honorario_instructor': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Honorario', 'class': 'text-currency textInput form-control'}),
             'honorario_total_evento': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Honorario total del evento", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'impuesto_unitario': forms.HiddenInput(),
             'impuesto_total': forms.HiddenInput(),
             'impuesto_select': forms.HiddenInput(),
-
-            'pasaje_instructor_unitario': forms.NumberInput(attrs={'readonly': True,
-                                                                   'placeholder': "Costo Pasaje",
+			'honorario_instructores':forms.HiddenInput(),
+			'horas_instructores':forms.HiddenInput(),
+			'valor_total':forms.HiddenInput(),
+            'pasaje_instructor_unitario': forms.NumberInput(attrs={'placeholder': "Costo Pasaje",
                                                                    'class': 'text-currency textInput form-control valor-total',
                                                                    'data-total': 'id_pasaje_instructor_total',
                                                                    'data-depend': 'False',
                                                                    'data-field': ''}),
             'pasaje_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Pasaje Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
             "hospedaje_alimentacion_instructor": forms.Select(attrs={'onchange': 'CargarInfo("hospedaje_alimentacion_instructor",this.value);', 'class': 'form-control'}),
-            'hospedaje_alimentacion_instructor_n': forms.NumberInput(attrs={'min': 0,
+            'hospedaje_alimentacion_instructor_n': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                                             'placeholder': '# instructores',
-                                                                            'class': 'textInput form-control valor-total',
+                                                                            'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                             "data-total": "hospedaje_alimentacion_instructor_r",
                                                                             'data-depend': 'True',
                                                                             'data-field': 'id_hospedaje_alimentacion_instructor_dias'}),
-            'hospedaje_alimentacion_instructor_dias': forms.NumberInput(attrs={'min': 0,
+            'hospedaje_alimentacion_instructor_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                                'placeholder': "# días",
-                                                                               'class': 'textInput form-control valor-total',
+                                                                               'class': 'textInput form-control p-1 p-xl-2 valor-total',
                                                                                'data-total': 'hospedaje_alimentacion_instructor_r',
                                                                                'data-depend': 'True',
                                                                                'data-field': 'id_hospedaje_alimentacion_instructor_n'}),
@@ -242,15 +276,15 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                                    'data-field': 'hospedaje_alimentacion_instructor_r'}),
             'hospedaje_alimentacion_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
             "break_instructor": forms.Select(attrs={'onchange': 'CargarInfo("break_instructor",this.value);', 'class': 'form-control'}),
-            'break_instructor_n': forms.NumberInput(attrs={'min': 0,
+            'break_instructor_n': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                            'placeholder': '# instructores',
-                                                           'class': 'textInput form-control valor-total',
+                                                           'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                            "data-total": "break_instructor_r",
                                                            'data-depend': 'True',
                                                            'data-field': 'id_break_instructor_dias'}),
-            'break_instructor_dias': forms.NumberInput(attrs={'min': 0,
+            'break_instructor_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                               'placeholder': "# días",
-                                                              'class': 'textInput form-control valor-total',
+                                                              'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                               'data-total': 'break_instructor_r',
                                                               'data-depend': 'True',
                                                               'data-field': 'id_break_instructor_n'}),
@@ -262,15 +296,15 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                   'data-field': 'break_instructor_r'}),
             'break_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Break Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
             "almuerzo_instructor": forms.Select(attrs={'onchange': 'CargarInfo("almuerzo_instructor",this.value);', 'class': 'form-control'}),
-            'almuerzo_instructor_n': forms.NumberInput(attrs={'min': 0,
+            'almuerzo_instructor_n': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                               'placeholder': '# instructores',
-                                                              'class': 'textInput form-control valor-total',
+                                                              'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                               "data-total": "almuerzo_instructor_r",
                                                               'data-depend': 'True',
                                                               'data-field': 'id_almuerzo_instructor_dias'}),
-            'almuerzo_instructor_dias': forms.NumberInput(attrs={'min': 0,
+            'almuerzo_instructor_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                  'placeholder': "# días",
-                                                                 'class': 'textInput form-control valor-total',
+                                                                 'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                  "data-total": "almuerzo_instructor_r",
                                                                  'data-depend': 'True',
                                                                  'data-field': 'id_almuerzo_instructor_n'}),
@@ -282,25 +316,30 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                      'data-field': 'almuerzo_instructor_r'}),
             'almuerzo_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Almuerzo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            "pasaje_personal": forms.Select(attrs={'onchange': 'CargarInfo("pasaje_personal",this.value);', 'class': 'form-control'}),
-            'pasaje_personal_dias': forms.NumberInput(attrs={'min': 0,
-                                                             'placeholder': "# días",
-                                                             'class': 'textInput form-control valor-total',
-                                                             'data-total': 'id_pasaje_personal_total',
-                                                             'data-depend': 'True',
-                                                             'data-field': 'id_pasaje_personal_unitario'}),
-            'pasaje_personal_unitario': forms.NumberInput(attrs={'readonly': True,
-                                                                 'placeholder': "Costo HyA por día",
-                                                                 'class': 'text-currency textInput form-control valor-total',
-                                                                 'data-total': 'id_pasaje_personal_total',
+            "pasaje_personal_cantidad": forms.NumberInput(attrs={'min': 0,
+                                                                 'class': 'form-control valor-total',
+                                                                 'placeholder': '# de pasajes',
+                                                                 'data-total': 'pasaje_personal_r',
                                                                  'data-depend': 'True',
                                                                  'data-field': 'id_pasaje_personal_dias'}),
+            'pasaje_personal_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
+                                                             'placeholder': "# días",
+                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
+                                                             'data-total': 'pasaje_personal_r',
+                                                             'data-depend': 'True',
+                                                             'data-field': 'id_pasaje_personal_cantidad'}),
+            'pasaje_personal_unitario': forms.NumberInput(attrs={
+                'placeholder': "Costo HyA por día",
+                'class': 'text-currency textInput form-control valor-total',
+                'data-total': 'id_pasaje_personal_total',
+                'data-depend': 'True',
+                'data-field': 'pasaje_personal_r'}),
             'pasaje_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
             "hospedaje_alimentacion_personal": forms.Select(attrs={'onchange': 'CargarInfo("hospedaje_alimentacion_personal",this.value);', 'class': 'form-control'}),
-            'hospedaje_alimentacion_personal_dias': forms.NumberInput(attrs={'min': 0,
+            'hospedaje_alimentacion_personal_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                              'placeholder': "# días",
-                                                                             'class': 'textInput form-control valor-total',
+                                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                              'data-total': 'id_hospedaje_alimentacion_personal_total',
                                                                              'data-depend': 'True',
                                                                              'data-field': 'id_hospedaje_alimentacion_personal_unitario'
@@ -314,9 +353,9 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                                  }),
             'hospedaje_alimentacion_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'movilizacion_personal_dias': forms.NumberInput(attrs={'min': 0,
+            'movilizacion_personal_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                    'placeholder': "# días",
-                                                                   'class': 'textInput form-control valor-total',
+                                                                   'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                    'data-total': 'id_movilizacion_personal_total',
                                                                    'data-depend': 'True',
                                                                    'data-field': 'id_movilizacion_personal_unitario'}),
@@ -326,7 +365,13 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                        'data-depend': 'True',
                                                                        'data-field': 'id_movilizacion_personal_dias'}),
             'movilizacion_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
-
+            'provision_mejoras_porcentaje': forms.NumberInput(attrs={'min': 0, 'max': 100, 'placeholder': 'porcentaje',
+                                                                     'class': 'form-control valor-porcentaje text-currency',
+                                                                     'data-total': 'id_provision_mejoras_total',
+                                                                     'data-depend': 'True',
+                                                                     'data-field': 'id_ingreso_neto_total'}),
+            'provision_mejoras_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total",
+                                                                'class': 'form-control egreso-fijo text-currency'}),
             "instalaciones": forms.Select(attrs={'onchange': 'CargarInfo("instalaciones",this.value);', 'class': 'form-control'}),
             'instalaciones_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                'placeholder': "Costo por día",
@@ -357,7 +402,7 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                  'class': 'text-currency textInput form-control valor-total',
                                                                  'data-total': 'id_personal_evento_total',
                                                                  'data-depend': 'True',
-                                                                 'data-field': 'id_n_horas'
+                                                                 'data-field': 'id_n_participantes'
                                                                  }),
             'personal_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
@@ -462,9 +507,9 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                   'data-field': 'id_n_participantes'}),
             'otros_materiales_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
             "break_evento": forms.Select(attrs={'onchange': 'CargarInfo("break_evento",this.value);', 'class': 'form-control'}),
-            'break_evento_dias': forms.NumberInput(attrs={'min': 0,
+            'break_evento_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                           'placeholder': "# días",
-                                                          'class': 'textInput form-control valor-total',
+                                                          'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                           'data-total': 'break_participantes',
                                                           'data-depend': 'True',
                                                           'data-field': 'id_n_participantes'}),
@@ -476,9 +521,9 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                               'data-field': 'break_participantes'}),
             'break_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Break Total", 'class': 'egreso-variable text-currency textInput form-control'}),
             "almuerzo_evento": forms.Select(attrs={'onchange': 'CargarInfo("almuerzo_evento",this.value);', 'class': 'form-control'}),
-            'almuerzo_evento_dias': forms.NumberInput(attrs={'min': 0,
+            'almuerzo_evento_dias': forms.NumberInput(attrs={'min': 0, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                              'placeholder': "# días",
-                                                             'class': 'textInput form-control valor-total',
+                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                              "data-total": "almuerzo_participantes",
                                                              'data-depend': 'True',
                                                              'data-field': 'id_n_participantes'}),
@@ -536,10 +581,25 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                                        'data-depend': 'True',
                                                                        'data-field': 'id_n_participantes'}),
             'aportacion_ministerio_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
-            'aportacion_facultad': forms.Select(attrs={'onchange': 'CargarInfo("aportacion_facultad_porcentaje",this.value);', 'class': 'form-control'}),
-            'aportacion_facultad_porcentaje_unitario': forms.NumberInput(attrs={'readonly': True, 'min': 0, 'max': 100,
-                                                                                'placeholder': "aporte",
-                                                                                'class': 'text-currency textInput form-control valor-porcentaje',
+
+            'aportacion_fundaespol_porcentaje': forms.NumberInput(attrs={'readonly': True, 'min': 0, 'max': 100,
+                                                                         'placeholder': "aporte",
+                                                                         'class': 'text-currency textInput form-control valor-porcentaje',
+                                                                         'data-total': 'id_aportacion_fundaespol_unitario',
+                                                                         'data-depend': 'True',
+                                                                         'data-field': 'id_ingreso_neto_individual'}),
+            'aportacion_fundaespol_unitario': forms.NumberInput(attrs={'readonly': True,
+                                                                       'placeholder': "Costo unitario",
+                                                                       'class': 'text-currency textInput form-control valor-total',
+                                                                       'data-total': 'id_aportacion_fundaespol_total',
+                                                                       'data-depend': 'True',
+                                                                       'data-field': 'id_n_participantes'}),
+            'aportacion_fundaespol_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
+
+            'aportacion_facultad': forms.Select(attrs={'onchange': 'CargarInfo("aportacion_facultad_porcentaje",this.value);', 'class': 'form-control otros', 'data-label': 'id_aportacion_facultad_porcentaje_unitario'}),
+            'aportacion_facultad_porcentaje_unitario': forms.NumberInput(attrs={'min': 0, 'max': 100, 'readonly': True,
+                                                                       'placeholder': "aporte",
+                                                                       'class': 'text-currency textInput form-control valor-porcentaje',
                                                                                 'data-total': 'id_aportacion_facultad_unitario',
                                                                                 'data-depend': 'True',
                                                                                 'data-field': 'id_ingreso_neto_individual'}),
@@ -595,14 +655,22 @@ class PresupuestoEventoForm(forms.ModelForm):
                                                  'data-depend': 'True',
                                                  'data-field': 'resumen_aporte_facultad'}),
             'participacion_total': forms.NumberInput(attrs={'readonly': True, 'class': 'form-control textInput text-currency'}),
+            'pago_docente_unitario': forms.NumberInput(attrs={'class': 'form-control textInput text-currency valor-total',
+                                                              'data-total': 'id_pago_docente_total',
+                                                              'data-depend': 'True',
+                                                              'data-field': 'id_n_cursos'}),
             'pago_docente_total': forms.NumberInput(attrs={'readonly': True, 'class': 'form-control textInput text-currency'}),
             "motivo_anular": forms.Textarea(attrs={"class": "form-control", "rows": 2}),
-            "observaciones": forms.Textarea(attrs={"class": "form-control", "rows": 2}),
+            "observaciones": forms.Textarea(attrs={"class": "form-control red darken-1", "rows": 2}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    # def clean_hora_fin(self):
+    #     hora_inicio = self.cleaned_data["hora_inicio"]
+    #     hora_fin = self.cleaned_data["hora_fin"]
+    #     return validate_horarios(hora_inicio,hora_fin)
 
 class PresupuestoEventoFormUpdate(forms.ModelForm):
     # estado=
@@ -612,6 +680,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
         labels = {
             'estado': '',
             'codigo': '',
+            'version':'',
             'fecha': '',
             'ingreso_individual_sin_desc': '',
             'ingreso_total_sin_desc': '',
@@ -626,12 +695,14 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'honorario_total_evento': '',
 
             'impuesto_select': '',
-            'impuesto_unitario': '',
             'impuesto_total': '',
 
-            'pasaje_instructor': '',
+            'pasaje_instructor_cantidad': '',
             'pasaje_instructor_unitario': '',
             'pasaje_instructor_total': '',
+
+            'provision_mejoras_porcentaje': '',
+            'provision_mejoras_total': '',
 
             'hospedaje_alimentacion_instructor': '',
             'hospedaje_alimentacion_instructor_dias': '',
@@ -651,7 +722,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'almuerzo_instructor_unitario': '',
             'almuerzo_instructor_total': '',
 
-            'pasaje_personal': '',
+            'pasaje_personal_cantidad': '',
             'pasaje_personal_dias': '',
             'pasaje_personal_unitario': '',
             'pasaje_personal_total': '',
@@ -748,6 +819,11 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'aportacion_ministerio_unitario': '',
             'aportacion_ministerio_total': '',
 
+            'aportacion_fundaespol': '',
+            'aportacion_fundaespol_porcentaje': '',
+            'aportacion_fundaespol_unitario': '',
+            'aportacion_fundaespol_total': '',
+
             'aportacion_facultad': '',
             'aportacion_facultad_porcentaje_unitario': '',
             'aportacion_facultad_unitario': '',
@@ -776,23 +852,42 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'participacion_total': '',
 
             'pago_docente_total': '',
+            'pago_docente_unitario': '',
+            "costo_instructores":'',
+            'honorario_total_evento_impuesto':'',
+            'razon_nombres': 'Razón Social',
+            'ruc_ci':'RUC',
         }
         widgets = {
-            'empresa': forms.Select(attrs={'disabled': True, 'class': 'form-control select2'}),
+            'impuesto_porcentaje':forms.HiddenInput(),
+            'ultimo':forms.HiddenInput(),
+            'evento':forms.HiddenInput(),
+            'last_id':forms.HiddenInput(),
+            'active':forms.HiddenInput(),
+            'version':forms.NumberInput(attrs={'readonly':True,"class":'px-2 text-center'}),
+            'fecha_envio': forms.HiddenInput(),
+			'fecha_aprobada_sin':forms.HiddenInput(),
+			'fecha_aprobada_con':forms.HiddenInput(),
+            'tipo':forms.Select(attrs={'disabled': True}),
+            'nombre_evento': forms.Select(attrs={'class': 'form-control select2-evento'}),
+            'codigo_evento': forms.Select(attrs={'class': 'form-control select2-evento'}),
+            'razon_nombres': forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'ruc_ci': forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
             'centro_costos': forms.Select(attrs={'disabled': True, 'class': 'form-control textInput'}),
             'fecha': forms.DateInput(attrs={'type': 'date', 'readonly': True, 'class': 'form-control'}),
             "pasaje_instructor": forms.Select(attrs={'onchange': 'CargarInfo("pasaje_instructor",this.value);', 'class': 'form-control'}),
             "estado": forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Estado'}),
             "codigo": forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Código'}),
             "costo_hora_instructores": forms.HiddenInput(),
-            "costo_instructores": forms.TextInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control'}),
-            "hora_inicio": forms.TimeInput(attrs={'type': 'time', 'readonly':True}),
-            "hora_fin": forms.TimeInput(attrs={'type': 'time', 'readonly':True}),
-            "n_horas": forms.NumberInput(attrs={'min': 0, 'readonly':True}),
-            "n_dias": forms.NumberInput(attrs={'min': 0, 'readonly':True}),
-            "n_participantes": forms.NumberInput(attrs={'min': 0, 'readonly':True}),
-            'ingreso_individual_sin_desc': forms.NumberInput(attrs={'placeholder': "Ingreso sin descuento individual", 'class': 'text-currency textInput form-control', 'readonly':True}),
-            'descuento_maximo': forms.NumberInput(attrs={'placeholder': "Descuento máximo", 'step': 1, 'class': 'text-currency textInput form-control', 'readonly':True}),
+            "costo_instructores": forms.NumberInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control'}),
+            "honorario_total_evento_impuesto": forms.NumberInput(attrs={'readonly': True, 'class': 'text-currency textInput form-control egreso-fijo'}),
+            "hora_inicio": forms.TimeInput(attrs={'type': 'time', 'readonly': True}),
+            "hora_fin": forms.TimeInput(attrs={'type': 'time', 'readonly': True}),
+            "n_horas": forms.NumberInput(attrs={'min': 0, 'readonly': True}),
+            "n_dias": forms.NumberInput(attrs={'min': 0, 'readonly': True}),
+            "n_participantes": forms.NumberInput(attrs={'min': 0, 'readonly': True}),
+            'ingreso_individual_sin_desc': forms.NumberInput(attrs={'placeholder': "Ingreso sin descuento individual", 'class': 'text-currency textInput form-control', 'readonly': True}),
+            'descuento_maximo': forms.NumberInput(attrs={'placeholder': "Descuento máximo", 'step': 1, 'class': 'text-currency textInput form-control', 'readonly': True}),
             'descuento_individual': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Descuento individual", 'class': 'text-currency textInput form-control'}),
             "ingreso_total_sin_desc": forms.NumberInput(attrs={'readonly': True, 'placeholder': "Ingreso sin descuento total", 'class': 'text-currency textInput form-control'}),
             "descuento_total": forms.NumberInput(attrs={'readonly': True, 'placeholder': "Descuento max total", 'class': 'text-currency textInput form-control'}),
@@ -800,11 +895,23 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'ingreso_neto_total': forms.NumberInput(attrs={'readonly': True, 'class': 'border border-success text-currency textInput form-control', 'placeholder': "Ingreso neto total"}),
             'porcentaje_honorario_instructor': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Honorario', 'class': 'text-currency textInput form-control'}),
             'honorario_total_evento': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Honorario total del evento", 'class': 'egreso-fijo text-currency textInput form-control'}),
-
-            'impuesto_unitario': forms.HiddenInput(),
+			'honorario_instructores':forms.HiddenInput(),
+			'horas_instructores':forms.HiddenInput(),
+			'valor_total':forms.HiddenInput(),
             'impuesto_total': forms.HiddenInput(),
             'impuesto_select': forms.HiddenInput(),
-            'pasaje_instructor':forms.Select(attrs={'disabled':True}),
+            'provision_mejoras_porcentaje': forms.NumberInput(attrs={'readonly': True, 'min': 0, 'max': 100,
+                                                                     'class': 'form-control valor-porcentaje text-currency',
+                                                                     'data-total': 'id_provision_mejoras_total',
+                                                                     'data-depend': 'True',
+                                                                     'data-field': 'id_ingreso_neto_total'}),
+            'provision_mejoras_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total",
+                                                                'class': 'form-control egreso-fijo text-currency'}),
+            "pasaje_instructor_cantidad": forms.NumberInput(attrs={'readonly': True, 'min': 0, 'placeholder': '# de pasajes',
+                                                                   'class': 'valor-total',
+                                                                   'data-total': 'id_pasaje_instructor_total',
+                                                                   'data-depend': 'True',
+                                                                   'data-field': 'id_pasaje_instructor_unitario'}),
             'pasaje_instructor_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                    'placeholder': "Costo Pasaje",
                                                                    'class': 'text-currency textInput form-control valor-total',
@@ -812,16 +919,16 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                    'data-depend': 'False',
                                                                    'data-field': ''}),
             'pasaje_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Pasaje Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
-            "hospedaje_alimentacion_instructor": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'hospedaje_alimentacion_instructor_n': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            "hospedaje_alimentacion_instructor": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'hospedaje_alimentacion_instructor_n': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                                             'placeholder': '# instructores',
-                                                                            'class': 'textInput form-control valor-total',
+                                                                            'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                             "data-total": "hospedaje_alimentacion_instructor_r",
                                                                             'data-depend': 'True',
                                                                             'data-field': 'id_hospedaje_alimentacion_instructor_dias'}),
-            'hospedaje_alimentacion_instructor_dias': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            'hospedaje_alimentacion_instructor_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                                'placeholder': "# días",
-                                                                               'class': 'textInput form-control valor-total',
+                                                                               'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                                'data-total': 'hospedaje_alimentacion_instructor_r',
                                                                                'data-depend': 'True',
                                                                                'data-field': 'id_hospedaje_alimentacion_instructor_n'}),
@@ -832,16 +939,16 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                                    'data-depend': 'True',
                                                                                    'data-field': 'hospedaje_alimentacion_instructor_r'}),
             'hospedaje_alimentacion_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
-            "break_instructor": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'break_instructor_n': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            "break_instructor": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'break_instructor_n': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                            'placeholder': '# instructores',
-                                                           'class': 'textInput form-control valor-total',
+                                                           'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                            "data-total": "break_instructor_r",
                                                            'data-depend': 'True',
                                                            'data-field': 'id_break_instructor_dias'}),
-            'break_instructor_dias': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            'break_instructor_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                               'placeholder': "# días",
-                                                              'class': 'textInput form-control valor-total',
+                                                              'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                               'data-total': 'break_instructor_r',
                                                               'data-depend': 'True',
                                                               'data-field': 'id_break_instructor_n'}),
@@ -852,16 +959,16 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                   'data-depend': 'True',
                                                                   'data-field': 'break_instructor_r'}),
             'break_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Break Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
-            "almuerzo_instructor": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'almuerzo_instructor_n': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            "almuerzo_instructor": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'almuerzo_instructor_n': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# instructores",
                                                               'placeholder': '# instructores',
-                                                              'class': 'textInput form-control valor-total',
+                                                              'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                               "data-total": "almuerzo_instructor_r",
                                                               'data-depend': 'True',
                                                               'data-field': 'id_almuerzo_instructor_dias'}),
-            'almuerzo_instructor_dias': forms.NumberInput(attrs={'min': 0,'readonly':True,
+            'almuerzo_instructor_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                  'placeholder': "# días",
-                                                                 'class': 'textInput form-control valor-total',
+                                                                 'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                  "data-total": "almuerzo_instructor_r",
                                                                  'data-depend': 'True',
                                                                  'data-field': 'id_almuerzo_instructor_n'}),
@@ -873,10 +980,15 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                      'data-field': 'almuerzo_instructor_r'}),
             'almuerzo_instructor_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Almuerzo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            "pasaje_personal": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'pasaje_personal_dias': forms.NumberInput(attrs={'min': 0,'readonly': True,
+            "pasaje_personal_cantidad": forms.NumberInput(attrs={'min': 0, "readonly":True,
+                                                                 'class': 'form-control valor-total',
+                                                                 'placeholder': '# de pasajes',
+                                                                 'data-total': 'pasaje_personal_r',
+                                                                 'data-depend': 'True',
+                                                                 'data-field': 'id_pasaje_personal_dias'}),
+            'pasaje_personal_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                              'placeholder': "# días",
-                                                             'class': 'textInput form-control valor-total',
+                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                              'data-total': 'id_pasaje_personal_total',
                                                              'data-depend': 'True',
                                                              'data-field': 'id_pasaje_personal_unitario'}),
@@ -888,10 +1000,10 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                  'data-field': 'id_pasaje_personal_dias'}),
             'pasaje_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            "hospedaje_alimentacion_personal": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'hospedaje_alimentacion_personal_dias': forms.NumberInput(attrs={'min': 0,'readonly': True,
+            "hospedaje_alimentacion_personal": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'hospedaje_alimentacion_personal_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                              'placeholder': "# días",
-                                                                             'class': 'textInput form-control valor-total',
+                                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                              'data-total': 'id_hospedaje_alimentacion_personal_total',
                                                                              'data-depend': 'True',
                                                                              'data-field': 'id_hospedaje_alimentacion_personal_unitario'
@@ -905,20 +1017,20 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                                  }),
             'hospedaje_alimentacion_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'movilizacion_personal_dias': forms.NumberInput(attrs={'min': 0,'readonly': True,
+            'movilizacion_personal_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                                    'placeholder': "# días",
-                                                                   'class': 'textInput form-control valor-total',
+                                                                   'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                                    'data-total': 'id_movilizacion_personal_total',
                                                                    'data-depend': 'True',
                                                                    'data-field': 'id_movilizacion_personal_unitario'}),
-            'movilizacion_personal_unitario': forms.NumberInput(attrs={'placeholder': "Costo HyA por día",'readonly': True,
+            'movilizacion_personal_unitario': forms.NumberInput(attrs={'placeholder': "Costo HyA por día", 'readonly': True,
                                                                        'class': 'text-currency textInput form-control valor-total',
                                                                        'data-total': 'id_movilizacion_personal_total',
                                                                        'data-depend': 'True',
                                                                        'data-field': 'id_movilizacion_personal_dias'}),
             'movilizacion_personal_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo HyA Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            "instalaciones": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
+            "instalaciones": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
             'instalaciones_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                'placeholder': "Costo por día",
                                                                'class': 'text-currency textInput form-control valor-total',
@@ -928,7 +1040,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                }),
             'instalaciones_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'publicidad_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día",'readonly': True,
+            'publicidad_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día", 'readonly': True,
                                                             'class': 'text-currency textInput form-control valor-total',
                                                             'data-total': 'id_publicidad_total',
                                                             'data-depend': 'False',
@@ -936,7 +1048,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                             }),
             'publicidad_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'publicidad_evento_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día",'readonly': True,
+            'publicidad_evento_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día", 'readonly': True,
                                                                    'class': 'text-currency textInput form-control valor-total',
                                                                    'data-total': 'id_publicidad_evento_total',
                                                                    'data-depend': 'True',
@@ -944,11 +1056,11 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                    }),
             'publicidad_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
-            'personal_evento_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día",'readonly':True,
+            'personal_evento_unitario': forms.NumberInput(attrs={'placeholder': "Costo por día", 'readonly': True,
                                                                  'class': 'text-currency textInput form-control valor-total',
                                                                  'data-total': 'id_personal_evento_total',
                                                                  'data-depend': 'True',
-                                                                 'data-field': 'id_n_horas'
+                                                                 'data-field': 'id_n_participantes'
                                                                  }),
             'personal_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
 
@@ -963,7 +1075,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'prospecto_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Total", 'class': 'egreso-fijo text-currency textInput form-control'}),
             'total_egresos_fijos': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Total egresos fijos', 'class': 'punto form-control textInput text-currency border border-success'}),
 
-            'certificados': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_certificados_unitario'}),
+            'certificados': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_certificados_unitario'}),
             'certificados_unitario': forms.NumberInput(attrs={'readonly': True,
                                                               'placeholder': "Costo unitario",
                                                               'class': 'text-currency textInput form-control valor-total',
@@ -972,7 +1084,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                               'data-field': 'id_n_participantes'}),
             'certificados_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'carpeta': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_carpeta_unitario'}),
+            'carpeta': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_carpeta_unitario'}),
             'carpeta_unitario': forms.NumberInput(attrs={'readonly': True,
                                                          'placeholder': "Costo unitario",
                                                          'class': 'text-currency textInput form-control valor-total',
@@ -981,7 +1093,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                          'data-field': 'id_n_participantes'}),
             'carpeta_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'maletin': forms.Select(attrs={'disabled':True, 'class': 'form-control otros', 'data-label': 'id_maletin_unitario'}),
+            'maletin': forms.Select(attrs={'disabled': True, 'class': 'form-control otros', 'data-label': 'id_maletin_unitario'}),
             'maletin_unitario':  forms.NumberInput(attrs={'readonly': True,
                                                           'placeholder': "Costo unitario",
                                                           'class': 'text-currency textInput form-control valor-total',
@@ -990,7 +1102,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                           'data-field': 'id_n_participantes'}),
             'maletin_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'block': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_block_unitario'}),
+            'block': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_block_unitario'}),
             'block_unitario':  forms.NumberInput(attrs={'readonly': True,
                                                         'placeholder': "Costo unitario",
                                                         'class': 'text-currency textInput form-control valor-total',
@@ -999,7 +1111,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                         'data-field': 'id_n_participantes'}),
             'block_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'lapiz': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_lapiz_unitario'}),
+            'lapiz': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_lapiz_unitario'}),
             'lapiz_unitario': forms.NumberInput(attrs={'readonly': True,
                                                        'placeholder': "Costo unitario",
                                                        'class': 'text-currency textInput form-control valor-total',
@@ -1008,7 +1120,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                        'data-field': 'id_n_participantes'}),
             'lapiz_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'pluma': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_pluma_unitario'}),
+            'pluma': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_pluma_unitario'}),
             'pluma_unitario': forms.NumberInput(attrs={'readonly': True,
                                                        'placeholder': "Costo unitario",
                                                        'class': 'text-currency textInput form-control valor-total',
@@ -1017,7 +1129,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                        'data-field': 'id_n_participantes'}),
             'pluma_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'credencial_plastico': forms.Select(attrs={'disabled':True,'class': 'form-control otros', 'data-label': 'id_credencial_plastico_unitario'}),
+            'credencial_plastico': forms.Select(attrs={'disabled': True, 'class': 'form-control otros', 'data-label': 'id_credencial_plastico_unitario'}),
             'credencial_plastico_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                      'placeholder': "Costo unitario",
                                                                      'class': 'text-currency textInput form-control valor-total',
@@ -1026,7 +1138,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                      'data-field': 'id_n_participantes'}),
             'credencial_plastico_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'credencial_pvc': forms.Select(attrs={'disabled':True, 'class': 'form-control otros', 'data-label': 'id_credencial_pvc_unitario'}),
+            'credencial_pvc': forms.Select(attrs={'disabled': True, 'class': 'form-control otros', 'data-label': 'id_credencial_pvc_unitario'}),
             'credencial_pvc_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                 'placeholder': "Costo unitario",
                                                                 'class': 'text-currency textInput form-control valor-total',
@@ -1035,7 +1147,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                 'data-field': 'id_n_participantes'}),
             'credencial_pvc_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'pendrive': forms.Select(attrs={'disabled':True, 'class': 'form-control', 'data-label': 'id_pendrive_unitario'}),
+            'pendrive': forms.Select(attrs={'disabled': True, 'class': 'form-control', 'data-label': 'id_pendrive_unitario'}),
             'pendrive_unitario': forms.NumberInput(attrs={'readonly': True,
                                                           'placeholder': "Costo unitario",
                                                           'class': 'text-currency textInput form-control valor-total',
@@ -1044,7 +1156,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                           'data-field': 'id_n_participantes'}),
             'pendrive_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'otros_materiales': forms.Select(attrs={'disabled':True, 'class': 'form-control otros', 'data-label': 'id_otros_materiales_unitario'}),
+            'otros_materiales': forms.Select(attrs={'disabled': True, 'class': 'form-control otros', 'data-label': 'id_otros_materiales_unitario'}),
             'otros_materiales_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                   'placeholder': "Costo unitario",
                                                                   'class': 'text-currency textInput form-control valor-total',
@@ -1052,10 +1164,10 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                   'data-depend': 'True',
                                                                   'data-field': 'id_n_participantes'}),
             'otros_materiales_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
-            "break_evento": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'break_evento_dias': forms.NumberInput(attrs={'min': 0,'readonly': True,
+            "break_evento": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'break_evento_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                           'placeholder': "# días",
-                                                          'class': 'textInput form-control valor-total',
+                                                          'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                           'data-total': 'break_participantes',
                                                           'data-depend': 'True',
                                                           'data-field': 'id_n_participantes'}),
@@ -1066,10 +1178,10 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                               'data-depend': 'True',
                                                               'data-field': 'break_participantes'}),
             'break_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Break Total", 'class': 'egreso-variable text-currency textInput form-control'}),
-            "almuerzo_evento": forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
-            'almuerzo_evento_dias': forms.NumberInput(attrs={'min': 0,'readonly':True, 
+            "almuerzo_evento": forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
+            'almuerzo_evento_dias': forms.NumberInput(attrs={'min': 0, 'readonly': True, 'data-toggle': "tooltip", 'data-placement': "top", "title": "# dias",
                                                              'placeholder': "# días",
-                                                             'class': 'textInput form-control valor-total',
+                                                             'class': 'p-1 p-xl-2 textInput form-control valor-total',
                                                              "data-total": "almuerzo_participantes",
                                                              'data-depend': 'True',
                                                              'data-field': 'id_n_participantes'}),
@@ -1080,7 +1192,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                  'data-depend': 'True',
                                                                  'data-field': 'almuerzo_participantes'}),
             'almuerzo_evento_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': "Costo Almuerzo Total", 'class': 'egreso-variable text-currency textInput form-control'}),
-            'ceremonia': forms.Select(attrs={'disabled':True,  'class': 'form-control otros', 'data-label': 'id_ceremonia_unitario'}),
+            'ceremonia': forms.Select(attrs={'disabled': True,  'class': 'form-control otros', 'data-label': 'id_ceremonia_unitario'}),
             'ceremonia_unitario': forms.NumberInput(attrs={'readonly': True,
                                                            'placeholder': "Costo unitario",
                                                            'class': 'text-currency textInput form-control valor-total',
@@ -1127,10 +1239,23 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                        'data-depend': 'True',
                                                                        'data-field': 'id_n_participantes'}),
             'aportacion_ministerio_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
-            'aportacion_facultad': forms.Select(attrs={'disabled':True, 'class': 'form-control'}),
+            'aportacion_fundaespol_porcentaje': forms.NumberInput(attrs={'readonly': True, 'min': 0, 'max': 100,
+                                                                         'placeholder': "aporte",
+                                                                         'class': 'text-currency textInput form-control valor-porcentaje',
+                                                                         'data-total': 'id_aportacion_fundaespol_unitario',
+                                                                         'data-depend': 'True',
+                                                                         'data-field': 'id_ingreso_neto_individual'}),
+            'aportacion_fundaespol_unitario': forms.NumberInput(attrs={'readonly': True,
+                                                                       'placeholder': "Costo unitario",
+                                                                       'class': 'text-currency textInput form-control valor-total',
+                                                                       'data-total': 'id_aportacion_fundaespol_total',
+                                                                       'data-depend': 'True',
+                                                                       'data-field': 'id_n_participantes'}),
+            'aportacion_fundaespol_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
+            'aportacion_facultad': forms.Select(attrs={'disabled': True, 'class': 'form-control'}),
             'aportacion_facultad_porcentaje_unitario': forms.NumberInput(attrs={'readonly': True, 'min': 0, 'max': 100,
-                                                                                'placeholder': "aporte",
-                                                                                'class': 'text-currency textInput form-control valor-porcentaje',
+                                                                       'placeholder': "aporte",
+                                                                       'class': 'text-currency textInput form-control valor-porcentaje',
                                                                                 'data-total': 'id_aportacion_facultad_unitario',
                                                                                 'data-depend': 'True',
                                                                                 'data-field': 'id_ingreso_neto_individual'}),
@@ -1142,14 +1267,14 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                      'data-field': 'id_n_participantes'}),
             'aportacion_facultad_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'movilizacion_interna_unitario': forms.NumberInput(attrs={'placeholder': 'Costo unitario','readonly':True, 
+            'movilizacion_interna_unitario': forms.NumberInput(attrs={'placeholder': 'Costo unitario', 'readonly': True,
                                                                       'class': 'text-currency textInput form-control valor-total',
                                                                       'data-total': 'id_movilizacion_interna_total',
                                                                       'data-depend': 'True',
                                                                       'data-field': 'id_n_dias'}),
             'movilizacion_interna_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
 
-            'cafeteria_limpieza': forms.Select(attrs={'disabled':True,  'class': 'form-control'}),
+            'cafeteria_limpieza': forms.Select(attrs={'disabled': True,  'class': 'form-control'}),
             'cafeteria_limpieza_unitario': forms.NumberInput(attrs={'readonly': True,
                                                                     'placeholder': 'Costo unitario',
                                                                     'class': 'text-currency textInput form-control valor-total',
@@ -1157,7 +1282,7 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
                                                                     'data-depend': 'True',
                                                                     'data-field': 'n_dias_participantes'}),
             'cafeteria_limpieza_total': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Costo Total', 'class': 'egreso-variable text-currency textInput form-control'}),
-            'imprevisto_porcentaje': forms.NumberInput(attrs={'placeholder': 'imprevisto', 'min': 0.5, 'max': 5.0,'readonly':True, 
+            'imprevisto_porcentaje': forms.NumberInput(attrs={'placeholder': 'imprevisto', 'min': 0.5, 'max': 5.0, 'readonly': True,
                                                               'class': 'text-currency textInput form-control valor-porcentaje',
                                                               'data-total': 'id_imprevisto_unitario',
                                                               'data-depend': 'True',
@@ -1181,44 +1306,24 @@ class PresupuestoEventoFormUpdate(forms.ModelForm):
             'margen_contribucion': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Contribución', 'class': 'form-control textInput text-currency'}),
             'utilidad': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Utilidad', 'class': 'form-control textInput text-currency'}),
             'punto_equilibrio': forms.NumberInput(attrs={'readonly': True, 'placeholder': 'Equilibrio', 'class': 'form-control textInput text-currency'}),
-            'n_cursos': forms.NumberInput(attrs={'class': 'form-control textInput text-currency valor-total','readonly':True, 
+            'n_cursos': forms.NumberInput(attrs={'class': 'form-control textInput text-currency valor-total', 'readonly': True,
                                                  'data-total': 'id_participacion_total',
                                                  'data-depend': 'True',
                                                  'data-field': 'resumen_aporte_facultad'}),
             'participacion_total': forms.NumberInput(attrs={'readonly': True, 'class': 'form-control textInput text-currency'}),
             'pago_docente_total': forms.NumberInput(attrs={'readonly': True, 'class': 'form-control textInput text-currency'}),
-            "motivo_anular": forms.Textarea(attrs={'readonly':True,"class": "form-control", "rows": 2}),
-            "observaciones": forms.Textarea(attrs={'readonly':True,"class": "form-control", "rows": 2}),
+            'pago_docente_unitario': forms.NumberInput(attrs={'readonly': True,'class': 'form-control textInput text-currency valor-total',
+                                                              'data-total': 'id_pago_docente_total',
+                                                              'data-depend': 'True',
+                                                              'data-field': 'id_n_cursos'}),
+            "motivo_anular": forms.Textarea(attrs={'readonly': True, "class": "form-control", "rows": 2}),
+            "observaciones": forms.Textarea(attrs={'readonly': True, "class": "form-control", "rows": 2}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
-# class PresupuestoEventoFilter(django_filters.FilterSet):
-# 	fecha = django_filters.DateFilter(
-#         widget=forms.DateInput(
-#             attrs={
-#                 'id': 'datepicker',
-#                 'type': 'date'
-#             }
-#         ))
-
-# 	estado = django_filters.ChoiceFilter(
-# 		#lookup_expr='isnull',
-# 		null_label="Pendiente",
-# 		empty_label="-------",
-# 		#null_value="null",
-
-# 		choices=TRUE_FALSE_CHOICES
-# 		)
-# 	#non_estado = django_filters.BooleanFilter(field_name='estado', lookup_expr='isnull')
-
-# 	class Meta:
-# 		model = PresupuestoEvento
-# 		fields = ["nombre","codigo","aula","modalidad","empresa","nombre_instructor",
-# 		"fecha","horario","n_horas","costo_hora_instructor","n_dias",
-# 		"n_participantes","estado"]
-
-# 	def __init__(self, *args, **kwargs):
-# 		super().__init__(*args, **kwargs)
+    # def clean_hora_fin(self):
+    #     hora_inicio = self.cleaned_data["hora_inicio"]
+    #     hora_fin = self.cleaned_data["hora_fin"]
+    #     return validate_horarios(hora_inicio,hora_fin)

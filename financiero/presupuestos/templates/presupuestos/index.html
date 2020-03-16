@@ -22,26 +22,47 @@
 				<div class="col-2">
 					{{ filter.form.codigo|as_crispy_field }}
 				</div>
-				<div class="col-2"></div>
+				<div class="col-2">
+					{{ filter.form.evento__codigo_evento|as_crispy_field }}
+				</div>
 				<div class="col-8">
+					{{ filter.form.evento__nombre|as_crispy_field }}
 				</div>
 			</div>
 			<div class="form-row">
-
-				<div class="col-4 col-xl-4">
+				<div class="col-3 col-xl-3">
 					{{ filter.form.fecha|as_crispy_field }}
 				</div>
-				<div class="col-8">
-					{{ filter.form.empresa|as_crispy_field }}
+				<div class="col-2">
+					{{ filter.form.ruc_ci|as_crispy_field }}
+				</div>
+				<div class="col-4">
+					{{ filter.form.razon_nombres|as_crispy_field }}
+				</div>
+				<div class="col-3">
+					{{filter.form.codigo_propuesta|as_crispy_field}}
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-3"></div>
-				<div class="col-3"></div>
-				<div class="col-2"></div>
-				<div class="col-2"></div>
+				<div class="col-3">
+					{{ filter.form.evento__modalidad|as_crispy_field}}
+				</div>
 				<div class="col-2">
+					{{ filter.form.tipo|as_crispy_field}}
+				</div>
+				<div class="col-2">
+					{{ filter.form.evento__fecha_inicio|as_crispy_field}}
+
+				</div>
+				<div class="col-2">
+					{{ filter.form.evento__fecha_fin|as_crispy_field}}
+
+				</div>
+				<div class="col-3">
 					{{ filter.form.estado|as_crispy_field }}
+				</div>
+				<div class="col-3">
+					{{ filter.form.centro_costos|as_crispy_field }}
 				</div>
 			</div>
 
@@ -55,19 +76,26 @@
 
 <div class="row mt-4">
 	<div class="col-12 col-xl-12">
-		<table id="dtBasicExample" class="table table-responsive-md  border-bottom">
+		<table id="dtBasicExample" class="table table-responsive  border-bottom">
 			<thead class="white-text darkgreen-bg">
 				<tr>
 					<th scope="col">Código</th>
+					<th scope="col">Versión</th>
 					<th scope="col">Cod. Evento</th>
+					<th scope="col">Cod. Propuesta</th>
 					<th scope="col">Nombre Evento</th>
-					<th scope="col">Fecha Inicio</th>
+					<th scope="col">Tipo</th>
+					<th scope="col">Fecha Elaboracion</th>
 					<th scope="col">% Margen contrib</th>
 					<th scope="col">Punto equilibrio</th>
 					<th scope="col">No. Participantes</th>
-					<th scope="col">Valor Total</th>
+					<th scope="col">Ingreso Total</th>
 					<th scope="col">Estado</th>
-					<th scope="col"></th>
+					<th scope="col">Centro Costos</th>
+					<th scope="col">Fecha Envío Solicitud</th>
+					<th scope="col">Fecha Aprobación sin Evento</th>
+					<th scope="col">Fecha Aprobación con Evento</th>
+					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
 			{% if filter.qs %}
@@ -75,24 +103,31 @@
 				{% for p in filter.qs %}
 				<tr class="text-center">
 					<td scope="row">{{p.codigo}}</td>
-					<td scope="row"></td>
-					<td scope="row"></td>
-					<td scope="row"></td>
-					<td scope="row">{{p.margen_contribucion}}</td>
+					<td scope="row">{{p.version}}</td>
+					<td scope="row">{{p.evento.codigo_evento}}</td>
+					<td scope="row">{{p.codigo_propuesta|default_if_none:""}}</td>
+					<td scope="row">{{p.evento.nombre}}</td>
+					<td scope="row">{{p.tipo}}</td>
+					<td scope="row">{{p.fecha}}</td>
+					<td scope="row">{{p.margen_contribucion|porcentaje}}</td>
 					<td scope="row">{{p.punto_equilibrio}}</td>
 					<td scope="row">{{p.n_participantes}}</td>
 					<td scope="row">{{p.ingreso_neto_total|currency}}</td>
 					<td scope="row">{{p.estado}}</td>
+					<td scope="row">{{p.centro_costos}}</td>
+					<td scope="row">{{p.fecha_envio|default_if_none:""}}</td>
+					<td scope="row">{{p.fecha_aprobada_sin|default_if_none:""}}</td>
+					<td scope="row">{{p.fecha_aprobada_con|default_if_none:""}}</td>
 					<td scope="row">
-						<a class="btn btn-secondary btn-sm" href="{% url 'editar_presupuestos' pk=p.id %}"><i
+						<a class="btn btn-secondary btn-sm btn-block" href="{% url 'editar_presupuestos' pk=p.id %}"><i
 								class="fas fa-edit"></i></a>
 
 						{% if p.estado == 'Grabado' %}
-						<a href='javascript:;' onclick='eliminar({{ p.id }});' class="btn btn-danger btn-sm"  data-toggle='modal'
+						<a href='javascript:;' onclick='eliminar({{ p.id }});' class="btn btn-danger btn-sm btn-block"  data-toggle='modal'
 						data-target="#presupuestoEliminarCenter"><i
 								class="fas fa-trash"></i></a>
 						{% endif %}
-						<a class="btn btn-secondary btn-sm" href="#" data-toggle="tooltip" data-placement="top"
+						<a class="btn btn-secondary btn-sm btn-block" href="#" data-toggle="tooltip" data-placement="top"
 								title="Imprimir">
 								<i class="fas fa-print"></i></a>
 					</td>
@@ -144,21 +179,5 @@
             $('#anular').attr('disabled',true);
         }
     })
-	$('.select2').select2({
-		minimumInputLength: 1,
-		language: {
-			noResults: function () {
-				return "No hay resultados";
-			},
-			searching: function () {
-
-				return "Buscando...";
-			},
-			inputTooShort: function (e) {
-				var t = e.minimum - e.input.length;
-				return "Ingresa " + t + " caractéres para buscar";
-			}
-		}
-	});
 </script>
 {% endblock extrafooter %}

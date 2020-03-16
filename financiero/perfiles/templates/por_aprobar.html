@@ -37,7 +37,8 @@
 						{% for orden in orden_fact %}
 						<tr class="text-center">
 							<td scope="row"><a class="btn btn-light btn-sm darkgreen-text"
-								href="{% url 'orden_facturacion_aprobar' orden.pk %}"><i class="fas fa-eye"></i></a></td>
+									href="{% url 'orden_facturacion_aprobar' orden.pk %}"><i class="fas fa-eye"></i></a>
+							</td>
 							<td scope="row">{{orden.cod_orden_fact}}</td>
 							<td scope="row">{{orden.razon_nombres}}</td>
 							<td scope="row">{{orden.ruc_ci}}</td>
@@ -118,17 +119,26 @@
 	<div class="col-12 col-xl-12">
 		<div class="row">
 			<div class="col-12 col-xl-12">
-				<table class="table table-responsive-md border-bottom">
+				<table class="table table-responsive border-bottom">
 					<thead class="white-text darkgreen-bg">
 						<tr>
 							<th scope="col">Ver Detalles</th>
 							<th scope="col">Código</th>
+							<th scope="col">Versión</th>
+							<th scope="col">Cod. Evento</th>
+							<th scope="col">Cod. Propuesta</th>
 							<th scope="col">Nombre Evento</th>
-							<th scope="col">Fecha</th>
-							<th scope="col">Aula</th>
-							<th scope="col">Horas</th>
-							<th scope="col">No. Días</th>
+							<th scope="col">Tipo</th>
+							<th scope="col">Fecha Elaboracion</th>
+							<th scope="col">% Margen contrib</th>
+							<th scope="col">Punto equilibrio</th>
 							<th scope="col">No. Participantes</th>
+							<th scope="col">Ingreso Total</th>
+							<th scope="col">Estado</th>
+							<th scope="col">Centro Costos</th>
+							<th scope="col">Fecha Envío Solicitud</th>
+							<th scope="col">Fecha Aprobación sin Evento</th>
+							<th scope="col">Fecha Aprobación con Evento</th>
 						</tr>
 					</thead>
 					{% if presupuestos_ev %}
@@ -139,12 +149,21 @@
 							<td scope="row"><a class="btn btn-secondary"
 									href="{% url 'presupuesto_aprobar' pk=p.id %}"><i class="fas fa-eye"></i></a></td>
 							<td scope="row">{{p.codigo}}</td>
-							<td scope="row">{{p.evento.nombre}}</td>
+							<td scope="row">{{p.version}}</td>
+							<td scope="row"></td>
+							<td scope="row">{{p.codigo_propuesta}}</td>
+							<td scope="row"></td>
+							<td scope="row">{{p.tipo}}</td>
 							<td scope="row">{{p.fecha}}</td>
-							<td scope="row">{{p.evento.aula}}</td>
-							<td scope="row">{{p.n_horas}}</td>
-							<td scope="row">{{p.n_dias}}</td>
+							<td scope="row">{{p.margen_contribucion}}</td>
+							<td scope="row">{{p.punto_equilibrio}}</td>
 							<td scope="row">{{p.n_participantes}}</td>
+							<td scope="row">{{p.ingreso_neto_total|currency}}</td>
+							<td scope="row">{{p.estado}}</td>
+							<td scope="row">{{p.centro_costos}}</td>
+							<td scope="row">{{p.fecha_envio}}</td>
+							<td scope="row">{{p.fecha_aprobada_sin}}</td>
+							<td scope="row">{{p.fecha_aprobada_con}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
@@ -157,6 +176,8 @@
 
 	</div>
 </div>
+<br>
+
 
 <div class="campo mt-2 p-2">
 	<h5 class="black-text text-uppercase mb-0">Presupuestos Anuales</h5>
@@ -179,7 +200,8 @@
 						{% for p in presupuestos_an %}
 						<tr class="text-center">
 							<td scope="row"><a class="btn btn-secondary float-right"
-									href="{% url 'presupuesto_anual_editarAUTR' pk=p.id %}"><i class="fas fa-eye"></i></a></td>
+									href="{% url 'presupuesto_anual_editarAUTR' pk=p.id %}"><i
+										class="fas fa-eye"></i></a></td>
 							<td scope="row">{{p.año}}</td>
 							<td scope="row">{{p.centro_costos}}</td>
 							<td scope="row">{{p.nombre}}</td>
@@ -188,7 +210,8 @@
 						{% for p2 in presupuestos_an_fundespol %}
 						<tr class="text-center">
 							<td scope="row"><a class="btn btn-secondary float-right"
-									href="{% url 'presupuesto_anual_editarAUTR_fundespol' pk=p2.id %}"><i class="fas fa-eye"></i></a></td>
+									href="{% url 'presupuesto_anual_editarAUTR_fundespol' pk=p2.id %}"><i
+										class="fas fa-eye"></i></a></td>
 							<td scope="row">{{p2.año}}</td>
 							<td scope="row">{{p2.centro_costos}}</td>
 							<td scope="row">{{p2.nombre}}</td>
@@ -204,9 +227,10 @@
 
 	</div>
 </div>
+<br>
 
 <div class="campo mt-2 p-2">
-	<h5 class="black-text text-uppercase mb-0">Cambio de evento</h5>
+	<h5 class="black-text text-uppercase mb-0">Plan Anual de Compra</h5>
 </div>
 <div class="row">
 	<div class="col-12 col-xl-12">
@@ -215,32 +239,31 @@
 				<table class="table table-responsive-md border-bottom">
 					<thead class="white-text darkgreen-bg">
 						<tr>
-							
-							<th scope="col">Participante</th>
-							<th scope="col">Evento origen</th>
-							<th scope="col">Evento destino</th>
-							<th scope="col">Acciones</th>
+							<th scope="col">Ver Detalles</th>
+							<th scope="col">Año</th>
+							<th scope="col">Fecha Elaboración</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Centro de Costo</th>
+							<th scope="col">Estado</th>
+							<th scope="col">Fecha Envío</th>
+							<th scope="col">Fecha Aprobación</th>
 						</tr>
 					</thead>
-					{% if cambio_eventos %}
+					{% if pac %}
 
 					<tbody>
-						{% for p in cambio_eventos %}
+						{% for p in pac %}
 						<tr class="text-center">
-							
-							<td scope="row">{{p.participante}}</td>
-							<td scope="row">{{p.evento_origen}}</td>
-							<td scope="row">{{p.evento_destino}}</td>
-							<td scope="row">
-
-								<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'procesos_especiales_cambio_evento_autorizar' pk=p.id %}" data-toggle="tooltip" data-placement="top"title="Aprobar"><i
-										class="fas fa-check"></i></a>
-								<a class="btn btn-light darkgreen-text btn-sm" href="{% url 'procesos_especiales_cambio_evento_anular' pk=p.id %}" data-toggle="tooltip" data-placement="top"title="Anular"><i
-										class="fas fa-times"></i></a>
-
-
-
-								</td>
+							<td scope="row"><a class="btn btn-secondary"
+								href="{% url 'pac_aprobar' pk=p.id %}"><i
+									class="fas fa-eye"></i></a></td>
+							<td scope="row">{{ p.año }}</td>
+							<td scope="row">{{ p.fecha }}</td>
+							<td scope="row">{{ p.nombre }}</td>
+							<td scope="row">{{ p.centro_costos }}</td>
+							<td scope="row">{{ p.estado }}</td>
+							<td scope="row">{{ p.fecha_envio |default_if_none:""}}</td>
+							<td scope="row">{{ p.fecha_aprobado |default_if_none:""}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
@@ -253,4 +276,60 @@
 
 	</div>
 </div>
+<br>
+
+<div class="campo mt-2 p-2">
+	<h5 class="black-text text-uppercase mb-0">Cambio de evento</h5>
+</div>
+<div class="row">
+	<div class="col-12 col-xl-12">
+		<div class="row">
+			<div class="col-12 col-xl-12">
+				<table class="table table-responsive-md border-bottom">
+					<thead class="white-text darkgreen-bg">
+						<tr>
+
+							<th scope="col">Participante</th>
+							<th scope="col">Evento origen</th>
+							<th scope="col">Evento destino</th>
+							<th scope="col">Acciones</th>
+						</tr>
+					</thead>
+					{% if cambio_eventos %}
+
+					<tbody>
+						{% for p in cambio_eventos %}
+						<tr class="text-center">
+
+							<td scope="row">{{p.participante}}</td>
+							<td scope="row">{{p.evento_origen}}</td>
+							<td scope="row">{{p.evento_destino}}</td>
+							<td scope="row">
+
+								<a class="btn btn-light darkgreen-text btn-sm"
+									href="{% url 'procesos_especiales_cambio_evento_autorizar' pk=p.id %}"
+									data-toggle="tooltip" data-placement="top" title="Aprobar"><i
+										class="fas fa-check"></i></a>
+								<a class="btn btn-light darkgreen-text btn-sm"
+									href="{% url 'procesos_especiales_cambio_evento_anular' pk=p.id %}"
+									data-toggle="tooltip" data-placement="top" title="Anular"><i
+										class="fas fa-times"></i></a>
+
+
+
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+					{% else %}
+					<h2>No hay cambios de evento por aprobar</h2>
+					{% endif %}
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+<br>
+
 {% endblock %}

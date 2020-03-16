@@ -27,6 +27,8 @@ class OrdenFacturacionForm(forms.ModelForm):
             'valor_total': '$ Valor total',
             "motivo_anular":"Motivo de Anulación",
             "contacto":"Contacto",
+            "asesor":"Asesor",
+            "tipo_evento":"Evento",
         }
 
         widgets = {
@@ -36,6 +38,7 @@ class OrdenFacturacionForm(forms.ModelForm):
             'n_participantes': forms.HiddenInput(),
             'fecha': forms.DateInput(attrs={'type': 'date', 'value': date.today, 'readonly': True}),
             'razon_nombres': forms.Select(attrs={'class': 'form-control select2'}),
+            'asesor': forms.Select(attrs={'class': 'form-control'}),
             'ruc_ci': forms.Select(attrs={'class': 'form-control select2'}),
             "contacto":forms.Select(attrs={'class': 'form-control select3'}),
             'n_tramite': forms.TextInput(attrs={'class': 'form-control textinput textInput form-control'}),
@@ -73,13 +76,19 @@ class OrdenFacturacionUpdateForm(forms.ModelForm):
             'valor_total': '$ Valor total',
             "motivo_anular":"Motivo de Anulación",
             "contacto":"Contacto",
+            "tipo_evento":"Evento",
+            "asesor":"Asesor",
+            "fecha_tramite":"Fecha de Tramite",
+            "fecha_factura":"Fecha de Factura",
         }
 
 
         widgets = {
             'cod_orden_fact': forms.HiddenInput(),
             'estado': forms.HiddenInput(),
+            'tipo_evento': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'tipo_cliente': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
+            'asesor': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'centro_costos': forms.Select(attrs={'disabled': True, 'class': 'form-control-plaintext'}),
             'valor_total': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'n_participantes': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
@@ -87,6 +96,8 @@ class OrdenFacturacionUpdateForm(forms.ModelForm):
             'observaciones': forms.Textarea(attrs={'rows': 2, 'readonly': True, 'class': 'form-control-plaintext'}),
             'n_tramite': forms.TextInput(attrs={'class': 'form-control textinput textInput'}),
             'n_factura': forms.TextInput(attrs={'class': 'form-control textinput textInput'}),
+            'fecha_tramite': forms.DateInput(attrs={'type': 'date', 'class': "form-control"}),
+            'fecha_factura': forms.DateInput(attrs={'type': 'date','class': "form-control"}),
             'fecha': forms.DateInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'razon_nombres': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),
             'ruc_ci': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),
@@ -125,11 +136,16 @@ class OrdenFacturacionFinalForm(forms.ModelForm):
             'valor_total':'$ Valor total',
             "motivo_anular":"Motivo de Anulación",
             "contacto":"Contacto",
+            "tipo_evento":"Evento",
+            "asesor":"Asesor",
+            
         }
         widgets = {
             'cod_orden_fact': forms.HiddenInput(),
             'estado': forms.HiddenInput(),
+            'tipo_evento': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'tipo_cliente': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
+            'asesor': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'centro_costos': forms.Select(attrs={'disabled': True, 'class': 'form-control-plaintext'}),
             'valor_total': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'n_participantes': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),

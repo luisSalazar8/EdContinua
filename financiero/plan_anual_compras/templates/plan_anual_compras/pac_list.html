@@ -7,7 +7,6 @@
 
 {% block content %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/pac.css' %}">
 <div class="row mb-2 d-flex white-bg">
 	<div class="col-9 v-align">
 		<h2>CONSULTAS <span class="darkgreen-text">PLAN ANUAL DE COMPRAS</span></h2>
@@ -19,13 +18,23 @@
 <div class="row darkwhite-bg py-2">
 	<div class="col-12">
 		<form method="GET">
-			{% csrf_token %}
-			<div class="row">
-				<div class="col-3 col-xl-3">
+			<div class="form-row">
+				<div class="col-3 col-xl-2">
 					{{ filter.form.año|as_crispy_field }}
 				</div>
-				<div class="col-9 col-xl-9">
+				<div class="col-3 col-xl-2">
+					{{ filter.form.fecha|as_crispy_field }}
+				</div>
+				<div class="col-6 col-xl-6">
 					{{ filter.form.nombre|as_crispy_field }}
+				</div>
+				<div class="col-3 col-xl-2">
+					{{ filter.form.centro_costos|as_crispy_field }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-3 col-xl-2">
+					{{ filter.form.estado|as_crispy_field }}
 				</div>
 			</div>
 			<div>
@@ -37,12 +46,16 @@
 <br>
 <div class="row mt-2">
 	<div class="col-12 col-xl-12">
-		<table id="dtBasicExample" class="table table-responsive-md">
+		<table id="dtBasicExample" class="table table-responsive-sm border-bottom">
 			<thead class="white-text darkgreen-bg">
 				<tr>
 					<th scope="col">Año</th>
+					<th scope="col">Fecha Elaboración</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">Fecha Creación</th>
+					<th scope="col">Centro de Costo</th>
+					<th scope="col">Estado</th>
+					<th scope="col">Fecha Envío</th>
+					<th scope="col">Fecha Aprobación</th>
 					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
@@ -51,12 +64,19 @@
 				{% for pac in filter.qs %}
 				<tr class="text-center">
 					<td scope="row">{{ pac.año }}</td>
-					<td scope="row">{{ pac.nombre }}</td>
 					<td scope="row">{{ pac.fecha }}</td>
+					<td scope="row">{{ pac.nombre }}</td>
+					<td scope="row">{{ pac.centro_costos }}</td>
+					<td scope="row">{{ pac.estado }}</td>
+					<td scope="row">{{ pac.fecha_envio |default_if_none:""}}</td>
+					<td scope="row">{{ pac.fecha_aprobado |default_if_none:""}}</td>
 					<td scope="row">
-						<a class="btn btn-light btn-sm" href="{% url 'pac_editar' pac.id %}"><i
-								class="fas fa-edit darkgreen-text"></i></a>
-						<a href='javascript:;' onclick='eliminar({{ pac.id }});' class="btn btn-light darkgreen-text btn-sm"><i class="fas fa-trash"></i></a>
+						<a class="btn btn-secondary btn-block btn-sm" href="{% url 'pac_editar' pac.id %}"><i
+								class="fas fa-edit"></i></a>
+						{% if pac.estado == 'Grabado' %}
+						<a href='javascript:;' onclick='eliminar({{ pac.id }});' class="btn btn-danger btn-block btn-sm" data-toggle='modal'
+						data-target="#pacEliminarCenter"><i class="fas fa-trash"></i></a>
+						{%endif%}
 					</td>
 				</tr>
 				{% endfor%}
@@ -66,55 +86,41 @@
 			{% endif %}
 		</table>
 	</div>
+	<div class="modal fade" id="pacEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="pacTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
 </div>
 
-<div id="myModal" class="modal">
-  	<div class="modal-content">
-	    <span class="close">&times;</span>
-	    <div id="modal-form">
-	    </div>
-  	</div>
-</div>
 
 {% endblock %}
 
 {% block extrafooter %}
 <script>
-  	function eliminar(id){
-  		var modal = document.getElementById("myModal");
-  		modal.style.display = "block";
 
-		var span = document.getElementsByClassName("close")[0];
-
-
-		span.onclick = function() {
-			modal.style.display = "none";
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
-
-		$.ajax({
-			url: "{% url 'pac_eliminar' %}",  
-			data:{
-				"pk": id
-			}, 
-			success: function (data) {   
-				$("#modal-form").html(data);  
-			}
-		});
-	}
-
-	function cerrar(e){
-		var modal = document.getElementById("myModal");
-  		modal.style.display = "block";
-		modal.style.display = "none";
-	}
-	
+    function eliminar(id) {
+        $.ajax({
+            url: "{% url 'pac_confirmar_eliminar' %}",
+            data: {
+                'pk': id
+            },
+            success: function (data) {
+                $(".modal-content").html(data)
+            }
+        });
+    };
+</script>
+<script>
+    $(document).on("change",'#id_motivo_anular', function(){
+        if ($(this).val().length>20){
+            $('#anular').attr('disabled',false);
+        }
+        else{
+            $('#anular').attr('disabled',true);
+        }
+    })
 </script>
 <script src="{% static 'js/table.js' %}"></script>
 {% endblock %}

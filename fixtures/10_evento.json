@@ -1,0 +1,32 @@
+[
+    {
+        "model": "presupuestos.Evento",
+        "pk": 100,
+        "fields": {
+            "nombre": "Office 2020",
+            "modalidad":"Presencial",
+            "fecha_inicio":"2020-02-12",
+            "fecha_fin":"2020-03-12"
+        }
+    },
+    {
+        "model": "presupuestos.Evento",
+        "pk": 101,
+        "fields": {
+            "nombre": "Scrum",
+            "modalidad":"Semi-Presencial",
+            "fecha_inicio":"2020-02-05",
+            "fecha_fin":"2020-03-05"
+        }
+    },
+    {
+        "model": "presupuestos.Evento",
+        "pk": 102,
+        "fields": {
+            "nombre": "Excel Avanzado A",
+            "modalidad":"Virtual",
+            "fecha_inicio":"2020-01-10",
+            "fecha_fin":"2020-02-10"
+        }
+    }
+]

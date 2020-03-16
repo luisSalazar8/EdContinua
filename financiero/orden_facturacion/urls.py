@@ -13,6 +13,7 @@ urlpatterns = [
     path('ajax/info-cliente-veris',views.load_info_veris,name='ajax_info_veris_id'),
     path('ajax/load-contactos',views.load_contactos,name='ajax_load_contactos'),
     path('ajax/load-mail',views.load_mail,name='ajax_load_mail'),
+    path('ajax/load-usuarios-ventas',views.load_usuarios_ventas,name='ajax_load_usuarios_ventas'),
     path('ajax/orden-ci',views.load_info_ci,name="ajax_orden_ci"),
     path('', views.index, name='orden_facturacion'),
     path('editar/<pk>/', views.OrdenFacturacionUpdate.as_view(), name='orden_facturacion_editar'),    

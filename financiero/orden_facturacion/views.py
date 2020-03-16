@@ -16,6 +16,7 @@ def index(request):
     else:
         ordFac_lista = OrdenFacturacion.objects.all().exclude(estado='ANLD')
     ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=ordFac_lista)
+    #ordFac_filter = OrdenFacturacionFilter(request.GET, queryset=OrdenFacturacion.objects.all())
     return render(request, "orden_facturacion.html", {"filter":ordFac_filter})
 
 class OrdenFacturacionCreate(CreateView):
@@ -119,12 +120,14 @@ def load_personas(request):
     razon_nombre=[]
     if persona=="Natural":
         personas=Persona_Natural.objects.all()
+        print(personas)
         identificacion=render_to_string("dropdown_natural_ci.html",{"personas":personas})
         razon_nombre=render_to_string("dropdown_natural_nombres.html",{"personas":personas})
     elif persona=="Jurídica":
         personas=Juridica.objects.all()
+        print(personas)
         identificacion=render_to_string("dropdown_juridica_ruc.html",{"personas":personas})
-        razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})    
+        razon_nombre=render_to_string("dropdown_juridica_razon.html",{"personas":personas})
     return JsonResponse({'ruc_ci': identificacion, 'razon_nombre': razon_nombre})
 
 def load_contactos(request):
@@ -209,6 +212,11 @@ def load_mail(request):
     if cedula!="":
         email=Persona_Natural.objects.get(cedula=cedula).email
     return JsonResponse({"email": email})
+
+def load_usuarios_ventas(request):
+    usuariosv=""
+    asesores=render_to_string("dropdown_usuarios_ventas.html",{"usuariosv":usuariosv})  
+    return JsonResponse({'asesores': asesores})
 
 def load_info_ci(request):
     pk = request.GET.get("pk")

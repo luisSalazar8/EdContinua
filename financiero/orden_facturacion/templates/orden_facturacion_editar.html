@@ -9,9 +9,9 @@
         <h2 class="darkgreen-text text-uppercase pr-2 pl-3">edición Orden de Facturación </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
     </div>
 </div>
-{% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}
+{% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
 <div class="row darkwhite-bg py-2">
-    <div class="col-6 mb-0">
+    <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
                 N° de trámite<span class="asteriskField">*</span>
@@ -21,9 +21,11 @@
             </div>
         </div>
     </div>
-    <div class="col-6 mb-0">
+    <div class="col-6 col-md-3 mb-0">
+                {{form.fecha_tramite|as_crispy_field}}
+    </div>
+    <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_factura" class="form-group">
-
             <label for="id_n_factura" class="col-form-label requiredField">
                 N° de factura<span class="asteriskField">*</span>
             </label>
@@ -32,7 +34,11 @@
             </div>
         </div>
     </div>
-    <div class="col-12 mb-0">
+    <div class="col-6 col-md-3 mb-0">
+                {{form.fecha_factura|as_crispy_field}}
+            
+    </div>
+    <div class="col-12 col-md-3 mb-0">
         <div id="div_id_anexo_factura" class="form-group">
             <label for="id_anexo_factura" class="col-form-label requiredField">
                 Anexo de factura<span class="asteriskField">*</span>
@@ -56,6 +62,8 @@
 <input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
 <input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
 <input type="hidden" id='cont' value="{{form.contacto.value}}">
+<input type="hidden" id='as' value="{{form.asesor.value}}">
+<input type="hidden" id='est' value="{{form.estado.value}}">
 {% endblock editar%}
 
 {% block tablas %}
@@ -157,6 +165,10 @@
                 {% if form.estado.value == "ANLD" %}
                 <hr>
                 {{form.motivo_anular|as_crispy_field}}
+                <br>
+                <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#ordenAgregarCenter" href='#'
+                    id="confirmar_guardar">Guardar</a>
+                <a class="btn btn-secondary" href="{% url 'orden_facturacion' %}" id="cancelar">Cancelar</a>
                 {% else %}
                 <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#ordenAgregarCenter" href='#'
                     id="confirmar_guardar">Guardar</a>

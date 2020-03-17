@@ -1,13 +1,21 @@
 console.log(localStorage.getItem("codigoevento"));
+console.log($("#id_cod_evento").val());
+if($("#id_cod_evento").val()==""){
+    const ce=localStorage.getItem("codigoevento");
+  $("#id_cod_evento").val(ce);
 
-const ce=localStorage.getItem("codigoevento");
-$("#id_cod_evento").val(ce);
+  $("#id_nombre_evento").val(ce);
+
+  $("#id_valor_evento").val(ce);
+
+}
+
 $("#id_cod_evento").prop("disabled",true);
 
-$("#id_nombre_evento").val(ce);
+
 $("#id_nombre_evento").prop("disabled",true);
 
-$("#id_valor_evento").val(ce);
+
 $("#id_valor_evento").prop("disabled",true);
 
 

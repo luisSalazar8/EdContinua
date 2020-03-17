@@ -129,7 +129,7 @@ $("td input[type=checkbox]").each(function() {
 
 $("tr label.col-form-label").text("Anexo")
 
-if($("#id_estado").val()=="PNDP"){
+if($("#id_estado").val()=="PNDP" || $("#id_estado").val()=="ANLD"){
     var anexos=$(".ordenfactf");
     $(anexos[anexos.length-1]).parent().parent().parent().parent().remove();
     if($("#id_estado").val()=="PNDP"){

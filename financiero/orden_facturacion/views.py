@@ -2,7 +2,7 @@ from django.shortcuts import render,  redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import OrdenFacturacion, Persona_Natural, Juridica, OrdenFacturacionParticipante, Contacto_natural
-from .forms import OrdenFacturacionForm, OrdenFacturacionUpdateForm, OrdenFacturacionFinalForm, OrdenFacturacionParticipanteForm
+from .forms import OrdenFacturacionForm, OrdenFacturacionUpdateForm, OrdenFacturacionFinalForm, OrdenFacturacionParticipanteForm, FileForm, FileFormset
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponseRedirect
 from datetime import date
@@ -61,32 +61,52 @@ class OrdenFacturacionUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context=super(OrdenFacturacionUpdate,self).get_context_data(**kwargs)
-        pk=self.kwargs.get('pk',0)
-        orden=self.model.objects.get(id=pk)
-        participantes=self.participantes_class.objects.filter(orden_id=pk)
-        prueba=OrdenFacturacion.objects.all()
-        for ori in prueba:
-            print(ori.contacto)
-        if 'form' in context:
-            if orden.estado=='ACTV':
-                print("actv")
-                context['form']=self.second_form_class(instance=orden)
-            elif orden.estado=='PNDP':
-                print("pndp")
-                context['form']=self.third_form_class(instance=orden)
-            else:
-                print("else")
-                context['form']=self.form_class(instance=orden)
-        context['orden_id']=pk
-        #selected_participantes=[]
-        #for par in orden.participantes.all():
-        #    selected_participantes.append(par.pk)
-        #context['selected_participantes']=selected_participantes
-        #context['num']=list(range(0, orden.participantes.count()))
-        context['participantes'] = participantes
+        if self.request.POST:
+            print("entro post")
+            pk=self.kwargs.get('pk',0)
+            orden=self.model.objects.get(id=pk)
+            if 'form' in context:
+                if orden.estado=='ACPF':
+                    context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
+        else:
+            pk=self.kwargs.get('pk',0)
+            orden=self.model.objects.get(id=pk)
+            participantes=self.participantes_class.objects.filter(orden_id=pk)
+            prueba=OrdenFacturacion.objects.all()
+            for ori in prueba:
+                print(ori.contacto)
+            if 'form' in context:
+                if orden.estado=='ACTV':
+                    print("actv")
+                    context['form']=self.second_form_class(instance=orden)
+                elif orden.estado=='PNDP':
+                    print("pndp")
+                    context['form']=self.third_form_class(instance=orden)
+                else:
+                    print("else")
+                    context['form']=self.form_class(instance=orden)
+            context['orden_id']=pk
+            context['formset'] = FileFormset(instance=orden)
+            #selected_participantes=[]
+            #for par in orden.participantes.all():
+            #    selected_participantes.append(par.pk)
+            #context['selected_participantes']=selected_participantes
+            #context['num']=list(range(0, orden.participantes.count()))
+            context['participantes'] = participantes
         return context
+
     def form_valid(self, form):
         form.instance.valor_pendiente = form.instance.valor_total
+        pk=self.kwargs.get('pk',0)
+        orden=self.model.objects.get(id=pk)
+        if orden.estado=='ACPF':
+            context = self.get_context_data()
+            titles = context['formset']
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            if titles.is_valid():
+                titles.instance = self.object
+                titles.save()
         return super().form_valid(form)
 
 class OrdenFacturacionDelete(DeleteView):

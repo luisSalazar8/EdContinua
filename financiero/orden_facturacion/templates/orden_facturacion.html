@@ -61,7 +61,7 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-12">
+    <div class="col-12 col-xl-12">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
@@ -103,6 +103,7 @@
                     <th scope="col">N° factura</th>
                     <th scope="col">Asesor</th>
                     <th scope="col">Fecha factura</th>
+                    <!-- <th id="motivo" scope="col">Motivo Anulación</th> -->
                     <th scope="col">Acciones</th>
                     
                 </tr>
@@ -155,6 +156,9 @@
                     <td scope="row">{{orden.n_factura}}</td>
                     <td scope="row">{{orden.asesor}}</td>
                     <td scope="row">{{orden.fecha_factura}}</td>
+                    <!-- {% if orden.estado == 'ANLD' %}
+                    <td class="tdmotivo" scope="row">{{orden.motivo_anular}}</td>
+                    {%endif%} -->
                     <td scope="row">
 
                         
@@ -178,9 +182,7 @@
                             {% endif %}
                             -->
                     </td>
-                    {% if orden.estado == 'ANLD' %}
-                    <td scope="row">{{orden.motivo_anular}}</td>
-                    {%endif%}
+                    
                 </tr>
                 {% endfor %}
 
@@ -221,6 +223,13 @@
         });
     };
 </script>
+<!-- <script>
+
+    
+    if(!($(".tdmotivo").length>0)){
+        $("#motivo").remove();
+    }
+</script> -->
 <script>
     $(document).on("change",'#id_motivo_anular', function(){
         if ($(this).val().length>20){

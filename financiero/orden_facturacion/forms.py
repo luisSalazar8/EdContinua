@@ -1,8 +1,8 @@
 from django import forms
-from financiero.orden_facturacion.models import OrdenFacturacion, OrdenFacturacionParticipante
+from financiero.orden_facturacion.models import OrdenFacturacion, OrdenFacturacionParticipante, OrdenFacturacionFile
 from datetime import date
 from financiero.validaciones import validate_porcentaje
-
+from django.forms.models import inlineformset_factory
 class OrdenFacturacionForm(forms.ModelForm):
     class Meta:
         model = OrdenFacturacion
@@ -188,3 +188,15 @@ class OrdenFacturacionParticipanteForm(forms.ModelForm):
     def clean_descuento(self):
         descuento = self.cleaned_data["descuento"]
         return validate_porcentaje(descuento)
+
+class FileForm(forms.ModelForm):
+
+    class Meta: 
+        model= OrdenFacturacionFile 
+        exclude=()
+
+FileFormset = inlineformset_factory(
+    OrdenFacturacion, OrdenFacturacionFile, form=FileForm,
+    fields=['file'],widgets={"file":forms.ClearableFileInput(attrs={'class':'ordenfactf','accept':'.pdf'})},
+     extra=1,can_delete=True
+    )

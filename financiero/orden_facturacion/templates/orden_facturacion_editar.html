@@ -54,6 +54,30 @@
             </div>
         </div>
     </div>
+    <div class="col-12 col-md-12 mb-0">
+    <table class="table table-responsive-md border-bottom">
+        {{ formset.management_form|crispy }}
+        
+            {% for form in formset.forms %}
+                    <tr class="{% cycle 'row1' 'row2' %} form-control form-row formset_row-{{ formset.prefix }}">
+                        {% for field in form.visible_fields %}
+                        <td scope="row">
+                            {# Include the hidden fields in the form #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+                            {{ field.errors.as_ul }}
+                            {{ field|as_crispy_field }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+        
+        </table>
+    </div>
+    
 </div>
 <hr>
 
@@ -136,7 +160,7 @@
             </div>
         </div>
 
-        <div id="summary" class="form-row">
+        <div id="summary" class="row">
             <div class="col-6 col-md-3">
                 {{ form.subtotal|as_crispy_field }}
                 <label for="subtotal">Subtotal</label>

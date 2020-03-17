@@ -75,3 +75,12 @@ class OrdenFacturacionParticipante(models.Model):
     descuento=models.IntegerField(default=0)
     valor=models.FloatField(default=0)
     orden=models.ForeignKey(OrdenFacturacion, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+
+
+class OrdenFacturacionFile(models.Model):
+    file = models.FileField(upload_to='uploads/facturas/',blank=True, null=True)
+    #file = models.CharField(max_length=50, blank=True,default=" ")
+    #propuesta = models.ManyToManyField(PropuestaCorporativo, through='PropFileKey')
+    orden=models.ForeignKey(OrdenFacturacion, on_delete=models.CASCADE)

@@ -1,5 +1,6 @@
 {% extends "base_financiero.html" %}
 {% load static %}
+{% load my_tags %}
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% load l10n %}
@@ -18,7 +19,15 @@
     <div class="col-12">
         <form action="" method="get">
             {% csrf_token %}
+            <div class="row mb-2">
+				<div class="campo p-2 pl-3 col-12">
+					<h5 class="black-text text-uppercase mb-0">Información Orden Ingreso</h5>
+				</div>
+			</div>
             <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.cod_orden_ing|as_crispy_field }}
+                </div>
                 <div class="col-4">
                     {{ filter.form.fecha|as_crispy_field }}
                 </div>
@@ -27,6 +36,44 @@
                 </div>
                 
             </div>
+            <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.ruc_ci|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.formaPago|as_crispy_field }}
+                </div>
+                
+            </div>
+            <div class="form-row ">
+            <div class="col-4">
+                    {{ filter.form.estado|as_crispy_field }}
+                </div>
+            <div class="col-4">
+                    {{ filter.form.fecha_anulacion|as_crispy_field }}
+            </div>
+                {% comment %} <div class="col-4">
+                    {{ filter.form.razon_nombres|as_crispy_field }}
+                </div>
+                <div class="col-4">
+                    {{ filter.form.formaPago|as_crispy_field }}
+                </div> {% endcomment %}
+                
+            </div>
+            <div class="row mb-2">
+				<div class="campo p-2 pl-3 col-12">
+					<h5 class="black-text text-uppercase mb-0">Información Orden Facturación</h5>
+				</div>
+			</div>
+            <div class="form-row ">
+                <div class="col-4">
+                        {{ filter.form.orden_facturacion__cod_orden_fact|as_crispy_field }}
+                </div>
+            </div>
+
             <div>
                 <button type="submit" class="btn btn-secondary green-bg float-right">
                     <span class="fas fa-search"></span> Buscar</button>
@@ -47,7 +94,7 @@
           
             <thead class="darkgreen-bg white-text">
                 <tr>
-                     <th scope="col">Código orden</th>
+                     <th scope="col" >Código orden</th>
                     
                      <th scope="col">Fecha</th>
                      <th scope="col">RUC CI</th>
@@ -60,6 +107,8 @@
                      <th scope="col">Código facturación</th>
                      <th scope="col">Saldo Orden Facturación</th>
                      <th scope="col">Estado Orden Facturación</th>
+                     <th scope="col">Estado Orden Ingreso</th>
+                     <th scope="col">Fecha de anulación</th>
                      <th scope="col"> Acciones</th>
                     
                 </tr>
@@ -71,30 +120,32 @@
 
                 {% for ordenIngreso in filter.qs %}
                 <tr class="text-center">
-                    <td scope="row">{{ordenIngreso.cod_orden_ing}}</td>
                     
-                  
-                    <td scope="row" class="">{{ordenIngreso.fecha}}</td>
-                    <td scope="row">{{ordenIngreso.ruc_ci}}</td>
-                    <td scope="row">{{ordenIngreso.razon_nombres}}</td>
-                    <td scope="row"></td>
-                    <td scope="row"></td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_total}}</td>
-                    <td scope="row">{{ordenIngreso.formaPago}}</td>
-                    <td scope="row">{{ordenIngreso.valor|floatformat:2|intcomma}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.valor_pendiente}}</td>
-                    <td scope="row">{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.cod_orden_ing}}</td>
+                    <td scope="row" >{{ordenIngreso.fecha}}</td>
+                    <td scope="row" >{{ordenIngreso.ruc_ci}}</td>
+                    <td scope="row" >{{ordenIngreso.razon_nombres}}</td>
+                    <td scope="row" ></td>
+                    <td scope="row" ></td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.valor_total|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.formaPago}}</td>
+                    <td scope="row" >{{ordenIngreso.valor|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.cod_orden_fact}}</td>
+                    <td scope="row" >{{ordenIngreso.saldo_facturacion|currency}}</td>
+                    <td scope="row" >{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.get_estado_display}}</td>
+                    <td scope="row" >{{ordenIngreso.fecha_anulacion}}</td>
                     
                     <td scope="row">
                         <a class="btn btn-secondary btn-sm " href="{% url 'ordenIngreso_editar' ordenIngreso.id %}">
-                            <i class="fas fa-edit"></i></a>
-                        <a onclick='eliminar({{ ordenIngreso.id }});' class="btn btn-danger btn-sm"
+                            <i class="fas fa-edit"></i></a> 
+                        {% comment %} <a onclick='eliminar({{ ordenIngreso.id }});' class="btn btn-danger btn-sm"
                             data-toggle='modal' data-target="#ordenEliminarCenter" href='#'><i
-                                class="fas fa-trash"></i></a> 
+                                class="fas fa-trash"></i></a>  {% endcomment %}
                         <a class="btn btn-secondary btn-sm"
                         href="{% url 'ordenIngreso_print' ordenIngreso.id %}"><i class="fas fa-print"></i></a> 
                     </td>
+                    
                 </tr>
                 {% endfor %}
 

@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
+from django.http import HttpResponseRedirect,JsonResponse
 from django.views.generic import CreateView,UpdateView,DeleteView
 from .models import OrdenIngreso
 from .forms import OrdenIngresoForm, OrdenIngresoUpdateForm, OrdenIngresoPrintForm
 from django.urls import reverse_lazy
-from datetime import date
+from datetime import date,datetime
 from financiero.orden_facturacion.models import OrdenFacturacion
+
 # Create your views here.
 
 
@@ -37,24 +39,35 @@ class OrdenIngresoCreate(CreateView):
         if form.is_valid():
             obj=(form.instance.orden_facturacion)
             obj.valor_pendiente-=form.instance.valor;
+            print(obj)
+            print(obj.valor_pendiente)
             if(obj.valor_pendiente==0):
                 obj.estado='CNCL'
             obj.save()
             self.form_class.genera_codigo(form)
+            form.instance.saldo_facturacion = obj.valor_pendiente
             form.save()
            
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
-    def get_success_url(self, **kwargs):         
-            return reverse_lazy('ordenIngreso')
-
+            
+    # def get_success_url(self, **kwargs):         
+    #         return reverse_lazy('ordenIngreso')
+   
+        
 
 class OrdenIngresoUpdate(UpdateView):
     model=OrdenIngreso
     form_class=OrdenIngresoUpdateForm
     template_name='ordenIngreso_editar.html'
     success_url=reverse_lazy('ordenIngreso')
+    def get_context_data(self, **kwargs):
+        context = super(OrdenIngresoUpdate, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        
+
+        return context
 
 class OrdenIngresoPrint(UpdateView):
     model=OrdenIngreso
@@ -66,8 +79,22 @@ class OrdenIngresoDelete(DeleteView):
     model=OrdenIngreso
     template_name='ordenIngreso_eliminar.html'
     success_url=reverse_lazy('ordenIngreso')
+    def post(self, request, *args, **kwargs):
+        self.object=self.get_object()
+        self.object.estado="ANLD" 
+        self.object.fecha_anulacion = datetime.now().strftime('%Y-%m-%d')
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
 
 def orden_ing_conf_elim(request):
     orden_id=request.GET.get('pk')
     orden=OrdenIngreso.objects.get(id=orden_id)
     return render(request,"ordenIngreso_eliminar.html",{"ordenIngreso":orden})
+
+def load_orden_facturacion(request):
+    ordenes = OrdenFacturacion.objects.all()
+    opciones=render_to_string("dropdown_orden_facturacion.html",{"orden_facturacion":ordenes})
+    print(opciones)
+    return JsonResponse({'ordenes_facturacion': opciones})
+        

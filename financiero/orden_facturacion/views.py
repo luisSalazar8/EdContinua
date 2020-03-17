@@ -114,13 +114,7 @@ class OrdenFacturacionDelete(DeleteView):
     template_name='orden_facturacion_eliminar.html'
     success_url=reverse_lazy('orden_facturacion')
     form_class=OrdenFacturacionForm
-    def post(self, request, *args, **kwargs):
-        self.object=self.get_object()
-        self.object.estado="ANLD"
-        motivo=dict(request.POST).get("motivo_anular")[0]
-        self.object.motivo_anular=motivo
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+      
 
 def orden_fact_conf_elim(request):
     orden_id=request.GET.get('pk')

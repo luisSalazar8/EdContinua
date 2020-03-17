@@ -3,7 +3,6 @@ var valor=$("#div_id_valor");
 var inp=$("#div_id_valor input");
 var hijos=valor.children();
 const dnuevo=hijos[1];
-console.log(dnuevo);
 dnuevo.remove();
 const dollar=$("<div>");
 dollar.attr("class","input-icon")

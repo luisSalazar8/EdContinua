@@ -11,7 +11,11 @@
 
 {% block content %}
 <form method="POST" novalidate id="form-fact" enctype="multipart/form-data" ,
-	data-persona-url="{% url 'ajax_load_personas' %}" , data-orden-url="{% url 'ajax_orden_ci' %}">
+	data-persona-url="{% url 'ajax_load_personas' %}" , data-orden-url="{% url 'ajax_orden_ci' %}"
+	orden-facturacion-url="{% url 'ajax_orden_facturacion' %}", ordenfact-url="{% url 'orden_facturacion_nuevo' %}",
+	data-natural-url="{% url 'natural_nuevo'%}" data-persona-url="{% url 'ajax_load_personas' %}"
+	
+	>
 	{% csrf_token %}
 	<div class="row mb-2">
 		<div class="col-12">
@@ -65,8 +69,11 @@
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-12">
+				<div class="col-8">
 					{{form.orden_facturacion|as_crispy_field}}
+				</div>
+				<div class="col-4">
+					{{form.centro_costos|as_crispy_field}}
 				</div>
 			</div>
 			<div class="form-row">
@@ -81,13 +88,13 @@
 			</div>
 
 			<div class="form-row">
-				<div class="col-3">
+				<div class="col-4">
 					{{form.formaPago|as_crispy_field}}
 				</div>
-				<div class="col-3">
+				<div class="col-4">
 					{{form.fechaPago|as_crispy_field}}
 				</div>
-				<div class="col-3">
+				<div class="col-2">
 					{{form.numeroDocumento|as_crispy_field}}
 				</div>
 			</div>
@@ -104,6 +111,14 @@
 				</div>
 				<div class="col-3">
 					{{form.valor|as_crispy_field}}
+					 {% comment %} {% if form.valor.errors %}
+							{% for error in form.valor.errors %}
+							<p class="invalid-feedback d-block">
+								<strong>{{ error }}</strong>
+							</p>
+							{% endfor %}
+					{% endif %} {% endcomment %} 
+
 				</div>
 			</div>
 			<div class="row">

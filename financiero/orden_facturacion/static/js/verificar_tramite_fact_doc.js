@@ -9,7 +9,7 @@ function isInteger(str) {
 }
 
 function change_state_btn() {
-    if (has_anexo && has_n_tra && has_n_fact) {
+    if (has_anexo && has_n_tra && has_n_fact && has_f_tra && has_f_fact) {
         $("#id_estado").val("PNDP");
     }
     else {

@@ -62,23 +62,25 @@ class OrdenFacturacionUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context=super(OrdenFacturacionUpdate,self).get_context_data(**kwargs)
+        pk=self.kwargs.get('pk',0)
+        orden=self.model.objects.get(id=pk)
+        participantes=self.participantes_class.objects.filter(orden_id=pk)
+        context['participantes'] = participantes
+        context['orden_id']=pk
         if self.request.POST:
             print("entro post")
-            pk=self.kwargs.get('pk',0)
-            orden=self.model.objects.get(id=pk)
             if 'form' in context:
-                if orden.estado=='ACPF':
-                    context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
-            pk=self.kwargs.get('pk',0)
-            orden=self.model.objects.get(id=pk)
-            participantes=self.participantes_class.objects.filter(orden_id=pk)
-            context['participantes'] = participantes
-            context['orden_id']=pk
+                if orden.estado=='ACTV':
+                    print("actv")
+                    context['form']=self.second_form_class(self.request.POST,instance=orden)
+                elif orden.estado=='PNDP':
+                    print("pndp")
+                    context['form']=self.third_form_class(self.request.POST,instance=orden)
+                else:
+                    print("else")
+                    context['form']=self.form_class(self.request.POST,instance=orden)
+            context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
         else:
-            pk=self.kwargs.get('pk',0)
-            orden=self.model.objects.get(id=pk)
-            participantes=self.participantes_class.objects.filter(orden_id=pk)
-            
             if 'form' in context:
                 if orden.estado=='ACTV':
                     print("actv")
@@ -89,14 +91,7 @@ class OrdenFacturacionUpdate(UpdateView):
                 else:
                     print("else")
                     context['form']=self.form_class(instance=orden)
-            context['orden_id']=pk
             context['formset'] = FileFormset(instance=orden)
-            #selected_participantes=[]
-            #for par in orden.participantes.all():
-            #    selected_participantes.append(par.pk)
-            #context['selected_participantes']=selected_participantes
-            #context['num']=list(range(0, orden.participantes.count()))
-            context['participantes'] = participantes
         return context
 
     def form_valid(self, form):

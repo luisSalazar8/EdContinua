@@ -29,11 +29,11 @@ class OrdenIngreso(models.Model):
 	
 	cod_orden_ing=models.CharField(max_length=15, blank=True)
 	tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
-	fecha=models.CharField(max_length=12,verbose_name="")
+	fecha=models.DateField(blank=True, null=True)
 	n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
 
-	fecha_tramite=models.CharField(max_length=15,blank=True, null=True, verbose_name="Fecha de Trámite")
-	fecha_anulacion=models.CharField(max_length=15, default="No aplica", blank=True, null=True, verbose_name="")
+	fecha_tramite=models.DateField(blank=True, null=True,verbose_name="Fecha trámite")
+	fecha_anulacion=models.DateField(blank=True, null=True, verbose_name="")
 	estado = models.CharField(max_length=5,default='ACTV',choices=ESTADO_CHOICES, blank=True, null=True,verbose_name="Estado Orden Ingreso")
 	saldo_facturacion=models.DecimalField(max_digits=10,decimal_places=2,validators=[val_fin.validate_positivo], blank=True, null=True,default=0)
 	centro_costos = models.ForeignKey(Centro_Costos, on_delete=models.SET_NULL, blank=False, null=True)

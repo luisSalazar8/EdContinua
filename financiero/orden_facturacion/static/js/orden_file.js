@@ -14,9 +14,9 @@ $(document).on('change', ".ordenfactf", function (e) {
         }
     }else{
         console.log("esta lleno");
-        console.log($(".form-row:last input[type=file]"));
-        if($(".form-row:last input[type=file]").val()!=""){
-            cloneMore('.form-row:last', 'ordenfacturacionfile_set');
+        console.log($(".prueba:last input[type=file]"));
+        if($(".prueba:last input[type=file]").val()!=""){
+            cloneMore('.prueba:last', 'ordenfacturacionfile_set');
         }
         /*  cantInput=cantInput+1;
         const divp=$("<div>");
@@ -37,7 +37,7 @@ function cloneMore(selector, prefix) {
     
     var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
     var newrow=parseInt(total)+1
-    newElement.attr("class","row"+(newrow) +" form-control form-row formset_row-ordenfacturacionfile_set")
+    newElement.attr("class","row"+(newrow) +" form-control prueba form-row formset_row-ordenfacturacionfile_set")
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
         var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
         var id = 'id_' + name;
@@ -61,7 +61,7 @@ function deleteForm(prefix, btn) {
     var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
     if (total > 1){
         $(btn).parent().parent().parent().parent().remove();
-        var forms = $('.form-row');
+        var forms = $('.prueba');
         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
         for (var i=0, formCount=forms.length; i<formCount; i++) {
             console.log(forms[i]);
@@ -85,7 +85,7 @@ function deleteForm(prefix, btn) {
             console.log(formset[j]);
             var newrow=j+1
             console.log(newrow)
-            $(formset.get(j)).attr("class","row"+newrow+"  form-control form-row formset_row-ordenfacturacionfile_set")
+            $(formset.get(j)).attr("class","row"+newrow+"  form-control prueba form-row formset_row-ordenfacturacionfile_set")
             var newElement=$(formset.get(j));
 
             newElement.find("input[type=hidden] + div").each(function(){

@@ -28,16 +28,16 @@ class OrdenIngresoFilter(django_filters.FilterSet):
 
     orden_facturacion__cod_orden_fact = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Código Orden Facturación '}))
 
-    def __init__(self, *args, **kwargs):
-        argumentos = 0
-        if (kwargs['data']):
-            for i in kwargs['data']:
-                if kwargs['data'][i] != "":
-                   argumentos+=1
-        if(argumentos>1):
-            kwargs['queryset']=OrdenIngreso.objects.filter(orden_facturacion__estado='PNDP').order_by('cod_orden_ing')
+    # def __init__(self, *args, **kwargs):
+    #     argumentos = 0
+    #     if (kwargs['data']):
+    #         for i in kwargs['data']:
+    #             if kwargs['data'][i] != "":
+    #                argumentos+=1
+    #     if(argumentos>1):
+    #         kwargs['queryset']=OrdenIngreso.objects.filter(orden_facturacion__estado='PNDP').order_by('cod_orden_ing')
                 
-        super().__init__(*args, **kwargs)
+    #     super().__init__(*args, **kwargs)
         
        
         

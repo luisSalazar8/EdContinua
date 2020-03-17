@@ -287,6 +287,7 @@ class ParticipanteUpdate(UpdateView):
         pk=self.kwargs.get('fk',0)
         context['orden_id']=pk
         context['orden_cod']=OrdenFacturacion.objects.get(pk=pk).cod_orden_fact
+        
         return context
 
     def post(self, request, *args, **kwargs):

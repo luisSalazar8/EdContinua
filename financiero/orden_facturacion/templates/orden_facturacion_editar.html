@@ -10,7 +10,7 @@
     </div>
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
-<div class="row darkwhite-bg py-2">
+<div class="form-row darkwhite-bg py-2">
     <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
@@ -44,7 +44,7 @@
         {{ formset.management_form|crispy }}
         
             {% for form in formset.forms %}
-                    <tr class="{% cycle 'row1' 'row2' %} form-control form-row formset_row-{{ formset.prefix }}">
+                    <tr class="{% cycle 'row1' 'row2' %} form-control prueba form-row formset_row-{{ formset.prefix }}">
                         {% for field in form.visible_fields %}
                         <td scope="row">
                             {# Include the hidden fields in the form #}

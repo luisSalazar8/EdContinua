@@ -61,12 +61,12 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-12 col-xl-12">
+    <div class="col-12 col-xl-12 table-responsive">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
                 data-placement="top" title="Exportar a excel"></i></a>
-        <table id="dtBasicExample" class="table table-responsive-md border-bottom">
+        <table id="dtBasicExample" class="table border-bottom">
             <thead class="white-text darkgreen-bg">
                 <!--
                     <tr>
@@ -209,6 +209,7 @@
 
 <script src="{% static 'js/table.js' %}"></script>
 <script src="{% static 'js/orden_tabla.js' %}"></script>
+<script src="{% static 'js/ordenfact_fecha.js' %}"></script>
 <script>
 
     function eliminar(id) {

@@ -11,11 +11,14 @@ function sumtr(table_id) {
     var s = [];
     var r = 0;
     $(table_id + " tbody tr").each(function (index) {
+        console.log($(this));
         var col = 0;
         $(this).children("td").each(function () {
             if ($(this).is(".sum")) {
+                console.log($(this));
                 if (s.length < col + 1) s[col] = 0;
-                var val = parseFloat($(this).html().replace(',', '.').replace('$', '').replace('%', ''));
+                
+                var val = parseFloat($(this).html().replace(/,/g, '').replace('$', '').replace('%', ''));
 
                 s[col] = s[col] + val;
             } else {
@@ -39,9 +42,9 @@ $('#env-sol').click(function (e) {
 
 if ($('#participantes-table tbody tr').length > 0) {
     $('#env-sol').attr('disabled',false);
-
-    s = sumtr("#participantes-table");
     
+    s = sumtr("#participantes-table");
+    console.log(s)
     $("#id_subtotal").val(s[3]);
     $("#id_valor_total").val(s[5]);
     $("#id_descuento_total").val((s[3] - s[5]).toFixed(2));

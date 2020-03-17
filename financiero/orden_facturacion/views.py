@@ -68,13 +68,16 @@ class OrdenFacturacionUpdate(UpdateView):
             if 'form' in context:
                 if orden.estado=='ACPF':
                     context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
+            pk=self.kwargs.get('pk',0)
+            orden=self.model.objects.get(id=pk)
+            participantes=self.participantes_class.objects.filter(orden_id=pk)
+            context['participantes'] = participantes
+            context['orden_id']=pk
         else:
             pk=self.kwargs.get('pk',0)
             orden=self.model.objects.get(id=pk)
             participantes=self.participantes_class.objects.filter(orden_id=pk)
-            prueba=OrdenFacturacion.objects.all()
-            for ori in prueba:
-                print(ori.contacto)
+            
             if 'form' in context:
                 if orden.estado=='ACTV':
                     print("actv")

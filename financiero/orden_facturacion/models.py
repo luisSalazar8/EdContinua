@@ -35,7 +35,6 @@ class OrdenFacturacion(models.Model):
     fecha_tramite=models.DateField(blank=True, null=True)
     n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
     fecha_factura=models.DateField(blank=True, null=True)
-    anexo_factura=models.FileField(upload_to='uploads/facturas/',blank=True, null=True)
     fecha=models.DateField()
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)

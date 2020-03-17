@@ -109,22 +109,33 @@ function updateElementIndex(el, prefix, ndx, postfix) {
     $(el).attr('id', id);
     console.log($(el).attr('name'));
 }
-// console.log($("[name=cod_propuesta]"))
-// if($("[name=cod_propuesta]").val()!=""){
-// $("td a + input").each(function() {
-//     $(this).remove();
-//   });
 
-//   $("td a + label").each(function() {
-//     $(this).remove();
-// });
-// }else{
-// $("td input[type=checkbox]").each(function() {
-//     $(this).parent().remove();
-//     $(this).remove();
-//   });
+
+$("td a + input").each(function() {
+    $(this).remove();
+  });
+
+  $("td a + label").each(function() {
+    $(this).remove();
+});
+
+$("td input[type=checkbox]").each(function() {
+    $(this).parent().remove();
+    $(this).remove();
+  });
 
   
-// }
 
-// $("tr label.col-form-label").text("Anexo")
+
+$("tr label.col-form-label").text("Anexo")
+
+if($("#id_estado").val()=="PNDP"){
+    var anexos=$(".ordenfactf");
+    $(anexos[anexos.length-1]).parent().parent().parent().parent().remove();
+    if($("#id_estado").val()=="PNDP"){
+        $(".ordenfactf").each(function(){
+            $(this).prop("disabled",true)
+    });
+    }
+}
+

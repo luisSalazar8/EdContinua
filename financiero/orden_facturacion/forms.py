@@ -13,7 +13,6 @@ class OrdenFacturacionForm(forms.ModelForm):
             'tipo_cliente': 'Cliente',
             'n_tramite': 'N° de trámite',
             'n_factura': 'N° de factura',
-            'anexo_factura': 'Anexo de factura',
             'fecha': 'Fecha',
             'ruc_ci': 'RUC',
             'razon_nombres': 'Razón social',
@@ -61,7 +60,6 @@ class OrdenFacturacionUpdateForm(forms.ModelForm):
             'tipo_cliente': 'Cliente',
             'n_tramite': 'N° de trámite',
             'n_factura': 'N° de factura',
-            'anexo_factura': 'Anexo de factura',
             'fecha': 'Fecha',
             'ruc_ci': 'RUC',
             'razon_nombres': 'Razón social',
@@ -122,7 +120,6 @@ class OrdenFacturacionFinalForm(forms.ModelForm):
             'tipo_cliente': 'Cliente',
             'n_tramite': 'N° de trámite',
             'n_factura': 'N° de factura',
-            'anexo_factura': 'Anexo de factura',
             'fecha': 'Fecha',
             'ruc_ci': 'RUC',
             'razon_nombres': 'Razón social',
@@ -138,6 +135,8 @@ class OrdenFacturacionFinalForm(forms.ModelForm):
             "contacto":"Contacto",
             "tipo_evento":"Evento",
             "asesor":"Asesor",
+            "fecha_tramite":"Fecha de Tramite",
+            "fecha_factura":"Fecha de Factura",
             
         }
         widgets = {
@@ -153,6 +152,8 @@ class OrdenFacturacionFinalForm(forms.ModelForm):
             'observaciones': forms.Textarea(attrs={'rows': 2, 'readonly': True, 'class': 'form-control-plaintext'}),
             'n_tramite': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),
             'n_factura': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),
+            "fecha_tramite":forms.DateInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
+            "fecha_factura":forms.DateInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'fecha': forms.DateInput(attrs={'readonly': True, 'class': 'form-control-plaintext'}),
             'razon_nombres': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),
             'ruc_ci': forms.TextInput(attrs={'readonly': True, 'class': 'form-control-plaintext form-control'}),

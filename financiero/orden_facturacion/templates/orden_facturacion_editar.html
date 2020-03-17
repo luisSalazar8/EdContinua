@@ -38,22 +38,7 @@
                 {{form.fecha_factura|as_crispy_field}}
             
     </div>
-    <div class="col-12 col-md-3 mb-0">
-        <div id="div_id_anexo_factura" class="form-group">
-            <label for="id_anexo_factura" class="col-form-label requiredField">
-                Anexo de factura<span class="asteriskField">*</span>
-            </label>
-            <div class="">
-                {% if form.anexo_factura.value %}
-                <a class="btn btn-secondary btn-sm" href="{{form.anexo_factura.value.url}}" target="_blank">
-                    Descargar
-                </a>
-                {% else %}
-                {{form.anexo_factura}}
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    
     <div class="col-12 col-md-12 mb-0">
     <table class="table table-responsive-md border-bottom">
         {{ formset.management_form|crispy }}
@@ -224,7 +209,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+                <button id="guardar" type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
             </div>
         </div>
     </div>

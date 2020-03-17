@@ -17,6 +17,15 @@ function Ocultar(){
        //Para el anexo no funciona el readonly, es necesario usar disabled
        $(anexo).attr('disabled',"");
        $(boton_anulado).remove();
+       var anexos=$(".ingresof");
+       $(anexos[anexos.length-1]).parent().parent().parent().parent().remove();
+       $(".ingresof").each(function(){
+         $(this).prop("disabled",true)
+      });
+      $("td input[type=checkbox]").each(function() {
+         $(this).parent().remove();
+         $(this).remove();
+       });
     }
     
   }

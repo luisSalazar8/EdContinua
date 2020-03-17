@@ -48,7 +48,7 @@ class OrdenIngreso(models.Model):
 	descripcion=models.CharField(max_length=150)
 	formaPago=models.CharField(max_length=30, choices=FORMAS_PAGO,default='cheque')
 	valor=models.DecimalField(max_digits=15,decimal_places=2,validators=[val_fin.validate_positivo])
-	anexo=models.FileField(upload_to='uploads/', blank=True)
+	
 	fechaPago=models.CharField(max_length=12)
 	numeroDocumento=models.PositiveIntegerField()
 	banco=models.CharField(max_length=30)
@@ -60,6 +60,11 @@ class OrdenIngreso(models.Model):
 
 
 	def delete(self, *arg, **kwargs):
-		self.anexo.delete()
+		
 		super().delete(*arg,**kwargs)
 
+class OrdenIngresoFile(models.Model):
+    file = models.FileField(upload_to='uploads/OrdenIngreso/',blank=True, null=True)
+    #file = models.CharField(max_length=50, blank=True,default=" ")
+    #propuesta = models.ManyToManyField(PropuestaCorporativo, through='PropFileKey')
+    orden=models.ForeignKey(OrdenIngreso, on_delete=models.CASCADE)

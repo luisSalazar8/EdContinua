@@ -1,8 +1,9 @@
 from django import forms
-from .models import OrdenIngreso
+from .models import OrdenIngreso, OrdenIngresoFile
 from financiero.orden_facturacion.models import OrdenFacturacion
 from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms.models import inlineformset_factory
 
 class OrdenIngresoForm(forms.ModelForm):
 
@@ -18,7 +19,6 @@ class OrdenIngresoForm(forms.ModelForm):
 			'descripcion':'Descripción',
 			'formaPago':'Forma de Pago',
 			'valor':'Valor',
-			'anexo':'Anexo Comprobante de Pago',
 			'fechaPago':'Fecha Pago',
 			'numeroDocumento':'N° Documento',
 			'banco':"Banco",
@@ -35,7 +35,6 @@ class OrdenIngresoForm(forms.ModelForm):
 			
 			'descripcion':forms.Textarea(attrs={'rows':2}),
 			'valor':forms.NumberInput(attrs={'class':'form-control'}),
-			'anexo':forms.ClearableFileInput(attrs={'class':'form-control',"accept":".pdf"}),
 			'numeroDocumento':forms.NumberInput(attrs={'class':'form-control'}),
 			'banco':forms.TextInput(attrs={'class':'form-control'}),
 			'emisoraTarjeta':forms.Select(attrs={'class':'select form-control'}),
@@ -99,7 +98,6 @@ class OrdenIngresoUpdateForm(forms.ModelForm):
 			'descripcion':'Descripción',
 			'formaPago':'Forma de Pago',
 			'valor':'Valor',
-			'anexo':'Anexo Comprobante de Pago',
 			'fechaPago':'Fecha Pago',
 			'numeroDocumento':'N° Documento',
 			'banco':"Banco",
@@ -147,7 +145,6 @@ class OrdenIngresoPrintForm(forms.ModelForm):
 			'descripcion':'Descripción',
 			'formaPago':'Forma de Pago',
 			'valor':'Valor',
-			'anexo':'Anexo Comprobante de Pago',
 			'fechaPago':'Fecha Pago',
 			'numeroDocumento':'N° Documento',
 			'banco':"Banco",
@@ -164,10 +161,20 @@ class OrdenIngresoPrintForm(forms.ModelForm):
             'ruc_ci':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
 			'descripcion':forms.Textarea(attrs={'readonly':True,'rows':2,'class':'form-control-plaintext'}),
 			'valor':forms.NumberInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
-			'anexo':forms.ClearableFileInput(attrs={'class':'form-control'}),
 			'numeroDocumento':forms.NumberInput(attrs={'readonly':True,'class':'form-control-plaintext form-control'}),
 			'banco':forms.TextInput(attrs={'readonly':True,'class':'form-control-plaintext'}),
 			'emisoraTarjeta':forms.TextInput(attrs={'readonly':True,'class':'select form-control-plaintext textinput textInput form-control'}),
 			'formaPago':forms.TextInput(attrs={'readonly':True,'id':'seleccion'})
 		}
 
+class FileForm(forms.ModelForm):
+
+    class Meta: 
+        model= OrdenIngresoFile 
+        exclude=()
+
+FileFormset = inlineformset_factory(
+    OrdenIngreso, OrdenIngresoFile, form=FileForm,
+    fields=['file'],widgets={"file":forms.ClearableFileInput(attrs={'class':'ingresof','accept':'.pdf'})},
+     extra=1,can_delete=True
+    )

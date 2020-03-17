@@ -8,6 +8,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from datetime import date
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .filters import OrdenFacturacionFilter
+
 # Create your views here.
 
 def index(request):

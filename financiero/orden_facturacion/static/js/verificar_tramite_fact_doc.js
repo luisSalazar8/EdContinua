@@ -27,11 +27,17 @@ function verificar() {
 
     has_f_tra = $("#id_fecha_tramite").val()!=undefined;
 
-    has_f_tra = $("#id_fecha_factura").val()!=undefined;
+    has_f_fact = $("#id_fecha_factura").val()!=undefined;
 
     has_n_fact = isInteger($("#id_n_factura").val());
 
     has_n_tra = isInteger($("#id_n_tramite").val());
+
+    console.log(has_f_tra)
+    console.log(has_n_tra)
+    console.log(has_anexo)
+    console.log(has_f_fact)
+    console.log(has_n_fact)
 
     change_state_btn()
 }

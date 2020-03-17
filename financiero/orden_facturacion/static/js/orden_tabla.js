@@ -81,7 +81,9 @@ $("tbody").children().each(function(){
     Object.keys(vtcant).forEach(function(key){
         console.log(key);
         const span=$("<span>");
-        span.html(vtcant[key]);
+
+        span.html(transform(vtcant[key]));
+        
         $(vt).append(span);
         $(vt).append($("<br>"));
 
@@ -116,3 +118,30 @@ $("tbody").children().each(function(){
 
 
 });
+
+function transform(numero){
+    var num=""+parseFloat(numero).toFixed(2);
+    var numeroe=num.split(".")
+    const long= numeroe[0].length;
+    console.log(long)
+    var newnum="";
+    cont=0;
+    for(var i=(long-1);i>=0;i--){
+          if(cont%3==0 && cont!=0){
+            newnum=numeroe[0].charAt(i)+","+newnum;
+            console.log("coma");
+            console.log(i);
+            console.log(numeroe[0].charAt(i));
+            cont+=1;
+          }else{
+            console.log("no coma");
+            console.log(i);
+            console.log(numeroe[0].charAt(i));
+            newnum=numeroe[0].charAt(i)+newnum;
+            cont+=1;
+          }
+    }
+    console.log(newnum+"."+numeroe[1]);
+    return "$"+newnum+"."+numeroe[1];
+    
+  }

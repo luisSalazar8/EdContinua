@@ -135,7 +135,7 @@
                     </td>
                     <td scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
-                        <span>{{p.valor_evento}}</span>
+                        <span>{{p.valor_evento|currency}}</span>
                         <br>
 					{% endfor %}
                     </td>

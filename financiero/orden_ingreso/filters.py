@@ -18,13 +18,14 @@ class OrdenIngresoFilter(django_filters.FilterSet):
 	# contacto_natural__contacto__apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos Contacto'}))
 
     cod_orden_ing = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Código Orden Ingreso '}))
-    fecha=django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha de Orden Ingreso',"class":"textbox-n", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
+    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Orden',"class":"textbox-n", "onfocus":"(this.type='date')"}))
+
     n_tramite = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'N° Tramite '}))
     ruc_ci = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'RUC - CI'}))
     razon_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombre - Razón Social'}))
     formaPago = django_filters.ChoiceFilter(label="", empty_label="Forma de pago",choices = OrdenIngreso.FORMAS_PAGO)
     estado = django_filters.ChoiceFilter(label="", empty_label="Estado Orden Ingreso",choices = OrdenIngreso.ESTADO_CHOICES)
-    fecha_anulacion = django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha de anulación',"class":"textbox-n", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
+    fecha_anulacion = django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha anulación',"class":"textbox-n", "onfocus":"(this.type='date')"}))
 
     orden_facturacion__cod_orden_fact = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Código Orden Facturación '}))
 

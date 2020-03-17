@@ -2,9 +2,8 @@
 {% load static %}
 {% load my_tags %}
 {% load crispy_forms_tags %}
-{% load humanize %}
-{% load l10n %}
 
+{% block title %}{{ "EC - Orden Ingreso" }}{% endblock title %}
 {% block content %}
 <div class="row mb-2 d-flex white-bg">
     <div class="col-9 v-align">
@@ -84,11 +83,12 @@
 </div>
 <br>
 <div class="row mt-2">
-    <div class="col-12 col-xl-12">
+    <div class="col-12 col-xl-12 ">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
                 data-placement="top" title="Exportar a excel"></i></a>
+        
         <table id="dtBasicExample" class="table table-responsive border-bottom">
         
           
@@ -168,6 +168,7 @@
 
 {% block extrafooter%}
 <script src="{% static 'js/table.js' %}"></script>
+<script src="{% static 'js/ordenIngreso_fecha.js' %}"></script>
 <script>
     function eliminar(id) {
         $.ajax({

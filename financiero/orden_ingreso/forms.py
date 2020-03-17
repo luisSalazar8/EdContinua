@@ -42,7 +42,7 @@ class OrdenIngresoForm(forms.ModelForm):
 		}
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields['orden_facturacion'].queryset = OrdenFacturacion.objects.filter(estado="PNDP")
+		# self.fields['orden_facturacion'].queryset = OrdenFacturacion.objects.filter(estado="PNDP")
 		
 	
 

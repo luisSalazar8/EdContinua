@@ -54,6 +54,8 @@ class OrdenIngresoCreate(CreateView):
             
             titles = FileFormset(self.request.POST,self.request.FILES)
             if titles.is_valid():
+                
+                
                 titles.instance = self.object
                 titles.save()
             return HttpResponseRedirect(self.get_success_url())

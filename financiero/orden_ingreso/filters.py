@@ -18,7 +18,9 @@ class OrdenIngresoFilter(django_filters.FilterSet):
 	# contacto_natural__contacto__apellidos = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Apellidos Contacto'}))
 
     cod_orden_ing = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Código Orden Ingreso '}))
-    fecha=django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha de Orden Ingreso',"class":"textbox-n", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
+    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha','type':'date'}))
+
+    # fecha=django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha de Orden Ingreso',"class":"textbox-n", "onfocus":"(this.type='date')","onfocusout":"(this.type='text')"}))
     n_tramite = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'N° Tramite '}))
     ruc_ci = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'RUC - CI'}))
     razon_nombres = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombre - Razón Social'}))

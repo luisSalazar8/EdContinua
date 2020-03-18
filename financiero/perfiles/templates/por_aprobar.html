@@ -25,21 +25,22 @@
 						<tr>
 							<th scope="col">Ver Detalles</th>
 							<th scope="col">Código Orden</th>
-							<th scope="col">Fecha</th>
-							<th scope="col">Identificación</th>
-							<th scope="col">Cliente</th>
-							<th scope="col">Nombre Evento</th>
-							<th scope="col">Código Evento</th>
-							<th scope="col">Valor Evento</th>
-							<th scope="col">Cant. Particip.</th>
-							<th scope="col">Sub Total</th>
-							<th scope="col">Descuento</th>
-							<th scope="col">Valor Total</th>
-							<th scope="col">Estado</th>
-							<th scope="col">N° trámite</th>
-							<th scope="col">N° factura</th>
-							<th scope="col">Asesor</th>
-							<th scope="col">Fecha factura</th>
+						<th scope="col">Fecha</th>
+						<th scope="col">Identificación</th>
+						<th scope="col">Cliente</th>
+						<th scope="col">Nombre Evento</th>
+						<th scope="col">Código Evento</th>
+						<th scope="col">Valor Evento</th>
+						<th scope="col">Cant. Particip.</th>
+						<th scope="col">Sub Total</th>
+						<th scope="col">%Descuento</th>
+						<th scope="col">$Descuento</th>
+						<th scope="col">Valor Total</th>
+						<th scope="col">Estado</th>
+						<th scope="col">N° trámite</th>
+						<th scope="col">N° factura</th>
+						<th scope="col">Asesor</th>
+						<th scope="col">Fecha factura</th>
 						</tr>
 					</thead>
 					{% if orden_fact %}
@@ -53,7 +54,7 @@
 							<td class="text-center" scope="row">{{orden.fecha}}</td>
 							<td class="text-center" scope="row">{{orden.ruc_ci}}</td>
 							<td  class="text-center" scope="row">{{orden.razon_nombres}}</td>
-		
+
 							<td class="text-center" scope="row">
 							{% for p in orden.ordenfacturacionparticipante_set.all%}
 								<span class={{p.cod_evento}}>{{p.nombre_evento}}</span>
@@ -78,6 +79,8 @@
 							<td class="text-right" scope="row">    
 							</td>
 							<td class="text-center" scope="row">
+							</td>
+							<td class="text-right" scope="row">
 							</td>
 							<td class="text-right" scope="row">
 								{% for p in orden.ordenfacturacionparticipante_set.all%}

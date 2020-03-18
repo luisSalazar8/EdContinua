@@ -153,7 +153,7 @@ $("#tordenfact").children().each(function(){
 
     //Para el valor total
     var vtcant={};
-    const vt=$(this).children()[11];
+    const vt=$(this).children()[12];
     $(vt).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(vtcant[$(this).attr("class")]!=undefined){
@@ -193,33 +193,16 @@ $("#tordenfact").children().each(function(){
 
     });
 
-
-
-    // var dcant={};
-    // const desc=$(this).children()[8];
-    // $(desc).children().each(function(){
-    //     if($(this).prop("tagName")!="BR"){
-    //         if(dcant[$(this).attr("class")]!=undefined){
-    //             dcant[$(this).attr("class")]=parseFloat($(this).html())+dcant[$(this).attr("class")];
-    //             $(this).next().remove();
-    //             $(this).remove();
-    //         }else{
-    //             dcant[$(this).attr("class")]=parseFloat($(this).html());
-    //             $(this).next().remove();
-    //             $(this).remove();
-    //         }
-    //     }
+    const descendolar=$(this).children()[11];
+    Object.keys(ccant).forEach(function(key){
         
-    // });
-    // console.log(dcant);
-    // Object.keys(dcant).forEach(function(key){
-    //     console.log(key);
-    //     const span=$("<span>");
-    //     span.html(dcant[key]/ccant[key]);
-    //     $(desc).append(span);
-    //     $(desc).append($("<br>"));
+        const span=$("<span>");
+        span.html(transform(subcant[key]-vtcant[key]))
+        $(descendolar).append(span);
+        $(descendolar).append($("<br>"));
 
-    // });
+    });
+
 
 
 });

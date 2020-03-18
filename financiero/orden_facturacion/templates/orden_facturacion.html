@@ -97,7 +97,8 @@
                     <th scope="col">Valor Evento</th>
                     <th scope="col">Cant. Particip.</th>
                     <th scope="col">Sub Total</th>
-                    <th scope="col">Descuento</th>
+                    <th scope="col">%Descuento</th>
+                    <th scope="col">$Descuento</th>
                     <th scope="col">Valor Total</th>
                     <th scope="col">Estado</th>
                     <th scope="col">N° trámite</th>
@@ -145,6 +146,8 @@
                     <td class="text-center" scope="row">
                     </td>
                     <td class="text-right" scope="row">
+                    </td>
+                    <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span class="{{p.cod_evento}}">{{p.valor}}</span>
                         <br>
@@ -159,18 +162,19 @@
                     <td class="tdmotivo" scope="row">{{orden.motivo_anular}}</td>
                     {%endif%} -->
                     <td class="text-center" scope="row">
-
-                        
                         <a class="btn btn-secondary btn-sm" href="{% url 'orden_facturacion_editar' orden.id %}">
                             <i class="fas fa-edit"></i></a>
-                        
-
+                        <br>
+                        <br>
                         {% if orden.estado == 'ACTV' %}
                         <a onclick='eliminar({{ orden.id }});' class="btn btn-danger btn-sm" data-toggle='modal'
                             data-target="#ordenEliminarCenter" href='#'>
                             <i class="fas fa-trash"></i></a>
+                            <br>
+                            <br>
                         {% endif%}
-                        <a class="btn btn-secondary btn-sm" href="#" data-toggle="tooltip" data-placement="top"
+                        
+                        <a class="btn btn-secondary btn-sm  offset" href="#" data-toggle="tooltip" data-placement="top"
                             title="Imprimir">
                             <i class="fas fa-print"></i></a>
                         <!--

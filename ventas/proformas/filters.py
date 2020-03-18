@@ -32,4 +32,5 @@ class ProformaFilter(django_filters.FilterSet):
             'fechaEnvio',
             'estado',
         ]
+    
 

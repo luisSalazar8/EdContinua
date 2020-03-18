@@ -10,8 +10,8 @@
     </div>
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
-<div class="row darkwhite-bg py-2">
-    <div class="col-6 col-md-3 mb-0">
+<div class="form-row darkwhite-bg py-2">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
                 N° de trámite<span class="asteriskField">*</span>
@@ -20,11 +20,14 @@
                 {{form.n_tramite}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_tramite|as_crispy_field}}
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_tramite|as_crispy_field}}
     </div>
-    <div class="col-6 col-md-3 mb-0">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_factura" class="form-group">
             <label for="id_n_factura" class="col-form-label requiredField">
                 N° de factura<span class="asteriskField">*</span>
@@ -33,27 +36,40 @@
                 {{form.n_factura}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_factura|as_crispy_field}}
+    
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_factura|as_crispy_field}}
             
     </div>
-    <div class="col-12 col-md-3 mb-0">
-        <div id="div_id_anexo_factura" class="form-group">
-            <label for="id_anexo_factura" class="col-form-label requiredField">
-                Anexo de factura<span class="asteriskField">*</span>
-            </label>
-            <div class="">
-                {% if form.anexo_factura.value %}
-                <a class="btn btn-secondary btn-sm" href="{{form.anexo_factura.value.url}}" target="_blank">
-                    Descargar
-                </a>
-                {% else %}
-                {{form.anexo_factura}}
-                {% endif %}
-            </div>
-        </div>
+    
+    <div class="col-12 col-md-12 mb-0">
+    <table id="tablefile" class="table table-responsive-md border-bottom">
+        {{ formset.management_form|crispy }}
+        
+            {% for form in formset.forms %}
+                    <tr class="{% cycle 'row1' 'row2' %} form-control prueba form-row formset_row-{{ formset.prefix }}">
+                        {% for field in form.visible_fields %}
+                        <td scope="row">
+                            {# Include the hidden fields in the form #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+                            {{ field.errors.as_ul }}
+                            {{ field|as_crispy_field }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+        
+        </table>
     </div>
+    
 </div>
 <hr>
 
@@ -136,7 +152,7 @@
             </div>
         </div>
 
-        <div id="summary" class="form-row">
+        <div id="summary" class="row">
             <div class="col-6 col-md-3">
                 {{ form.subtotal|as_crispy_field }}
                 <label for="subtotal">Subtotal</label>
@@ -200,7 +216,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+                <button id="guardar" type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
             </div>
         </div>
     </div>
@@ -242,10 +258,10 @@
         });
     };
 
-    $('#cancelar').click(function (e){
-        $('form').submit();
-        e.preventDefault();
-    })
+    // $('#cancelar').click(function (e){
+    //     $('form').submit();
+    //     e.preventDefault();
+    // })
 </script>
 <script src="{% static 'js/calcular_valores_tabla.js' %}"></script>
 <script src="{% static 'js/orden_fact_editar.js' %}"></script>

@@ -2,12 +2,13 @@ from django.shortcuts import render,  redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import OrdenFacturacion, Persona_Natural, Juridica, OrdenFacturacionParticipante, Contacto_natural
-from .forms import OrdenFacturacionForm, OrdenFacturacionUpdateForm, OrdenFacturacionFinalForm, OrdenFacturacionParticipanteForm
+from .forms import OrdenFacturacionForm, OrdenFacturacionUpdateForm, OrdenFacturacionFinalForm, OrdenFacturacionParticipanteForm, FileForm, FileFormset
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponseRedirect
 from datetime import date
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .filters import OrdenFacturacionFilter
+
 # Create your views here.
 
 def index(request):
@@ -64,29 +65,47 @@ class OrdenFacturacionUpdate(UpdateView):
         pk=self.kwargs.get('pk',0)
         orden=self.model.objects.get(id=pk)
         participantes=self.participantes_class.objects.filter(orden_id=pk)
-        prueba=OrdenFacturacion.objects.all()
-        for ori in prueba:
-            print(ori.contacto)
-        if 'form' in context:
-            if orden.estado=='ACTV':
-                print("actv")
-                context['form']=self.second_form_class(instance=orden)
-            elif orden.estado=='PNDP':
-                print("pndp")
-                context['form']=self.third_form_class(instance=orden)
-            else:
-                print("else")
-                context['form']=self.form_class(instance=orden)
-        context['orden_id']=pk
-        #selected_participantes=[]
-        #for par in orden.participantes.all():
-        #    selected_participantes.append(par.pk)
-        #context['selected_participantes']=selected_participantes
-        #context['num']=list(range(0, orden.participantes.count()))
         context['participantes'] = participantes
+        context['orden_id']=pk
+        if self.request.POST:
+            print("entro post")
+            if 'form' in context:
+                if orden.estado=='ACTV':
+                    print("actv")
+                    context['form']=self.second_form_class(self.request.POST,instance=orden)
+                elif orden.estado=='PNDP':
+                    print("pndp")
+                    context['form']=self.third_form_class(self.request.POST,instance=orden)
+                else:
+                    print("else")
+                    context['form']=self.form_class(self.request.POST,instance=orden)
+            context['formset'] = FileFormset(self.request.POST, self.request.FILES,instance=self.object)
+        else:
+            if 'form' in context:
+                if orden.estado=='ACTV':
+                    print("actv")
+                    context['form']=self.second_form_class(instance=orden)
+                elif orden.estado=='PNDP':
+                    print("pndp")
+                    context['form']=self.third_form_class(instance=orden)
+                else:
+                    print("else")
+                    context['form']=self.form_class(instance=orden)
+            context['formset'] = FileFormset(instance=orden)
         return context
+
     def form_valid(self, form):
         form.instance.valor_pendiente = form.instance.valor_total
+        pk=self.kwargs.get('pk',0)
+        orden=self.model.objects.get(id=pk)
+        if orden.estado=='ACPF':
+            context = self.get_context_data()
+            titles = context['formset']
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            if titles.is_valid():
+                titles.instance = self.object
+                titles.save()
         return super().form_valid(form)
 
 class OrdenFacturacionDelete(DeleteView):
@@ -94,13 +113,7 @@ class OrdenFacturacionDelete(DeleteView):
     template_name='orden_facturacion_eliminar.html'
     success_url=reverse_lazy('orden_facturacion')
     form_class=OrdenFacturacionForm
-    def post(self, request, *args, **kwargs):
-        self.object=self.get_object()
-        self.object.estado="ANLD"
-        motivo=dict(request.POST).get("motivo_anular")[0]
-        self.object.motivo_anular=motivo
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+      
 
 def orden_fact_conf_elim(request):
     orden_id=request.GET.get('pk')
@@ -269,6 +282,7 @@ class ParticipanteUpdate(UpdateView):
         pk=self.kwargs.get('fk',0)
         context['orden_id']=pk
         context['orden_cod']=OrdenFacturacion.objects.get(pk=pk).cod_orden_fact
+        
         return context
 
     def post(self, request, *args, **kwargs):
@@ -335,6 +349,20 @@ def anular_orden_facturacion(request, pk):
         p.motivo_anular=motivo
         p.save()
         return redirect('pendiente_aprobacion')
+    else:
+        p = get_object_or_404(OrdenFacturacion, pk=pk)
+        form = OrdenFacturacionFinalForm(instance=p)
+        participantes=OrdenFacturacionParticipante.objects.filter(orden_id=pk)
+        return render(request, 'orden_facturacion_aprobar.html', {'form': form, 'participantes':participantes, "orden":p})
+
+def anular_orden_facturacionMenu(request, pk):
+    if(request.method == 'POST'):
+        p = get_object_or_404(OrdenFacturacion, pk=pk)
+        p.estado="ANLD"
+        motivo=dict(request.POST).get("motivo_anular")[0]
+        p.motivo_anular=motivo
+        p.save()
+        return redirect('orden_facturacion')
     else:
         p = get_object_or_404(OrdenFacturacion, pk=pk)
         form = OrdenFacturacionFinalForm(instance=p)

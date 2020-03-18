@@ -61,12 +61,12 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-12">
+    <div class="col-12 col-xl-12 table-responsive">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
                 data-placement="top" title="Exportar a excel"></i></a>
-        <table id="dtBasicExample" class="table table-responsive-md border-bottom">
+        <table id="dtBasicExample" class="table border-bottom">
             <thead class="white-text darkgreen-bg">
                 <!--
                     <tr>
@@ -94,8 +94,9 @@
                     <th scope="col">Cliente</th>
                     <th scope="col">Nombre Evento</th>
                     <th scope="col">Código Evento</th>
-                    <th scope="col">Cant. Particip.</th>
                     <th scope="col">Valor Evento</th>
+                    <th scope="col">Cant. Particip.</th>
+                    <th scope="col">Sub Total</th>
                     <th scope="col">Descuento</th>
                     <th scope="col">Valor Total</th>
                     <th scope="col">Estado</th>
@@ -112,50 +113,52 @@
             <tbody>
 
                 {% for orden in filter.qs %}
-                <tr class="text-center">
-                    <td scope="row">{{orden.cod_orden_fact}}</td>
-                    <td scope="row">{{orden.fecha}}</td>
-                    <td scope="row">{{orden.ruc_ci}}</td>
-                    <td scope="row">{{orden.razon_nombres}}</td>
+                <tr >
+                    <td class="text-center" scope="row">{{orden.cod_orden_fact}}</td>
+                    <td class="text-center" scope="row">{{orden.fecha}}</td>
+                    <td class="text-center" scope="row">{{orden.ruc_ci}}</td>
+                    <td  class="text-center" scope="row">{{orden.razon_nombres}}</td>
 
-                    <td scope="row">
+                    <td class="text-center" scope="row">
                     {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span class={{p.cod_evento}}>{{p.nombre_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td class="cod_evento" scope="row">
+                    <td class="text-center" class="cod_evento" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span>{{p.cod_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td scope="row">    
-                    </td>
-                    <td scope="row">
+                    
+                    <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
-                        <span>{{p.valor_evento}}</span>
+                        <span class="{{p.cod_evento}}">{{p.valor_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td scope="row">
-                        {% for p in orden.ordenfacturacionparticipante_set.all%}
-                        <span class="{{p.cod_evento}}">{{p.descuento}}</span>
-                        <br>
-					    {% endfor %}
+                    <td class="text-center" scope="row">    
                     </td>
-                    <td scope="row">
+                    <td class="text-right" scope="row">    
+                    </td>
+                    <td class="text-center" scope="row">
+                    </td>
+                    <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span class="{{p.cod_evento}}">{{p.valor}}</span>
                         <br>
                         {% endfor %}
                     </td>
-                    <td scope="row">{{orden.get_estado_display}}</td>
-                    <td scope="row">{{orden.n_tramite}}</td>
-                    <td scope="row">{{orden.n_factura}}</td>
-                    <td scope="row">{{orden.asesor}}</td>
-                    <td scope="row">{{orden.fecha_factura}}</td>
-                    <td scope="row">
+                    <td class="text-center" scope="row">{{orden.get_estado_display}}</td>
+                    <td class="text-center" scope="row">{{orden.n_tramite}}</td>
+                    <td class="text-center" scope="row">{{orden.n_factura}}</td>
+                    <td class="text-center" scope="row">{{orden.asesor}}</td>
+                    <td class="text-center" scope="row">{{orden.fecha_factura}}</td>
+                    <!-- {% if orden.estado == 'ANLD' %}
+                    <td class="tdmotivo" scope="row">{{orden.motivo_anular}}</td>
+                    {%endif%} -->
+                    <td class="text-center" scope="row">
 
                         
                         <a class="btn btn-secondary btn-sm" href="{% url 'orden_facturacion_editar' orden.id %}">
@@ -178,9 +181,7 @@
                             {% endif %}
                             -->
                     </td>
-                    {% if orden.estado == 'ANLD' %}
-                    <td scope="row">{{orden.motivo_anular}}</td>
-                    {%endif%}
+                    
                 </tr>
                 {% endfor %}
 
@@ -207,6 +208,7 @@
 
 <script src="{% static 'js/table.js' %}"></script>
 <script src="{% static 'js/orden_tabla.js' %}"></script>
+<script src="{% static 'js/ordenfact_fecha.js' %}"></script>
 <script>
 
     function eliminar(id) {
@@ -221,6 +223,13 @@
         });
     };
 </script>
+<!-- <script>
+
+    
+    if(!($(".tdmotivo").length>0)){
+        $("#motivo").remove();
+    }
+</script> -->
 <script>
     $(document).on("change",'#id_motivo_anular', function(){
         if ($(this).val().length>20){

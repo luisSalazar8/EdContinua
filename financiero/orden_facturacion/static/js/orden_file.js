@@ -111,7 +111,22 @@ function updateElementIndex(el, prefix, ndx, postfix) {
 }
 
 
-$("td a + input").each(function() {
+// $("td a + input").each(function() {
+//     $(this).remove();
+//   });
+
+//   $("td a + label").each(function() {
+//     $(this).remove();
+// });
+
+// $("td input[type=checkbox]").each(function() {
+//     $(this).parent().remove();
+//     $(this).remove();
+//   });
+
+  
+if($("#id_estado").val()=="ACPF"){
+    $("td a + input").each(function() {
     $(this).remove();
   });
 
@@ -119,13 +134,16 @@ $("td a + input").each(function() {
     $(this).remove();
 });
 
-$("td input[type=checkbox]").each(function() {
-    $(this).parent().remove();
-    $(this).remove();
-  });
+    $("#tablefile tr").each(function(){
+        var h=$(this).children();
+        var a =$(h[0]).find("a");
+        console.log($(a).attr("href"));
+        if($(a).attr("href")==undefined){
+            $(h[1]).remove();
+        }
+    });
 
-  
-
+}
 
 $("tr label.col-form-label").text("Anexo")
 
@@ -137,5 +155,43 @@ if($("#id_estado").val()=="PNDP" || $("#id_estado").val()=="ANLD"){
             $(this).prop("disabled",true)
     });
     }
+
 }
+
+if($("#id_estado").val()=="PNDP"){
+    $("td a + input").each(function() {
+        $(this).remove();
+    });
+
+    $("td a + label").each(function() {
+        $(this).remove();
+    });
+
+    $("td input[type=checkbox]").each(function() {
+        $(this).parent().remove();
+        $(this).remove();
+    });
+
+    $("#tablefile tr").each(function(){
+        var h=$(this).children();
+        var parent=$(h[0]).find("input[type=file]").parent();
+        console.log($(parent).children());
+        var anex=undefined;
+        $(parent).children().each(function(){
+            console.log($(this));
+            if($(this).prop("tagName")=="BR" ||$(this).prop("tagName")=="INPUT"){
+                $(this).remove();
+            }else if($(this).prop("tagName")=="A"){
+                anex=$(this);
+            }
+        })
+        $(parent).html("");
+        $(parent).html("Actual:");
+        $(parent).append(anex);
+        
+    });
+
+}
+
+
 

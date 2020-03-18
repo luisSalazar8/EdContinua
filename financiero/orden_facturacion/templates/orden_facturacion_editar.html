@@ -11,7 +11,7 @@
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
 <div class="form-row darkwhite-bg py-2">
-    <div class="col-6 col-md-3 mb-0">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
                 N° de trámite<span class="asteriskField">*</span>
@@ -20,11 +20,14 @@
                 {{form.n_tramite}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_tramite|as_crispy_field}}
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_tramite|as_crispy_field}}
     </div>
-    <div class="col-6 col-md-3 mb-0">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_factura" class="form-group">
             <label for="id_n_factura" class="col-form-label requiredField">
                 N° de factura<span class="asteriskField">*</span>
@@ -33,6 +36,10 @@
                 {{form.n_factura}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_factura|as_crispy_field}}
+    
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_factura|as_crispy_field}}
@@ -40,7 +47,7 @@
     </div>
     
     <div class="col-12 col-md-12 mb-0">
-    <table class="table table-responsive-md border-bottom">
+    <table id="tablefile" class="table table-responsive-md border-bottom">
         {{ formset.management_form|crispy }}
         
             {% for form in formset.forms %}

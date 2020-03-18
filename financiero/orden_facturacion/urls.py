@@ -25,4 +25,5 @@ urlpatterns = [
     path('ajax/confirmar-eliminar-par',views.participante_conf_elim,name='participante_confirmar_eliminar'),
     path('aprobar/<pk>',views.aprobar_orden_facturacion, name="orden_facturacion_aprobar"),
     path('anular/<pk>',views.anular_orden_facturacion, name="orden_facturacion_anular"),
+    path('anularM/<pk>',views.anular_orden_facturacionMenu, name="orden_facturacion_anularMenu"),
 ]

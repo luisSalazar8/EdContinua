@@ -1,4 +1,5 @@
 $("tbody").children().each(function(){
+    //Para los codigos del evento
     var ccant={};
     var codu=[];
     const cod=$(this).children()[5];
@@ -12,46 +13,135 @@ $("tbody").children().each(function(){
             }else{
                 codu.push($(this).html());
                 ccant[$(this).html()]=1;
+                $(this).next().remove();
+                $(this).remove();
             }
         }
         
     });
     console.log(ccant);
     console.log(codu);
+
+    Object.keys(ccant).forEach(function(key){
+        const span=$("<span>");
+        span.html(key);
+        $(cod).append(span);
+        $(cod).append($("<br>"));
+
+    });
+
     
-    var nomu=[];
+    //Para los nombres de los eventos
+    // var nomu=[];
+    // const nom=$(this).children()[4];
+    // $(nom).children().each(function(){
+    //     if($(this).prop("tagName")!="BR"){
+    //         if(nomu.includes($(this).attr("class"))){
+    //             $(this).next().remove();
+    //             $(this).remove();
+                
+    //         }else{
+    //             nomu.push($(this).attr("class"));
+    //         }
+    //     }
+        
+    // });
+    // console.log(nomu);
+    var nomucant={}
     const nom=$(this).children()[4];
     $(nom).children().each(function(){
         if($(this).prop("tagName")!="BR"){
-            if(nomu.includes($(this).attr("class"))){
+            if(nomucant[$(this).attr("class")]!=undefined){
                 $(this).next().remove();
                 $(this).remove();
-                
             }else{
-                nomu.push($(this).attr("class"));
+                nomucant[$(this).attr("class")]=$(this).html();
+                $(this).next().remove();
+                $(this).remove();
             }
         }
         
     });
-    console.log(nomu);
+    console.log(nomucant);
+    Object.keys(nomucant).forEach(function(key){
+        const span=$("<span>");
+        span.html(nomucant[key]);
+        $(nom).append(span);
+        $(nom).append($("<br>"));
 
-    var valu=[];
-    const val=$(this).children()[7];
+    });
+
+
+    //subtotal para el descuento
+    var subcant={}
+    const subval=$(this).children()[6];
+    $(subval).children().each(function(){
+        if($(this).prop("tagName")!="BR"){
+            if(subcant[$(this).attr("class")]!=undefined){
+                subcant[$(this).attr("class")]=parseFloat($(this).html())+subcant[$(this).attr("class")];
+            }else{
+                subcant[$(this).attr("class")]=parseFloat($(this).html());
+                console.log($(this).html())
+            }
+        }
+        
+    });
+    console.log(subcant);
+
+    const colsub=$(this).children()[8];
+    Object.keys(subcant).forEach(function(key){
+        const span=$("<span>");
+        span.html(transform(subcant[key]));
+        $(colsub).append(span);
+        $(colsub).append($("<br>"));
+
+    });
+
+
+    //Para los valores de evento
+    // var valu=[];
+    // const val=$(this).children()[6];
+    // $(val).children().each(function(){
+    //     if($(this).prop("tagName")!="BR"){
+    //         if(valu.includes($(this).html())){
+    //             $(this).next().remove();
+    //             $(this).remove();
+    //         }else{
+    //             valu.push($(this).html());
+    //             $(this).html(transform($(this).html()))
+    //         }
+    //     }
+        
+    // });
+    // console.log(valu);
+
+    var valucant={}
+    const val=$(this).children()[6];
     $(val).children().each(function(){
         if($(this).prop("tagName")!="BR"){
-            if(valu.includes($(this).html())){
+            if(valucant[$(this).attr("class")]!=undefined){
                 $(this).next().remove();
                 $(this).remove();
-                
             }else{
-                valu.push($(this).html());
+                valucant[$(this).attr("class")]=parseFloat($(this).html());
+                $(this).next().remove();
+                $(this).remove();
             }
         }
         
     });
-    console.log(valu);
+    console.log(subcant);
 
-    const part=$(this).children()[6];
+    Object.keys(valucant).forEach(function(key){
+        const span=$("<span>");
+        span.html(transform(valucant[key]));
+        $(val).append(span);
+        $(val).append($("<br>"));
+
+    });
+
+    //Para poner los participantes
+    const part=$(this).children()[7];
     Object.keys(ccant).forEach(function(key){
         console.log(key);
         const span=$("<span>");
@@ -61,8 +151,9 @@ $("tbody").children().each(function(){
 
     });
 
+    //Para el valor total
     var vtcant={};
-    const vt=$(this).children()[9];
+    const vt=$(this).children()[10];
     $(vt).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(vtcant[$(this).attr("class")]!=undefined){
@@ -88,6 +179,20 @@ $("tbody").children().each(function(){
         $(vt).append($("<br>"));
 
     });
+
+    //Para el descuento
+    const desc=$(this).children()[9];
+    Object.keys(ccant).forEach(function(key){
+        
+        const span=$("<span>");
+        var final=(subcant[key]-vtcant[key])/subcant[key]
+        var ffinal= parseFloat(final*100);
+        span.html(ffinal+"%");
+        $(desc).append(span);
+        $(desc).append($("<br>"));
+
+    });
+
 
 
     // var dcant={};

@@ -94,8 +94,9 @@
                     <th scope="col">Cliente</th>
                     <th scope="col">Nombre Evento</th>
                     <th scope="col">Código Evento</th>
-                    <th scope="col">Cant. Particip.</th>
                     <th scope="col">Valor Evento</th>
+                    <th scope="col">Cant. Particip.</th>
+                    <th scope="col">Sub Total</th>
                     <th scope="col">Descuento</th>
                     <th scope="col">Valor Total</th>
                     <th scope="col">Estado</th>
@@ -113,53 +114,52 @@
             <tbody>
 
                 {% for orden in filter.qs %}
-                <tr class="text-center">
-                    <td scope="row">{{orden.cod_orden_fact}}</td>
-                    <td scope="row">{{orden.fecha}}</td>
-                    <td scope="row">{{orden.ruc_ci}}</td>
-                    <td scope="row">{{orden.razon_nombres}}</td>
+                <tr >
+                    <td class="text-center" scope="row">{{orden.cod_orden_fact}}</td>
+                    <td class="text-center" scope="row">{{orden.fecha}}</td>
+                    <td class="text-center" scope="row">{{orden.ruc_ci}}</td>
+                    <td  class="text-center" scope="row">{{orden.razon_nombres}}</td>
 
-                    <td scope="row">
+                    <td class="text-center" scope="row">
                     {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span class={{p.cod_evento}}>{{p.nombre_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td class="cod_evento" scope="row">
+                    <td class="text-center" class="cod_evento" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span>{{p.cod_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td scope="row">    
-                    </td>
-                    <td scope="row">
+                    
+                    <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
-                        <span>{{p.valor_evento|currency}}</span>
+                        <span class="{{p.cod_evento}}">{{p.valor_evento}}</span>
                         <br>
 					{% endfor %}
                     </td>
-                    <td scope="row">
-                        {% for p in orden.ordenfacturacionparticipante_set.all%}
-                        <span class="{{p.cod_evento}}">{{p.descuento}}</span>
-                        <br>
-					    {% endfor %}
+                    <td class="text-center" scope="row">    
                     </td>
-                    <td scope="row">
+                    <td class="text-right" scope="row">    
+                    </td>
+                    <td class="text-center" scope="row">
+                    </td>
+                    <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
                         <span class="{{p.cod_evento}}">{{p.valor}}</span>
                         <br>
                         {% endfor %}
                     </td>
-                    <td scope="row">{{orden.get_estado_display}}</td>
-                    <td scope="row">{{orden.n_tramite}}</td>
-                    <td scope="row">{{orden.n_factura}}</td>
-                    <td scope="row">{{orden.asesor}}</td>
-                    <td scope="row">{{orden.fecha_factura}}</td>
+                    <td class="text-center" scope="row">{{orden.get_estado_display}}</td>
+                    <td class="text-center" scope="row">{{orden.n_tramite}}</td>
+                    <td class="text-center" scope="row">{{orden.n_factura}}</td>
+                    <td class="text-center" scope="row">{{orden.asesor}}</td>
+                    <td class="text-center" scope="row">{{orden.fecha_factura}}</td>
                     <!-- {% if orden.estado == 'ANLD' %}
                     <td class="tdmotivo" scope="row">{{orden.motivo_anular}}</td>
                     {%endif%} -->
-                    <td scope="row">
+                    <td class="text-center" scope="row">
 
                         
                         <a class="btn btn-secondary btn-sm" href="{% url 'orden_facturacion_editar' orden.id %}">

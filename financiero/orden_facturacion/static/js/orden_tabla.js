@@ -186,7 +186,7 @@ $("tbody").children().each(function(){
         
         const span=$("<span>");
         var final=(subcant[key]-vtcant[key])/subcant[key]
-        var ffinal= parseFloat(final*100);
+        var ffinal= parseFloat(final*100).toFixed(2);
         span.html(ffinal+"%");
         $(desc).append(span);
         $(desc).append($("<br>"));

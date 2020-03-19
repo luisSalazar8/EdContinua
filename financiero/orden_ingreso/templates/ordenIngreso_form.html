@@ -25,14 +25,14 @@
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
 			<div class="form-row">
-				<div class="col-6 col-md-3 mb-0">
+				<div class="col-6 col-md-3 col-lg-3 mb-0">
 					{{form.tipo_cliente|as_crispy_field}}
 					<small class="form-text text-muted">Seleccione el tipo de cliente</small>
 				</div>
-				<div class="col-6 col-md-3 mb-0">
+				<div class="col-6 col-md-3 col-lg-3 mb-0">
 					{{ form.fecha|as_crispy_field }}
 				</div>
-				<div class="col-6 col-md-3 mb-0 " id="field-ruc-ci">
+				<div class="col-6 col-md-3 col-lg-3 mb-0 " id="field-ruc-ci">
 					<div id="div_id_ruc_ci" class="form-group">
 						<label for="{{ form.ruc_ci.id_for_label}}" class="col-form-label requiredField"
 							id="ruc_ci">RUC/CI</label><span class="asteriskField">*</span>
@@ -48,7 +48,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-6 col-md-3 mb-0 " id="field-razon">
+				<div class="col-6 col-md-3 mb-0 col-lg-23" id="field-razon">
 					<div id="div_id_razon_nombres" class="form-group">
 						<label for="{{ form.razon_nombres.id_for_label}}" class="col-form-label requiredField"
 							id="ra_nom">Razón
@@ -69,10 +69,10 @@
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-8">
+				<div class="offset-sm-0 col-sm-6 col-md-7 offset-lg-0 col-lg-8  ">
 					{{form.orden_facturacion|as_crispy_field}}
 				</div>
-				<div class="col-4">
+				<div class="offset-sm-1 col-sm-5 offset-md-1 col-md-4 offset-lg-1 col-lg-3 ">
 					{{form.centro_costos|as_crispy_field}}
 				</div>
 			</div>
@@ -111,13 +111,13 @@
 				</div>
 				<div class="col-3">
 					{{form.valor|as_crispy_field}}
-					 {% comment %} {% if form.valor.errors %}
+					  {% if form.valor.errors %}
 							{% for error in form.valor.errors %}
 							<p class="invalid-feedback d-block">
 								<strong>{{ error }}</strong>
 							</p>
 							{% endfor %}
-					{% endif %} {% endcomment %} 
+					{% endif %} 
 
 				</div>
 			</div>

@@ -126,7 +126,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xl-12">
-					<table class="table table-responsive-md border-bottom">
+					<table id="tablefile" class="table table-responsive-md border-bottom">
 						{{ formset.management_form|crispy }}
 						
 							{% for form in formset.forms %}
@@ -152,33 +152,23 @@
 			</div>
 		</div>
 	</div>
-
-	{% if form.errors %}
-<div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
-    <div id="form_errors">
-        {% for key, value in form.errors.items %}
-            <span class="fieldWrapper">
-                {{ key }}:{{ value }}
-            </span>
-        {% endfor %}
-    </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-{% endif %}
-
-
-
-	</div>
-	<div class="row ">
-		<div class="col-12 mb-3">
-			<button type="submit" class="btn btn-secondary green-bg ml-3 ">Guardar</button>
-			<a class="btn btn-secondary" href="{% url 'ordenIngreso' %}"> Cancelar </a>
-			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn btn-danger "
-            data-toggle='modal' data-target="#ordenEliminarCenter" href='#'>Anular</a> 
+	<div id="row-botones" class="row  d-flex">
+		<div>
+				<button id ="guardar_orden_ingreso" type="submit" class="btn btn-secondary green-bg ml-3 ">Guardar</button>
+				<a class="btn btn-secondary ml-sm-2" href="{% url 'ordenIngreso' %}"> Cancelar </a>	
 		</div>
+		<div class="offset-5 offset-sm-8 offset-xl-9 text-center">
+			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn  btn-secondary  "
+					data-toggle='modal' data-target="#ordenEliminarCenter" href='#'> Anular
+				</a> 
+		<div>
 	</div>
+
+</div>
+	
+		
+	
+	
 	<div class="modal fade" id="ordenEliminarCenter" tabindex="-1" role="dialog" aria-labelledby="ordenTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

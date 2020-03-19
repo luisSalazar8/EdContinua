@@ -35,10 +35,19 @@ class OrdenIngresoFilter(django_filters.FilterSet):
     #         for i in kwargs['data']:
     #             if kwargs['data'][i] != "":
     #                argumentos+=1
-    #     if(argumentos>1):
-    #         kwargs['queryset']=OrdenIngreso.objects.filter(orden_facturacion__estado='PNDP').order_by('cod_orden_ing')
+    #     if(argumentos):
+    #         kwargs['queryset']=OrdenIngreso.objects.except(estado='ANLD').order_by('cod_orden_ing')
                 
     #     super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        
+        if (kwargs['data'] and kwargs['data']['estado'] != ""):
+            kwargs['queryset']=OrdenIngreso.objects.all()
+        else:
+             kwargs['queryset']=OrdenIngreso.objects.exclude(estado='ANLD').order_by('cod_orden_ing')
+        
+                
+        super().__init__(*args, **kwargs)
         
        
         

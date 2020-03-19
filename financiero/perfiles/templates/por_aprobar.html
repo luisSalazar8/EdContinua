@@ -41,6 +41,7 @@
 						<th scope="col">N° factura</th>
 						<th scope="col">Asesor</th>
 						<th scope="col">Fecha factura</th>
+						<th scope="col">Centro Costos</th>
 						</tr>
 					</thead>
 					{% if orden_fact %}
@@ -93,7 +94,7 @@
 							<td class="text-center" scope="row">{{orden.n_factura}}</td>
 							<td class="text-center" scope="row">{{orden.asesor}}</td>
 							<td class="text-center" scope="row">{{orden.fecha_factura}}</td>
-						
+							<td class="text-center" scope="row">{{orden.centro_costos}}</td>
 						</tr>
 						{% endfor %}
 					</tbody>

@@ -44,7 +44,7 @@ class OrdenIngresoFilter(django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         
         if (kwargs['data'] and kwargs['data']['estado'] != ""):
-            kwargs['queryset']=OrdenIngreso.objects.all()
+            kwargs['queryset']=OrdenIngreso.objects.all().order_by('cod_orden_ing')
         else:
              kwargs['queryset']=OrdenIngreso.objects.exclude(estado='ANLD').order_by('cod_orden_ing')
         

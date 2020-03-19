@@ -53,7 +53,7 @@
 	</div>
 	<div class="row">
 		<div class="campo col-12 mt-2 p-2 pl-3">
-			<h4 class="black-text text-uppercase mb-0">Datos Generales</h4>
+			<h5 class="black-text text-uppercase mb-0">Datos Generales</h5>
 		</div>
 	</div>
 	<div class="row darkwhite-bg py-2">
@@ -62,14 +62,14 @@
 				<div class="col-xl-3">
 					{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
 					<label for="codigo_evento" class="col-form-label">Código del Evento</label>
-					<select class="select2 form-control" id="codigo_evento"></select>
+					<select class="select2-evento form-control" id="codigo_evento"></select>
 					{%endif%}
 				</div>
 				<div class="col-xl-6">
 					<div class="form-group">
 						{% if form.estado.value == "Autorizada sin evento" or form.estado.value == "Autorizada con evento" %}
 						<label for="nombre_evento" class="col-form-label">Nombre del Evento</label>
-						<select class="select2 form-control" id="nombre_evento"></select>
+						<select class="select2-evento form-control" id="nombre_evento"></select>
 						{%endif%}
 					</div>
 				</div>
@@ -125,14 +125,15 @@
 	</div>
 	<div class="row">
 		<div class="campo col-12 p-2 pl-3">
-			<h4 class="black-text text-uppercase mb-0">Ingresos</h4>
+			<h5 class="black-text text-uppercase mb-0">Ingresos</h5>
 		</div>
 	</div>
+
 	<div class="row darkwhite-bg py-2">
-		<div class="col-12">
+		<div class="col-xl-12">
 			<div class="row">
-				<div class="col-xl-2"></div>
-				<div class="col-xl-8">
+				<div class="col-xl-2 d-none-sm"></div>
+				<div class="col-xl-8 col-12">
 					<div class="form-row">
 						<div class="col-3"></div>
 						<div class="col-3">
@@ -149,8 +150,8 @@
 						<div class="col-3 v-align">Ingresos sin descuento</div>
 						<div class="col-3"></div>
 						<div class="col-3">
-							<div class="currency-wrap">
-								<span class="currency-code">$</span>
+							<div class="currency-wrap money">
+								<span class="currency-code money">$</span>
 								{{ form.ingreso_individual_sin_desc | as_crispy_field}}
 							</div>
 						</div>
@@ -197,7 +198,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap">
+								<div class="currency-wrap money">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_individual |as_crispy_field}}
 								</div>
@@ -205,7 +206,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap">
+								<div class="currency-wrap money">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_total |as_crispy_field}}
 								</div>
@@ -213,30 +214,31 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-2"></div>
+				<div class="col-xl-2 d-none-sm">
+				</div>
 			</div>
 
 
 		</div>
 	</div>
 	<div class="row">
-		<div class="campo col-12 p-2 pl-3">
-			<h4 class="black-text text-uppercase mb-0">Egresos >> <span class="green-text"> Egresos Fijos</span></h4>
+		<div class="campo col-xl-12 p-2 pl-3">
+			<h5 class="black-text text-uppercase mb-0">Egresos >> <span class="green-text"> Egresos Fijos</span></h5>
 		</div>
 	</div>
 	<div class="my-3">
 		<div id="accordion">
 			<div class="card">
-				<div class="card-header border-bottom border-success" id="headingOne">
-					<a style="cursor: pointer" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
-						aria-controls="collapseOne">
+				<div class="card-header border-bottom border-success" id="heading1">
+					<a style="cursor: pointer" data-toggle="collapse" data-target="#collapse1" aria-expanded="false"
+						aria-controls="collapse1">
 						<h5 class="mb-0">
 							EGRESOS INSTRUCTOR<i class="fas fa-angle-down float-right"></i>
 						</h5>
 					</a>
 				</div>
 
-				<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+				<div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-1"></div>
@@ -278,84 +280,55 @@
 												</div>
 											</div>
 											<div class="col">
-												{% if form.estado.value == "Grabado" %}
-												<input type="number" min="0" id="hora1" required
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
+												<input type="number" min="0" id="hora1" required {%if form.estado.value != "Grabado" %} readonly {%endif%}
+													class='pr-3 form-control horas-honorario valor-total p-1 p-xl-2'
 													placeholder="#horas" data-depend="True" data-field="costo1"
 													data-total="total1" data-toggle="tooltip" data-placement="top"
 													title="# horas">
-												{%else%}
-												<input type="number" min="0" id="hora1" required readonly
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
-													placeholder="#horas" data-depend="True" data-field="costo1"
-													data-total="total1" data-toggle="tooltip" data-placement="top"
-													title="# horas">
-												{%endif%}
 											</div>
 										</div>
 									</div>
 									<div class="col-2">
-										<div class="currency-wrap">
+										<div class="currency-wrap money">
 											<span class="currency-code">$</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="costo1" required
-												class='form-control costo-hora valor-total text-currency'
+											<input type="text" min="0" id="costo1" required {%if form.estado.value != "Grabado" %} readonly {%endif%}
+												class='pr-3 form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora1" data-total="total1"
 												placeholder="Costo hora">
-											{%else%}
-											<input type="number" min="0" id="costo1" required readonly
-												class='form-control costo-hora valor-total text-currency'
-												data-depend="True" data-field="hora1" data-total="total1"
-												placeholder="Costo hora">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group">
 											<div class="currency-wrap">
 												<span class="currency-code">$</span>
-												<input type="number" min="0" id="total1" readonly required
+												<input type="text" min="0" id="total1" readonly required
 													data-porc="porcentaje1"
-													class='form-control total-honorario text-currency valor-total'
+													class='form-control pr-3 total-honorario text-currency valor-total'
 													data-depend="True" data-field="ir1" data-total="impuesto_total_1">
 											</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="form-check">
-											{% if form.estado.value == "Grabado" %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
+											<input type="checkbox" class="form-check-input impuesto-select" required{%if form.estado.value != "Grabado" %} disabled {%endif%}
 												id="impuesto_select_1" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir1"
 												data-label="total1" data-depend="impuesto_porcentaje_1">
-											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required
-												disabled id="impuesto_select_1" value=1 data-toggle="tooltip"
-												data-placement="top" title="¿Tiene impuesto?" data-field="ir1"
-												data-label="total1" data-depend="impuesto_porcentaje_1">
-											{%endif%}
-
 										</div>
 									</div>
 									<div class="col-1">
 										<div class="currency-wrap">
 											<span class="currency-code">%</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="impuesto_porcentaje_1" required readonly
-												class='form-control porcentaje-impuesto text-currency'
+											<input type="number" min="0" max="100" id="impuesto_porcentaje_1" required
+												class='form-control porcentaje-impuesto text-currency valor-porcentaje'
 												placeholder="impuesto">
-											{%else%}
-											<input type="number" min="0" id="impuesto_porcentaje_1" required readonly
-												class='form-control porcentaje-impuesto text-currency'
-												placeholder="impuesto">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col">
 										<div class="currency-wrap">
 											<span class="currency-code">$</span>
-											<input type="number" min="0" id="impuesto_total_1" required readonly
-												class='form-control total-impuesto text-currency'
+											<input type="text" min="0" id="impuesto_total_1" required readonly
+												class='form-control pr-3 total-impuesto text-currency'
 												placeholder="Valor Total">
 										</div>
 									</div>
@@ -374,84 +347,55 @@
 												</div>
 											</div>
 											<div class="col">
-												{% if form.estado.value == "Grabado" %}
-												<input type="number" min="0" id="hora2" required
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
+												<input type="number" min="0" id="hora2" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+													class='pr-3 form-control horas-honorario valor-total p-1 p-xl-2'
 													placeholder="#horas" data-depend="True" data-field="costo2"
 													data-total="total2" data-toggle="tooltip" data-placement="top"
 													title="# horas">
-												{%else%}
-												<input type="number" min="0" id="hora2" required readonly
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
-													placeholder="#horas" data-depend="True" data-field="costo2"
-													data-total="total2" data-toggle="tooltip" data-placement="top"
-													title="# horas">
-												{%endif%}
 											</div>
 										</div>
 									</div>
 									<div class="col-2">
-										<div class="currency-wrap">
+										<div class="currency-wrap money">
 											<span class="currency-code">$</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="costo2" required
-												class='form-control costo-hora valor-total text-currency'
+											<input type="text" min="0" id="costo2" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+												class='pr-3 form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora2" data-total="total2"
 												placeholder="Costo hora">
-											{%else%}
-											<input type="number" min="0" id="costo2" required readonly
-												class='form-control costo-hora valor-total text-currency'
-												data-depend="True" data-field="hora2" data-total="total2"
-												placeholder="Costo hora">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group">
 											<div class="currency-wrap">
 												<span class="currency-code">$</span>
-												<input type="number" min="0" id="total2" readonly required
+												<input type="text" min="0" id="total2" readonly required
 													data-porc="porcentaje2"
-													class='form-control total-honorario text-currency valor-total'
+													class='form-control pr-3 total-honorario text-currency valor-total'
 													data-depend="True" data-field="ir2" data-total="impuesto_total_2">
 											</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="form-check">
-											{% if form.estado.value == "Grabado" %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
+											<input type="checkbox" class="form-check-input impuesto-select" required{%if form.estado.value != "Grabado" %} disabled {%endif%}
 												id="impuesto_select_2" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir2"
 												data-label="total2" data-depend="impuesto_porcentaje_2">
-											{% else %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
-												disabled id="impuesto_select_2" value=1 data-toggle="tooltip"
-												data-placement="top" title="¿Tiene impuesto?" data-field="ir2"
-												data-label="total2" data-depend="impuesto_porcentaje_2">
-											{% endif %}
-
 										</div>
 									</div>
 									<div class="col-1">
 										<div class="currency-wrap">
 											<span class="currency-code">%</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="impuesto_porcentaje_2" required
-												class='form-control porcentaje-impuesto text-currency'
+											<input type="number" min="0"  max="100"  id="impuesto_porcentaje_2" required
+												class='form-control porcentaje-impuesto valor-porcentaje text-currency'
 												placeholder="impuesto">
-											{%else%}
-											<input type="number" min="0" id="impuesto_porcentaje_2" required readonly
-												class='form-control porcentaje-impuesto text-currency'
-												placeholder="impuesto">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col">
 										<div class="currency-wrap">
 											<span class="currency-code">$</span>
-											<input type="number" min="0" id="impuesto_total_2" required readonly
-												class='form-control total-impuesto text-currency'
+											<input type="text" min="0" id="impuesto_total_2" required readonly
+												class='form-control pr-3 total-impuesto text-currency'
 												placeholder="Valor Total">
 										</div>
 									</div>
@@ -470,84 +414,55 @@
 												</div>
 											</div>
 											<div class="col">
-												{% if form.estado.value == "Grabado" %}
-												<input type="number" min="0" id="hora3" required
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
+												<input type="number" min="0" id="hora3" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+													class='pr-3 form-control horas-honorario valor-total p-1 p-xl-2'
 													placeholder="#horas" data-depend="True" data-field="costo3"
 													data-total="total3" data-toggle="tooltip" data-placement="top"
 													title="# horas">
-												{%else%}
-												<input type="number" min="0" id="hora3" required readonly
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
-													placeholder="#horas" data-depend="True" data-field="costo3"
-													data-total="total3" data-toggle="tooltip" data-placement="top"
-													title="# horas">
-												{%endif%}
 											</div>
 										</div>
 									</div>
 									<div class="col-2">
-										<div class="currency-wrap">
+										<div class="currency-wrap money">
 											<span class="currency-code">$</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="costo3" required
-												class='form-control costo-hora valor-total text-currency'
+											<input type="text" min="0" id="costo3" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+												class='pr-3 form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora3" data-total="total3"
 												placeholder="Costo hora">
-											{%else%}
-											<input type="number" min="0" id="costo3" required readonly
-												class='form-control costo-hora valor-total text-currency'
-												data-depend="True" data-field="hora3" data-total="total3"
-												placeholder="Costo hora">
-											{%endif%}
-
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group">
 											<div class="currency-wrap">
 												<span class="currency-code">$</span>
-												<input type="number" min="0" id="total3" readonly required
+												<input type="text" min="0" id="total3" readonly required
 													data-porc="porcentaje3"
-													class='form-control total-honorario text-currency valor-total'
+													class='form-control pr-3 total-honorario text-currency valor-total'
 													data-depend="True" data-field="ir3" data-total="impuesto_total_3">
 											</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="form-check">
-											{% if form.estado.value == "Grabado" %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
+											<input type="checkbox" class="form-check-input impuesto-select" required{%if form.estado.value != "Grabado" %} disabled {%endif%}
 												id="impuesto_select_3" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir3"
 												data-label="total3" data-depend="impuesto_porcentaje_3">
-											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required
-												disabled id="impuesto_select_3" value=1 data-toggle="tooltip"
-												data-placement="top" title="¿Tiene impuesto?" data-field="ir3"
-												data-label="total3" data-depend="impuesto_porcentaje_3">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-1">
 										<div class="currency-wrap">
 											<span class="currency-code">%</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="impuesto_porcentaje_3" required
-												class='form-control porcentaje-impuesto text-currency'
+											<input type="number" min="0"  max="100" id="impuesto_porcentaje_3" required
+												class='form-control porcentaje-impuesto valor-porcentaje text-currency'
 												placeholder="impuesto">
-											{%else%}
-											<input type="number" min="0" id="impuesto_porcentaje_3" required readonly
-												class='form-control porcentaje-impuesto text-currency'
-												placeholder="impuesto">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col">
 										<div class="currency-wrap">
 											<span class="currency-code">$</span>
-											<input type="number" min="0" id="impuesto_total_3" required readonly
-												class='form-control total-impuesto text-currency'
+											<input type="text" min="0" id="impuesto_total_3" required readonly
+												class='form-control pr-3 total-impuesto text-currency'
 												placeholder="Valor Total">
 										</div>
 									</div>
@@ -566,83 +481,55 @@
 												</div>
 											</div>
 											<div class="col">
-												{% if form.estado.value == "Grabado" %}
-												<input type="number" min="0" id="hora4" required
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
+												<input type="number" min="0" id="hora4" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+													class='pr-3 form-control horas-honorario valor-total p-1 p-xl-2'
 													placeholder="#horas" data-depend="True" data-field="costo4"
 													data-total="total4" data-toggle="tooltip" data-placement="top"
 													title="# horas">
-												{%else%}
-												<input type="number" min="0" id="hora4" required readonly
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
-													placeholder="#horas" data-depend="True" data-field="costo4"
-													data-total="total4" data-toggle="tooltip" data-placement="top"
-													title="# horas">
-												{%endif%}
 											</div>
 										</div>
 									</div>
 									<div class="col-2">
-										<div class="currency-wrap">
+										<div class="currency-wrap money">
 											<span class="currency-code">$</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="costo4" required
-												class='form-control costo-hora valor-total text-currency'
+											<input type="text" min="0" id="costo4" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+												class='pr-3 form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora4" data-total="total4"
 												placeholder="Costo hora">
-											{%else%}
-											<input type="number" min="0" id="costo4" required readonly
-												class='form-control costo-hora valor-total text-currency'
-												data-depend="True" data-field="hora4" data-total="total4"
-												placeholder="Costo hora">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group">
 											<div class="currency-wrap">
 												<span class="currency-code">$</span>
-												<input type="number" min="0" id="total4" readonly required
+												<input type="text" min="0" id="total4" readonly required
 													data-porc="porcentaje4"
-													class='form-control total-honorario text-currency valor-total'
+													class='form-control pr-3 total-honorario text-currency valor-total'
 													data-depend="True" data-field="ir4" data-total="impuesto_total_4">
 											</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="form-check">
-											{% if form.estado.value == "Grabado" %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
+											<input type="checkbox" class="form-check-input impuesto-select" required{%if form.estado.value != "Grabado" %} disabled {%endif%}
 												id="impuesto_select_4" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir4"
 												data-label="total4" data-depend="impuesto_porcentaje_4">
-											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required
-												disabled id="impuesto_select_4" value=1 data-toggle="tooltip"
-												data-placement="top" title="¿Tiene impuesto?" data-field="ir4"
-												data-label="total4" data-depend="impuesto_porcentaje_4">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-1">
 										<div class="currency-wrap">
 											<span class="currency-code">%</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="impuesto_porcentaje_4" required
-												class='form-control porcentaje-impuesto text-currency'
+											<input type="number" min="0" max="100"  id="impuesto_porcentaje_4" required
+												class='form-control porcentaje-impuesto valor-porcentaje text-currency'
 												placeholder="impuesto">
-											{%else%}
-											<input type="number" min="0" id="impuesto_porcentaje_4" required readonly
-												class='form-control porcentaje-impuesto text-currency'
-												placeholder="impuesto">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col">
 										<div class="currency-wrap">
 											<span class="currency-code">$</span>
-											<input type="number" min="0" id="impuesto_total_4" required readonly
-												class='form-control total-impuesto text-currency'
+											<input type="text" min="0" id="impuesto_total_4" required readonly
+												class='form-control pr-3 total-impuesto text-currency'
 												placeholder="Valor Total">
 										</div>
 									</div>
@@ -661,84 +548,55 @@
 												</div>
 											</div>
 											<div class="col">
-												{% if form.estado.value == "Grabado" %}
-												<input type="number" min="0" id="hora5" required
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
+												<input type="number" min="0" id="hora5" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+													class='pr-3 form-control horas-honorario valor-total p-1 p-xl-2'
 													placeholder="#horas" data-depend="True" data-field="costo5"
 													data-total="total5" data-toggle="tooltip" data-placement="top"
 													title="# horas">
-												{%else%}
-												<input type="number" min="0" id="hora5" required readonly
-													class='form-control horas-honorario valor-total p-1 p-xl-2'
-													placeholder="#horas" data-depend="True" data-field="costo5"
-													data-total="total5" data-toggle="tooltip" data-placement="top"
-													title="# horas">
-												{%endif%}
 											</div>
 										</div>
 									</div>
 									<div class="col-2">
-										<div class="currency-wrap">
+										<div class="currency-wrap money">
 											<span class="currency-code">$</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="costo5" required
-												class='form-control costo-hora valor-total text-currency'
+											<input type="text" min="0" id="costo5" required{%if form.estado.value != "Grabado" %} readonly {%endif%}
+												class='pr-3 form-control costo-hora valor-total text-currency'
 												data-depend="True" data-field="hora5" data-total="total5"
 												placeholder="Costo hora">
-											{%else%}
-											<input type="number" min="0" id="costo5" required readonly
-												class='form-control costo-hora valor-total text-currency'
-												data-depend="True" data-field="hora5" data-total="total5"
-												placeholder="Costo hora">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group">
 											<div class="currency-wrap">
 												<span class="currency-code">$</span>
-												<input type="number" min="0" id="total5" readonly required
+												<input type="text" min="0" id="total5" readonly required
 													data-porc="porcentaje5"
-													class='form-control total-honorario text-currency valor-total'
+													class='form-control pr-3 total-honorario text-currency valor-total'
 													data-depend="True" data-field="ir5" data-total="impuesto_total_5">
 											</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="form-check">
-											{% if form.estado.value == "Grabado" %}
-											<input type="checkbox" class="form-check-input impuesto-select" required
+											<input type="checkbox" class="form-check-input impuesto-select" required{%if form.estado.value != "Grabado" %} disabled {%endif%}
 												id="impuesto_select_5" value=1 data-toggle="tooltip"
 												data-placement="top" title="¿Tiene impuesto?" data-field="ir5"
 												data-label="total5" data-depend="impuesto_porcentaje_5">
-											{%else%}
-											<input type="checkbox" class="form-check-input impuesto-select" required
-												disabled id="impuesto_select_5" value=1 data-toggle="tooltip"
-												data-placement="top" title="¿Tiene impuesto?" data-field="ir5"
-												data-label="total5" data-depend="impuesto_porcentaje_5">
-											{%endif%}
 										</div>
 									</div>
 									<div class="col-1">
 										<div class="currency-wrap">
 											<span class="currency-code">%</span>
-											{% if form.estado.value == "Grabado" %}
-											<input type="number" min="0" id="impuesto_porcentaje_5" required
-												class='form-control porcentaje-impuesto text-currency'
+											<input type="number" min="0"  max="100" id="impuesto_porcentaje_5" required
+												class='form-control porcentaje-impuesto valor-porcentaje text-currency'
 												placeholder="impuesto">
-											{%else%}
-											<input type="number" min="0" id="impuesto_porcentaje_5" required readonly
-												class='form-control porcentaje-impuesto text-currency'
-												placeholder="impuesto">
-											{%endif%}
-
 										</div>
 									</div>
 									<div class="col">
 										<div class="currency-wrap">
 											<span class="currency-code">$</span>
-											<input type="number" min="0" id="impuesto_total_5" required readonly
-												class='form-control total-impuesto text-currency'
+											<input type="text" min="0" id="impuesto_total_5" required readonly
+												class='form-control pr-3 total-impuesto text-currency'
 												placeholder="Valor Total">
 										</div>
 									</div>
@@ -813,7 +671,7 @@
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span
+										<div class="currency-wrap money"><span
 												class="currency-code">$</span>{{form.pasaje_instructor_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -826,9 +684,8 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Hospedaje y alimentación Instructor</div>
 									<div class="col-2">
+										<input type="hidden" name="hospedaje_alimentacion_instructor" value="{{form.hospedaje_alimentacion_instructor.value}}">
 										<div class="form-group">
-											<input type="hidden" name="hospedaje_alimentacion_instructor"
-												value='{{form.hospedaje_alimentacion_instructor.value}}' />
 											{{form.hospedaje_alimentacion_instructor|as_crispy_field}}
 										</div>
 									</div>
@@ -855,9 +712,8 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Breaks Instructor</div>
 									<div class="col-2">
+										<input type="hidden" name="break_instructor" value="{{form.break_instructor.value}}">
 										<div class="form-group">
-											<input type="hidden" name="break_instructor"
-												value='{{form.break_instructor.value}}' />
 											{{form.break_instructor|as_crispy_field}}
 										</div>
 									</div>
@@ -884,9 +740,8 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Almuerzos Instructor</div>
 									<div class="col-2">
+										<input type="hidden" name="almuerzo_instructor" value="{{form.almuerzo_instructor.value}}">
 										<div class="form-group">
-											<input type="hidden" name="almuerzo_instructor"
-												value='{{form.almuerzo_instructor.value}}' />
 											{{form.almuerzo_instructor|as_crispy_field}}
 										</div>
 									</div>
@@ -912,10 +767,9 @@
 
 								</div>
 							</div>
-
+							
 							<div class="col-1">
-								{% if form.estado.value == "Grabado" %}
-
+								{%if form.estado.value == "Grabado" %}
 								<div class="form-row">
 									<div class="col-12 v-align">
 										<a id="add_inst" class="btn btn-block btn-sm white-text btn-secondary">+</a>
@@ -925,27 +779,26 @@
 									<div class="col-12 v-align">
 										<a id="remove_inst" class="btn btn-block btn-sm white-text btn-secondary">-</a>
 									</div>
-								</div>
-								{%endif%}
+								</div> {%endif%}
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="card">
-				<div class="card-header border-bottom border-success" id="headingTwo">
-					<a style="cursor: pointer" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-						aria-controls="collapseTwo">
+				<div class="card-header border-bottom border-success" id="heading2">
+					<a style="cursor: pointer" data-toggle="collapse" data-target="#collapse2" aria-expanded="false"
+						aria-controls="collapse2">
 						<h5 class="mb-0">
 							VIATICOS DEL PERSONAL<i class="fas fa-angle-down float-right"></i>
 						</h5>
 					</a>
 				</div>
-				<div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+				<div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-xl-1"></div>
-							<div class="col-xl-10">
+							<div class="col-xl-1 d-none-sm"></div>
+							<div class="col-xl-10 col-12">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -974,7 +827,7 @@
 										{{form.pasaje_personal_dias}}
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span class="currency-code">$</span>
+										<div class="currency-wrap money"><span class="currency-code">$</span>
 											{{form.pasaje_personal_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -988,8 +841,7 @@
 									<div class="col-3 v-align">Hospedaje y alimentación</div>
 									<div class="col-2">
 										<div class="form-group">
-											<input type="hidden" name="hospedaje_alimentacion_personal"
-												value='{{form.hospedaje_alimentacion_personal.value}}' />
+											<input type="hidden" name="hospedaje_alimentacion_personal" value="{{form.hospedaje_alimentacion_personal.value}}">
 											{{form.hospedaje_alimentacion_personal|as_crispy_field}}
 										</div>
 									</div>
@@ -1017,7 +869,7 @@
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span class="currency-code">$</span>
+										<div class="currency-wrap money"><span class="currency-code">$</span>
 											{{form.movilizacion_personal_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1033,19 +885,19 @@
 				</div>
 			</div>
 			<div class="card">
-				<div class="card-header border-bottom border-success" id="headingThree">
-					<a style="cursor: pointer" class="collapsed" data-toggle="collapse" data-target="#collapseThree"
-						aria-expanded="false" aria-controls="collapseThree">
+				<div class="card-header border-bottom border-success" id="heading3">
+					<a style="cursor: pointer" class="collapsed" data-toggle="collapse" data-target="#collapse3"
+						aria-expanded="false" aria-controls="collapse3">
 						<h5 class="mb-0">
 							INFRAESTRUCTURA<i class="fas fa-angle-down float-right"></i>
 						</h5>
 					</a>
 				</div>
-				<div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
+				<div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1063,9 +915,8 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Instalaciones</div>
 									<div class="col-3">
+										<input type="hidden" name="instalaciones" value="{{form.instalaciones.value}}">
 										<div class="form-group">
-											<input type="hidden" name="instalaciones"
-												value='{{form.instalaciones.value}}' />
 											{{form.instalaciones|as_crispy_field}}
 										</div>
 									</div>
@@ -1091,7 +942,7 @@
 									</div>
 									<div class="col-3">
 										<div class="currency-wrap"><span class="currency-code">$</span>
-											<input type="number" id="provision_mejoras_unitario"
+											<input type="text" id="provision_mejoras_unitario"
 												class="form-control text-currency" readonly placeholder="Total egresos"
 												value="{{form.ingreso_neto_total.value}}">
 										</div>
@@ -1115,7 +966,7 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse4" class="collapse show" aria-labelledby="heading4" data-parent="#accordion">
+				<div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-1"></div>
@@ -1140,7 +991,7 @@
 									</div>
 									<div class="col-3">
 										<div class="form-group">
-											<div class="currency-wrap"><span
+											<div class="currency-wrap money"><span
 													class="currency-code">$</span>{{form.publicidad_unitario|as_crispy_field}}
 											</div>
 										</div>
@@ -1165,7 +1016,7 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse5" class="collapse show" aria-labelledby="heading5" data-parent="#accordion">
+				<div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-1"></div>
@@ -1190,7 +1041,7 @@
 									</div>
 									<div class="col-3">
 										<div class="form-group">
-											<div class="currency-wrap"><span
+											<div class="currency-wrap money"><span
 													class="currency-code">$</span>{{form.personal_evento_unitario|as_crispy_field}}
 											</div>
 										</div>
@@ -1215,7 +1066,7 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse6" class="collapse show" aria-labelledby="heading6" data-parent="#accordion">
+				<div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-1"></div>
@@ -1237,8 +1088,7 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Prospecto del evento</div>
 									<div class="col-3">
-										<input type="hidden" name="prospecto_evento"
-											value='{{form.prospecto_evento.value}}' />
+										<input type="hidden" name="prospecto_evento" value="{{form.prospecto_evento.value}}">
 										{{form.prospecto_evento|as_crispy_field}}
 									</div>
 									<div class="col-3">
@@ -1288,11 +1138,10 @@
 	</div>
 
 
-
 	<div class="row">
-		<div class="campo col-12 p-2 pl-3">
-			<h4 class="black-text text-uppercase mb-0">Egresos >> <span class="green-text"> Egresos Variables</span>
-			</h4>
+		<div class="campo col-xl-12 p-2 pl-3">
+			<h5 class="black-text text-uppercase mb-0">Egresos >> <span class="green-text"> Egresos Variables</span>
+			</h5>
 		</div>
 	</div>
 	<div class="my-3">
@@ -1307,11 +1156,11 @@
 					</a>
 				</div>
 
-				<div id="collapse7" class="collapse show" aria-labelledby="heading7" data-parent="#accordion">
+				<div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1330,8 +1179,7 @@
 									<div class="col-3 v-align">Emisión Certificados</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="certificados"
-												value='{{form.certificados.value}}' />
+											<input type="hidden" name="certificados" value="{{form.certificados.value}}">
 											{{form.certificados|as_crispy_field}}
 										</div>
 									</div>
@@ -1350,7 +1198,7 @@
 									<div class="col-3 v-align">Carpeta</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="carpeta" value='{{form.carpeta.value}}' />
+											<input type="hidden" name="carpeta" value="{{form.carpeta.value}}">
 											{{form.carpeta|as_crispy_field}}
 										</div>
 									</div>
@@ -1370,12 +1218,12 @@
 
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="maletin" value='{{form.maletin.value}}' />
+											<input type="hidden" name="maletin" value="{{form.maletin.value}}">
 											{{form.maletin|as_crispy_field}}
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span
+										<div class="currency-wrap money"><span
 												class="currency-code">$</span>{{form.maletin_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1389,7 +1237,7 @@
 									<div class="col-3 v-align">Blocks</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="block" value='{{form.block.value}}' />
+											<input type="hidden" name="block" value="{{form.block.value}}">
 											{{form.block|as_crispy_field}}
 										</div>
 									</div>
@@ -1408,7 +1256,7 @@
 									<div class="col-3 v-align">Plumas</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="pluma" value='{{form.pluma.value}}' />
+											<input type="hidden" name="pluma" value="{{form.pluma.value}}">
 											{{form.pluma|as_crispy_field}}
 										</div>
 									</div>
@@ -1427,7 +1275,7 @@
 									<div class="col-3 v-align">Lápices</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="lapiz" value='{{form.lapiz.value}}' />
+											<input type="hidden" name="lapiz" value="{{form.lapiz.value}}">
 											{{form.lapiz|as_crispy_field}}
 										</div>
 									</div>
@@ -1446,13 +1294,12 @@
 									<div class="col-3 v-align">Credenciales (plástico)</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="credencial_plastico"
-												value='{{form.credencial_plastico.value}}' />
+											<input type="hidden" name="credencial_plastico" value="{{form.credencial_plastico.value}}">
 											{{form.credencial_plastico|as_crispy_field}}
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span class="currency-code">$</span>
+										<div class="currency-wrap money"><span class="currency-code">$</span>
 											{{form.credencial_plastico_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1466,13 +1313,12 @@
 									<div class="col-3 v-align">Credenciales (pvc)</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="credencial_pvc"
-												value='{{form.credencial_pvc.value}}' />
+											<input type="hidden" name="credencial_pvc" value="{{form.credencial_pvc.value}}">
 											{{form.credencial_pvc|as_crispy_field}}
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span class="currency-code">$</span>
+										<div class="currency-wrap money"><span class="currency-code">$</span>
 											{{form.credencial_pvc_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1486,7 +1332,7 @@
 									<div class="col-3 v-align">Pendrives</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="pendrive" value='{{form.pendrive.value}}' />
+											<input type="hidden" name="pendrive" value="{{form.pendrive.value}}">
 											{{form.pendrive|as_crispy_field}}
 										</div>
 									</div>
@@ -1505,13 +1351,12 @@
 									<div class="col-3 v-align">Otros materiales</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="otros_materiales"
-												value='{{form.otros_materiales.value}}' />
+											<input type="hidden" name="otros_materiales" value="{{form.otros_materiales.value}}">
 											{{form.otros_materiales|as_crispy_field}}
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span class="currency-code">$</span>
+										<div class="currency-wrap money"><span class="currency-code">$</span>
 											{{form.otros_materiales_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1535,11 +1380,11 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse8" class="collapse show" aria-labelledby="heading8" data-parent="#accordion">
+				<div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1558,8 +1403,7 @@
 									<div class="col-3 v-align">Breaks</div>
 									<div class="col-2">
 										<div class="form-group">
-											<input type="hidden" name="break_evento"
-												value='{{form.break_evento.value}}' />
+											<input type="hidden" name="break_evento" value="{{form.break_evento.value}}">
 											{{form.break_evento|as_crispy_field}}
 										</div>
 									</div>
@@ -1585,8 +1429,7 @@
 									<div class="col-3 v-align">Almuerzo</div>
 									<div class="col-2">
 										<div class="form-group">
-											<input type="hidden" name="almuerzo_evento"
-												value='{{form.almuerzo_evento.value}}' />
+											<input type="hidden" name="almuerzo_evento" value="{{form.almuerzo_evento.value}}">
 											{{form.almuerzo_evento|as_crispy_field}}
 										</div>
 									</div>
@@ -1622,11 +1465,11 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse9" class="collapse show" aria-labelledby="heading9" data-parent="#accordion">
+				<div id="collapse9" class="collapse" aria-labelledby="heading9" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1645,12 +1488,12 @@
 									<div class="col-3 v-align">Ceremonia clausura</div>
 									<div class="col-3">
 										<div class="form-group">
-											<input type="hidden" name="ceremonia" value='{{form.ceremonia.value}}' />
+											<input type="hidden" name="ceremonia" value="{{form.ceremonia.value}}">
 											{{form.ceremonia|as_crispy_field}}
 										</div>
 									</div>
 									<div class="col-3">
-										<div class="currency-wrap"><span
+										<div class="currency-wrap money"><span
 												class="currency-code">$</span>{{form.ceremonia_unitario|as_crispy_field}}
 										</div>
 									</div>
@@ -1676,11 +1519,11 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse10" class="collapse show" aria-labelledby="heading10" data-parent="#accordion">
+				<div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1762,7 +1605,7 @@
 									</div>
 								</div>
 								<div class="form-row">
-									<div class="col-3 v-align">Aportación Fundaespol</div>
+									<div class="col-3 v-align">Aportación FUNDAESPOL</div>
 									<div class="col-3">
 										<div class="form-group">
 											<div class="currency-wrap"><span
@@ -1785,12 +1628,11 @@
 								</div>
 								<div class="form-row">
 									<div class="col-3 v-align">Aportación Facultades</div>
-									<div class="col-2">
-										<input type="hidden" name="aportacion_facultad"
-											value='{{form.aportacion_facultad.value}}' />
-										{{form.aportacion_facultad}}
-									</div>
-									<div class="col-1">
+									<div class="col-xl-2 col">
+										<input type="hidden" name="aportacion_facultad" value="{{form.aportacion_facultad.value}}">
+										{{form.aportacion_facultad}
+									}</div>
+									<div class="col-xl-1 col">
 										<div class="form-group">
 											<div class="currency-wrap"><span
 													class="currency-code">%</span>{{form.aportacion_facultad_porcentaje_unitario|as_crispy_field}}
@@ -1824,11 +1666,11 @@
 						</h5>
 					</a>
 				</div>
-				<div id="collapse11" class="collapse show" aria-labelledby="heading11" data-parent="#accordion">
+				<div id="collapse11" class="collapse" aria-labelledby="heading11" data-parent="#accordion">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-1"></div>
-							<div class="col-10">
+							<div class="col-xl-1"></div>
+							<div class="col-xl-10">
 								<div class="form-row">
 									<div class="col-3"></div>
 									<div class="col-3">
@@ -1849,7 +1691,7 @@
 									</div>
 									<div class="col-3">
 										<div class="form-group">
-											<div class="currency-wrap"><span
+											<div class="currency-wrap money"><span
 													class="currency-code">$</span>{{form.movilizacion_interna_unitario|as_crispy_field}}
 											</div>
 										</div>
@@ -1864,8 +1706,7 @@
 								<div class="form-row">
 									<div class="col-3 v-align">Cafeteria y limpieza</div>
 									<div class="col-3">
-										<input type="hidden" name="cafeteria_limpieza"
-											value='{{form.cafeteria_limpieza.value}}' />
+										<input type="hidden" name="cafeteria_limpieza" value="{{form.cafeteria_limpieza.value}}">
 										{{form.cafeteria_limpieza}}
 									</div>
 									<div class="col-3">
@@ -1940,7 +1781,7 @@
 		<div class="col-9 col-xl-10 v-align">
 			<h5 class="float-right">TOTAL EGRESOS</h5>
 		</div>
-		<div class="col-xl-2 col-3">
+		<div class="col-3 col-xl-2">
 			<div class="form-group">
 				<div class="currency-wrap">
 					<span class="currency-code">$</span>{{form.total_egresos|as_crispy_field}}
@@ -1949,8 +1790,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="campo col-12 mt-2 p-2 pl-3">
-			<h4 class="black-text text-uppercase mb-0">Resumen presupuesto</h4>
+		<div class="campo col-xl-12 mt-2 p-2 pl-3">
+			<h5 class="black-text text-uppercase mb-0">Resumen presupuesto</h5>
 		</div>
 	</div>
 	<div class="row darkwhite-bg py-2">
@@ -1961,7 +1802,7 @@
 				<div class="col-3 v-align">Nombre del evento</div>
 				<div class="col-9">
 					<div class="form-group">
-						<input type="number" readonly id="resumen_nombre_evento" class="form-control textInput myinput">
+						<input type="text" readonly id="resumen_nombre_evento" class="form-control textInput myinput">
 					</div>
 				</div>
 			</div>
@@ -1971,16 +1812,16 @@
 					<div class="form-group">
 						<div class="currency-wrap">
 							<span class="currency-code">$</span>
-							<input type="number" readonly id="resumen_ingreso"
-								class="form-control textInput text-currency myinput">
+							<input type="text" readonly id="resumen_ingreso"
+								class="pr-3 form-control textInput text-currency myinput">
 						</div>
 					</div>
 				</div>
 				<div class="col-3 v-align">Precio del evento</div>
 				<div class="col-3">
 					<div class="currency-wrap"><span class="currency-code">$</span>
-						<input type="number" readonly id="resumen_precio_evento"
-							class="punto form-control textInput myinput text-currency">
+						<input type="text" readonly id="resumen_precio_evento"
+							class="pr-3 punto form-control textInput myinput text-currency">
 					</div>
 				</div>
 			</div>
@@ -1989,8 +1830,8 @@
 				<div class="col-3">
 					<div class="form-group">
 						<div class="currency-wrap"><span class="currency-code">$</span>
-							<input type="number" readonly id="resumen_egreso"
-								class="form-control textInput text-currency myinput">
+							<input type="text" readonly id="resumen_egreso"
+								class="pr-3 form-control textInput text-currency myinput">
 						</div>
 					</div>
 				</div>
@@ -2006,8 +1847,8 @@
 				<div class="col-3">
 					<div class="form-group">
 						<div class="currency-wrap"><span class="currency-code">$</span>
-							<input type="number" readonly id="resumen_egreso_fijo"
-								class="form-control textInput text-currency myinput">
+							<input type="text" readonly id="resumen_egreso_fijo"
+								class="pr-3 form-control textInput text-currency myinput">
 						</div>
 					</div>
 				</div>
@@ -2023,15 +1864,15 @@
 				<div class="col-3">
 					<div class="form-group">
 						<div class="currency-wrap"><span class="currency-code">$</span>
-							<input type="number" readonly id="resumen_egreso_variable"
-								class="form-control textInput text-currency myinput">
+							<input type="text" readonly id="resumen_egreso_variable"
+								class="pr-3 form-control textInput text-currency myinput">
 						</div>
 					</div>
 				</div>
 				<div class="col-3 v-align">No. participantes</div>
 				<div class="col-3">
-					<input type="number" readonly id="resumen_n_participantes"
-						class="form-control textInput text-currency myinput">
+					<input type="text" readonly id="resumen_n_participantes"
+						class="pr-3 form-control textInput text-currency myinput">
 				</div>
 			</div>
 			<div class="form-row">
@@ -2066,8 +1907,8 @@
 				<div class="col-3">
 					<div class="form-group">
 						<div class="currency-wrap"><span class="currency-code">$</span>
-							<input type="number" readonly id="resumen_aporte_facultad"
-								class="form-control textInput text-currency" data-total="id_participacion_total"
+							<input type="text" readonly id="resumen_aporte_facultad"
+								class="pr-3 form-control textInput text-currency" data-total="id_participacion_total"
 								data-depend="True" data-field="id_n_cursos">
 						</div>
 					</div>
@@ -2105,10 +1946,17 @@
 						{{form.observaciones|as_crispy_field}}
 					</div>
 				</div>
+				<div class="col-12 v-align d-none">
+					<div class="form-group">
+						{{form.motivo_anular|as_crispy_field}}
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-2"></div>
+		<div class="col-xl-2"></div>
 	</div>
+
+
 
 	<div class="row mt-3">
 		<div class="col-12">
@@ -2144,23 +1992,25 @@
 				</div>
 				<div class="modal-body" id="modal-confirmacion">
 					¿Está seguro/a que desea continuar? Verifíque los datos ingresados antes de proceder.
+					<br>
+					NOTA: En caso de que algún campo no se haya llenado, ciertos valores se vaciarán para su ingreso
+					nuevamente
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+					<button type="submit" id ="enviar" class="btn btn-secondary green-bg mr-3">Confirmar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
-{{form.errors}}
 
 {% endblock %}
 
 {% block extrafooter %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-
+<script src="{% static 'js/money_formater.js' %}"></script>
 <script src="{% static 'js/presupuestos.js' %}"></script>
 
 <script>
@@ -2168,22 +2018,19 @@
 		e.preventDefault();
 		$("#id_estado").val("Solicitud Enviada");
 		$('#id_fecha_envio').val(GetCurrentDate());
+		$(".currency-wrap input").each(function(e){
+			$(this).val(unformatNumber($(this).val()));
+		})
 		$("#form").trigger("submit");
 	});
 
-	$("#codigo_evento").change(CambiarEstado);
-	$("#nombre_evento").change(CambiarEstado);
-
-
-	function CambiarEstado() {
-		if ($("#codigo_evento").val() !== null && $("#nombre_evento").val() !== null) {
-			$("#id_estado").val("Autorizada con evento");
-			$('#id_fecha_aprobada_con').val(GetCurrentDate());
-		}
-		else {
-			$("#id_estado").val("Autorizada sin evento");
-		}
-	}
+	$("#enviar").click(function(e){
+		e.preventDefault();
+		$(".currency-wrap input").each(function(e){
+			$(this).val(unformatNumber($(this).val()));
+		})
+		$("#form").trigger("submit");
+	});
 </script>
 
 <script>
@@ -2238,7 +2085,7 @@
 	$("#id_descuento_maximo").change(function (e) {
 		$(this).val(parseInt($(this).val()));
 		if ($(this).val() > 10) {
-			$(this).val(10);
+			$(this).val(100);
 		}
 		CalcularIngresos();
 	});
@@ -2246,33 +2093,34 @@
 
 	function InitCostoHoras() {
 		$.each({{ costo_horas }}, function(index, value) {
-			field_instructor++;
-			$("#div_hora_" + (index + 1)).removeClass('d-none');
-			$('#costo' + (index + 1)).val(value.toFixed(2)).trigger('change');
+			$('#costo' + (index + 1)).attr('required', true).val(formatNumber(value)).trigger('change');
 		});
 
-	$.each({{ impuesto_select }}, function (index, value) {
-		$('#impuesto_select_' + (index + 1)).prop('checked', value == 1 ? true : false).trigger('change');;
-	});
+		$.each({{ impuesto_select }}, function (index, value) {
+			$('#impuesto_select_' + (index + 1)).prop('checked', value == 1 ? true : false).trigger('change');
+		});
 
-	$.each({{ valor_total }}, function (index, value) {
-		$('#total' + (index + 1)).val(value).trigger('change');;
-	});
+		$.each({{ valor_total }}, function (index, value) {
+			$('#total' + (index + 1)).val(formatNumber(value)).trigger('change');
+		});
 
-	$.each({{ horas_instructores }}, function (index, value) {
-		$('#hora' + (index + 1)).val(value).trigger('change');;
-	});
+		$.each({{ horas_instructores }}, function (index, value) {
+			field_instructor++;
+			$("#div_hora_" + (index + 1)).removeClass('d-none');
+			$('#hora' + (index + 1)).val(value).trigger('change');
+		});
 
-	$.each({{ honorario_instructores }}, function (index, value) {
-		$('#porcentaje' + (index + 1)).val(value).trigger('change');;
-	});
+		$.each({{ honorario_instructores }}, function (index, value) {
+			$('#porcentaje' + (index + 1)).val(value).trigger('change');
+		});
 
-	$.each({{ impuesto_total }}, function (index, value) {
-		$('#impuesto_total_' + (index + 1)).val(value.toFixed(2)).trigger('change');;
-	});
-	$.each({{ impuesto_porcentaje }}, function (index, value) {
-		$('#impuesto_porcentaje_' + (index + 1)).val(value).trigger('change');
-	});
+		$.each({{ impuesto_total }}, function (index, value) {
+			$('#impuesto_total_' + (index + 1)).val(formatNumber(value)).trigger('change');
+		});
+
+		$.each({{ impuesto_porcentaje }}, function (index, value) {
+			$('#impuesto_porcentaje_' + (index + 1)).val(value).trigger('change');
+		});
 	};
 
 
@@ -2293,11 +2141,16 @@
 		ResumenValores();
 		load_data("{{form.estado.value}}" === "Grabado" ? 0 : 1);
 		load_data_eventos();
-		$("input[type=number]").addClass('text-right');
+		$(".currency-wrap input").addClass('text-right');
+		$("#id_n_participantes").trigger('change');
 
 		if ("{{form.estado.value}}" === "Autorizada con evento") {
 			$("#codigo_evento").attr("disabled", true);
 			$("#nombre_evento").attr("disabled", true);
+			codigo_propuesta
+		}
+		if ("{{form.estado.value}}" === "Anulada" || "{{form.estado.value}}"== "Solicitud Enviada") {
+			$("#id_codigo_propuesta").attr("readonly", true);
 		}
 	});
 </script>

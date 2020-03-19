@@ -218,22 +218,6 @@ def cargar_info(request):
     return JsonResponse({'costo': valor})
 
 
-def load_personas(request):
-    persona = request.GET.get("persona")
-    identificacion = []
-    razon_nombre = []
-    if persona == "Abierto":
-        identificacion = render_to_string(
-            "presupuestos/dropdown_natural_ci.html", {"personas": []})
-        razon_nombre = render_to_string(
-            "presupuestos/dropdown_natural_nombres.html", {"personas": []})
-    elif persona == "Corporativo":
-        personas = Juridica.objects.all()
-        identificacion = render_to_string(
-            "presupuestos/dropdown_juridica_ruc.html", {"personas": personas})
-        razon_nombre = render_to_string(
-            "presupuestos/dropdown_juridica_razon.html", {"personas": personas})
-    return JsonResponse({'ruc_ci': identificacion, 'razon_nombre': razon_nombre})
 
 def load_eventos(request):
     eventos = Evento.objects.all()

@@ -10,6 +10,11 @@ $(document).on('click', '#cancelar', function () {
   
 });
 
+$(document).on('click', '#guardar', function () {
+  localStorage.removeItem("codigoevento");
+  
+});
+
 if(localStorage.getItem("codigoevento")!=null){
   $("#codigoe").val(localStorage.getItem("codigoevento"));
 }

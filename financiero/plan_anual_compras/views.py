@@ -112,7 +112,7 @@ class PACAprobar(UpdateView):
 def pac_conf_elim(request):
     pac_id = request.GET.get('pk')
     pac = PlanAnualCompras.objects.get(id=pac_id)
-    form = PlanAnualComprasForm(instance=pac)
+    form = PlanAnualComprasUpdateForm(instance=pac)
     return render(request, "plan_anual_compras/pac_eliminar.html", {"object": pac, "form": form})
 
 def partida_update(request):
@@ -129,32 +129,8 @@ def partida_update(request):
 def partida_eliminar(request):
     p_id=request.GET.get('pk')
     pac_id = request.GET.get('fk')
-    partida = Partida.objects.get(id=p_id)
-    return render(request, "plan_anual_compras/partida_eliminar.html", {"form": partida,"pk":p_id,"fk":pac_id})
-
-class PartidaCreate(CreateView):
-    model = Partida
-    form_class = PartidaForm
-    template_name='plan_anual_compras/partida_nuevo.html'
-    success_url='/financiero/plan_anual_compras/editar'
-
-    def get_context_data(self, **kwargs):
-        context = super(PartidaCreate,self).get_context_data(**kwargs)
-        pk=self.kwargs.get('pk',0)
-        context['pac_id']=pk
-        return context
-
-    def post(self, request,*args,**kwargs):
-        self.object = self.get_object
-        form = self.form_class(request.POST)
-        pac_id=kwargs['pk']
-        if form.is_valid():
-            p = form.save(commit=False)
-            p.pac_id = pac_id
-            p.save()
-            return HttpResponseRedirect(self.get_success_url()+'/'+str(pac_id))
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+    producto = Partida.objects.get(pk=p_id)
+    return render(request, "plan_anual_compras/.html", {"form": producto,"pk":p_id,"fk":pac_id})
 
 
 class PartidaUpdate(UpdateView):
@@ -182,9 +158,7 @@ class PartidaUpdate(UpdateView):
             p=form.save(commit=False)
             p.pac_id = pac_id
             p.save()
-            return HttpResponseRedirect(self.get_success_url()+'/'+str(pac_id))
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        return HttpResponseRedirect(self.get_success_url()+'/'+str(pac_id))
 
 
 class PartidaDelete(DeleteView):

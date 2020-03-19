@@ -8,11 +8,11 @@
     {% csrf_token %}
 
     <div class="modal-body">
-        ¿Está seguro que desea eliminar la siguiente orden de ingreso?
+        ¿Está seguro que desea anular la siguiente orden de ingreso?
         Código: {{ordenIngreso.cod_orden_ing}}
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button class="btn btn-secondary green-bg mr-3" type="submit"> Eliminar </button>
+        <button class="btn btn-secondary green-bg mr-3" type="submit"> Anular </button>
     </div>
 </form>

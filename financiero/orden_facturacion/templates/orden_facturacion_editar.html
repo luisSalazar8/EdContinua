@@ -9,9 +9,9 @@
         <h2 class="darkgreen-text text-uppercase pr-2 pl-3">edición Orden de Facturación </h2><h2 class="text-dark">Nº{{form.cod_orden_fact.value}}</h2>
     </div>
 </div>
-{% if form.estado.value == "ACPF" or form.estado.value == "PNDP" %}
-<div class="row darkwhite-bg py-2">
-    <div class="col-6 mb-0">
+{% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
+<div class="form-row darkwhite-bg py-2">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
                 N° de trámite<span class="asteriskField">*</span>
@@ -20,10 +20,15 @@
                 {{form.n_tramite}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_tramite|as_crispy_field}}
     </div>
-    <div class="col-6 mb-0">
+    <div class="col-6 col-md-3 mb-0">
+                {{form.fecha_tramite|as_crispy_field}}
+    </div>
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_factura" class="form-group">
-
             <label for="id_n_factura" class="col-form-label requiredField">
                 N° de factura<span class="asteriskField">*</span>
             </label>
@@ -31,23 +36,40 @@
                 {{form.n_factura}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_factura|as_crispy_field}}
+    
     </div>
-    <div class="col-12 mb-0">
-        <div id="div_id_anexo_factura" class="form-group">
-            <label for="id_anexo_factura" class="col-form-label requiredField">
-                Anexo de factura<span class="asteriskField">*</span>
-            </label>
-            <div class="">
-                {% if form.anexo_factura.value %}
-                <a class="btn btn-secondary btn-sm" href="{{form.anexo_factura.value.url}}" target="_blank">
-                    Descargar
-                </a>
-                {% else %}
-                {{form.anexo_factura}}
-                {% endif %}
-            </div>
-        </div>
+    <div class="col-6 col-md-3 mb-0">
+                {{form.fecha_factura|as_crispy_field}}
+            
     </div>
+    
+    <div class="col-12 col-md-12 mb-0">
+    <table id="tablefile" class="table table-responsive-md border-bottom">
+        {{ formset.management_form|crispy }}
+        
+            {% for form in formset.forms %}
+                    <tr class="{% cycle 'row1' 'row2' %} form-control prueba form-row formset_row-{{ formset.prefix }}">
+                        {% for field in form.visible_fields %}
+                        <td scope="row">
+                            {# Include the hidden fields in the form #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+                            {{ field.errors.as_ul }}
+                            {{ field|as_crispy_field }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+        
+        </table>
+    </div>
+    
 </div>
 <hr>
 
@@ -56,6 +78,8 @@
 <input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
 <input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
 <input type="hidden" id='cont' value="{{form.contacto.value}}">
+<input type="hidden" id='as' value="{{form.asesor.value}}">
+<input type="hidden" id='est' value="{{form.estado.value}}">
 {% endblock editar%}
 
 {% block tablas %}
@@ -91,24 +115,28 @@
                             <th>Código del evento</th>
                             <th>Nombre del evento</th>
                             <th>Valor Evento</th>
-                            <th>Descuento</th>
+                            <th>%Descuento</th>
+                            <th>$Descuento</th>
                             <th>Valor total</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     {% if participantes %}
 
-                    <tbody>
+                    <tbody id="descmeme">
 
                         {% for p in participantes %}
-                        <tr class="text-center">
-                            <td>{{ p.participante }}</td>
-                            <td>{{ p.cod_evento }}</td>
-                            <td>{{ p.nombre_evento }}</td>
-                            <td class="sum">{{ p.valor_evento|currency}}</td>
-                            <td>{{ p.descuento|porcentaje }}</td>
-                            <td class="sum">{{ p.valor|currency }}</td>
-                            <td>
+                        <tr>
+                            <td class="text-center">{{ p.participante }}</td>
+                            <td class="text-center">{{ p.cod_evento }}</td>
+                            <td class="text-center">{{ p.nombre_evento }}</td>
+                            <td class="sum text-right">
+                                {{ p.valor_evento|currency}}
+                            </td>
+                            <td class="text-center">{{ p.descuento|porcentaje }}</td>
+                            <td class="text-right desc"></td>
+                            <td class="sum text-right">{{ p.valor|currency }}</td>
+                            <td class="text-center">
                                 {% if form.estado.value == "ACTV" %}
 
                                 <a class="btn btn-secondary btn-sm" href="{% url 'participante_editar' p.id orden_id %}"><i
@@ -128,7 +156,7 @@
             </div>
         </div>
 
-        <div id="summary" class="form-row">
+        <div id="summary" class="row">
             <div class="col-6 col-md-3">
                 {{ form.subtotal|as_crispy_field }}
                 <label for="subtotal">Subtotal</label>
@@ -157,6 +185,10 @@
                 {% if form.estado.value == "ANLD" %}
                 <hr>
                 {{form.motivo_anular|as_crispy_field}}
+                <br>
+                <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#ordenAgregarCenter" href='#'
+                    id="confirmar_guardar">Guardar</a>
+                <a class="btn btn-secondary" href="{% url 'orden_facturacion' %}" id="cancelar">Cancelar</a>
                 {% else %}
                 <a class="btn btn-secondary green-bg" data-toggle='modal' data-target="#ordenAgregarCenter" href='#'
                     id="confirmar_guardar">Guardar</a>
@@ -188,7 +220,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
+                <button id="guardar" type="submit" class="btn btn-secondary green-bg mr-3">Confirmar</button>
             </div>
         </div>
     </div>
@@ -230,10 +262,10 @@
         });
     };
 
-    $('#cancelar').click(function (e){
-        $('form').submit();
-        e.preventDefault();
-    })
+    // $('#cancelar').click(function (e){
+    //     $('form').submit();
+    //     e.preventDefault();
+    // })
 </script>
 <script src="{% static 'js/calcular_valores_tabla.js' %}"></script>
 <script src="{% static 'js/orden_fact_editar.js' %}"></script>

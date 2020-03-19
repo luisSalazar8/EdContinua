@@ -28,22 +28,22 @@ $(document).on('change', '#producto', function () {
     $("#id_producto").val($(this).val());
     var prod=$(this).children('option[value="'+$(this).val()+'"]');
     $("#unidad_medida").val(prod.attr('data-unidad'));
-    $("#costo_unitario").val(prod.attr('data-unitario'));
+    $("#costo_unitario").val(formatNumber(prod.attr('data-unitario')));
     $("#iva").val(prod.attr('data-iva'));
 });
 
 
 $(document).on('change',"#id_cantidad_anual",function(){
     var cant=+$(this).val();
-    var unitario=$("#costo_unitario").val();
-    var iva= $("#iva").val()*cant;
+    var unitario=unformatNumber($("#costo_unitario").val());
+    var iva=unformatNumber($("#iva").val())*cant;
     var subtotal=cant*unitario;
     //Si iva es un check....
     //var iva=$("#iva").prop('checked') ? 1.12 : 1;
     //var total=subtotal*iva;
     var total= subtotal+iva;
-    $("#id_subtotal").val(subtotal.toFixed(2));
-    $("#id_total").val(total.toFixed(2));
+    $("#id_subtotal").val(formatNumber(subtotal));
+    $("#id_total").val(formatNumber(total));
 });
 
 

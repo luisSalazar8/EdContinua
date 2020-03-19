@@ -1,8 +1,8 @@
-$("tbody").children().each(function(){
+$("#tordenfact").children().each(function(){
     //Para los codigos del evento
     var ccant={};
     var codu=[];
-    const cod=$(this).children()[5];
+    const cod=$(this).children()[6];
     $(cod).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(codu.includes($(this).html())){
@@ -48,7 +48,7 @@ $("tbody").children().each(function(){
     // });
     // console.log(nomu);
     var nomucant={}
-    const nom=$(this).children()[4];
+    const nom=$(this).children()[5];
     $(nom).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(nomucant[$(this).attr("class")]!=undefined){
@@ -74,7 +74,7 @@ $("tbody").children().each(function(){
 
     //subtotal para el descuento
     var subcant={}
-    const subval=$(this).children()[6];
+    const subval=$(this).children()[7];
     $(subval).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(subcant[$(this).attr("class")]!=undefined){
@@ -88,7 +88,7 @@ $("tbody").children().each(function(){
     });
     console.log(subcant);
 
-    const colsub=$(this).children()[8];
+    const colsub=$(this).children()[9];
     Object.keys(subcant).forEach(function(key){
         const span=$("<span>");
         span.html(transform(subcant[key]));
@@ -116,7 +116,7 @@ $("tbody").children().each(function(){
     // console.log(valu);
 
     var valucant={}
-    const val=$(this).children()[6];
+    const val=$(this).children()[7];
     $(val).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(valucant[$(this).attr("class")]!=undefined){
@@ -141,7 +141,7 @@ $("tbody").children().each(function(){
     });
 
     //Para poner los participantes
-    const part=$(this).children()[7];
+    const part=$(this).children()[8];
     Object.keys(ccant).forEach(function(key){
         console.log(key);
         const span=$("<span>");
@@ -153,7 +153,7 @@ $("tbody").children().each(function(){
 
     //Para el valor total
     var vtcant={};
-    const vt=$(this).children()[11];
+    const vt=$(this).children()[12];
     $(vt).children().each(function(){
         if($(this).prop("tagName")!="BR"){
             if(vtcant[$(this).attr("class")]!=undefined){
@@ -181,7 +181,7 @@ $("tbody").children().each(function(){
     });
 
     //Para el descuento
-    const desc=$(this).children()[9];
+    const desc=$(this).children()[10];
     Object.keys(ccant).forEach(function(key){
         
         const span=$("<span>");
@@ -193,7 +193,7 @@ $("tbody").children().each(function(){
 
     });
 
-    const descendolar=$(this).children()[10];
+    const descendolar=$(this).children()[11];
     Object.keys(ccant).forEach(function(key){
         
         const span=$("<span>");

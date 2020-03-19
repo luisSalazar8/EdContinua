@@ -1,3 +1,4 @@
+var p_url = "";
 
 window.onload = function() {
 
@@ -31,10 +32,41 @@ function run(){
   }
 }	
 
+
+function load_ordenes_facturas(){
+  // var opcion1 = $('<option value="primero">primero</option>')
+  // $('#prueba').html(opcion1);
+  var link = $('#form-fact').attr("orden-facturacion-url");
+  console.log(link);
+  $.ajax({
+    url: link,
+    success: function (data) {
+      console.log(data.ordenes_facturacion);
+      $("#prueba").html(data.ordenes_facturacion);
+    }
+  });
+}
+
+
+
 $('.select2').select2({
-  language: "es",
-  minimunInputLength: 2,
-  minimunResultsForSearch: -1
+  minimumInputLength: 2,
+  width: '100%' ,
+  language: {
+
+    noResults: function () {
+      $(".select2-results__options").append("<a id='pnuevo' class='btn btn-secondary btn-block btn-sm' href='" + p_url + "' target='_blank'>Agregar Nuevo</a>");
+      return "No hay resultados";
+    },
+    searching: function () {
+
+      return "Buscando...";
+    },
+    inputTooShort: function (e) {
+      var t = e.minimum - e.input.length;
+      return "Ingresa " + t + " caractéres para buscar";
+    }
+  }
 });
 
 function load_data(url, persona) {
@@ -52,8 +84,8 @@ function load_data(url, persona) {
         $("#id_razon_nombres").html(data.razon_nombre)
         $('#id_ruc_ci').val($('#rc').val());
         $('#id_razon_nombres').val($('#rn').val());
-        $('#select2-id_ruc_ci-container').text($('#rc').val());
-        $('#select2-id_razon_nombres-container').text($('#rn').val());
+        // $('#select2-id_ruc_ci-container').text($('#rc').val());
+        // $('#select2-id_razon_nombres-container').text($('#rn').val());
       }
     });
     $('#field-razon').show();
@@ -62,10 +94,12 @@ function load_data(url, persona) {
     if (persona == "Natural") {
       $('#ruc_ci').text('CI');
       $('#ra_nom').text('Nombre');
+      p_url = $('#form-fact').attr("data-natural-url");
     }
     else if (persona == "Jurídica") {
       $('#ruc_ci').text('RUC');
       $('#ra_nom').text('Razón Social');
+      p_url = $('#form-fact').attr("data-juridica-url");
     }
   }
   else {
@@ -86,14 +120,29 @@ function autocomplete(from, to) {
 }
 
 
+function cambiar_url(){
+  $('#div_id_orden_facturacion').click(function (e) { 
+    p_url = $('#form-fact').attr("ordenfact-url");
+    console.log(p_url);
+    
+  });
+}
+
+$(document).ready(function () {
+  cambiar_url();
+});
 
 load_data();
+
 
 $("#id_tipo_cliente").on("change", load_data);
 
 $('#id_razon_nombres').on('change', function () {
   autocomplete($(this), 'id_ruc_ci');
 })
+
+
+
 
 $('#id_ruc_ci').on('change', function () {
   autocomplete($(this), 'id_razon_nombres');
@@ -122,6 +171,7 @@ $(document).on('change','.select2-participantes',function(){
     }
   });
 });
+
 
 //$('document').ready(function(){});
 

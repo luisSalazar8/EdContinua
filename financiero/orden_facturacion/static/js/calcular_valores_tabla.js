@@ -15,7 +15,8 @@ function sumtr(table_id) {
         $(this).children("td").each(function () {
             if ($(this).is(".sum")) {
                 if (s.length < col + 1) s[col] = 0;
-                var val = parseFloat($(this).html().replace(',', '.').replace('$', '').replace('%', ''));
+                
+                var val = parseFloat($(this).html().replace(/,/g, '').replace('$', '').replace('%', ''));
 
                 s[col] = s[col] + val;
             } else {
@@ -29,7 +30,7 @@ function sumtr(table_id) {
     return s;
 }
 
-$('.select2').trigger('change.select2')
+$('.select2').trigger('change.select2');
 
 $('#env-sol').click(function (e) {
     e.preventDefault();
@@ -39,18 +40,29 @@ $('#env-sol').click(function (e) {
 
 if ($('#participantes-table tbody tr').length > 0) {
     $('#env-sol').attr('disabled',false);
-
-    s = sumtr("#participantes-table");
     
+    s = sumtr("#participantes-table");
+    console.log(s)
     $("#id_subtotal").val(s[3]);
-    $("#id_valor_total").val(s[5]);
-    $("#id_descuento_total").val((s[3] - s[5]).toFixed(2));
-    $("#id_descuento_fact").val(roundToTwo(((s[3] - s[5]) / s[3]) * 100));
+    $("#id_valor_total").val(s[6]);
+    $("#id_descuento_total").val((s[3] - s[6]).toFixed(2));
+    $("#id_descuento_fact").val(roundToTwo(((s[3] - s[6]) / s[3]) * 100));
 
-    $("#subtotal").val("$ "+s[3].toFixed(2));
-    $("#valor_total").val('$ '+s[5].toFixed(2));
-    $("#descuento_total").val('$ '+(s[3] - s[5]).toFixed(2));
-    $("#descuento_fact").val(roundToTwo(((s[3] - s[5]) / s[3]) * 100)+' %');
+    // $("#subtotal").val("$ "+s[3].toFixed(2));
+    // $("#valor_total").val('$ '+s[5].toFixed(2));
+    // $("#descuento_total").val('$ '+(s[3] - s[5]).toFixed(2));
+    $("#descuento_fact").val(roundToTwo(((s[3] - s[6]) / s[3]) * 100)+' %');
+
+    $("#subtotal").val(s[3].toFixed(2));
+    $("#valor_total").val(s[6].toFixed(2));
+    $("#descuento_total").val(+(s[3] - s[6]).toFixed(2));
+    back("#subtotal");
+    transform("#subtotal");
+    back("#valor_total");
+    transform("#valor_total");
+    back("#descuento_total");
+    transform("#descuento_total");
+
 }
 else {
     $('#env-sol').attr('disabled',true);
@@ -60,3 +72,76 @@ else {
     $("#id_descuento_fact").val(0);
 }
 
+function back(input){
+    const val=$(input).val();
+    $(input).attr("type","number");
+    $(input).val(parseFloat(val.replace(/,/g,"")));
+    $(input).val(parseFloat($(input).val()).toFixed(2));
+}
+
+//Funcion para establecer Formato de Dinero
+function transform(input){
+    if($(input).val()!=""){
+      $(input).val(parseFloat($(input).val()).toFixed(2));
+    $(input).attr("type","text");
+   
+    var numeroe=$(input).val().split(".")
+    const long= numeroe[0].length;
+   
+    var newnum="";
+    cont=0;
+    for(var i=(long-1);i>=0;i--){
+          if(cont%3==0 && cont!=0){
+            newnum=numeroe[0].charAt(i)+","+newnum;
+            
+            cont+=1;
+          }else{
+            
+            newnum=numeroe[0].charAt(i)+newnum;
+            cont+=1;
+          }
+    }
+    
+    $(input).val("$"+newnum+"."+numeroe[1]);
+    }
+    
+  }
+
+  //calcular descuentos
+  $("#descmeme").children().each(function(){
+    console.log("la wea funka chucha");
+    var valor=$($(this).children()[3]).html().replace("$","").replace(/,/,"");
+    var valortotal=$($(this).children()[6]).html().replace("$","").replace(/,/,"");
+    console.log(parseFloat(valor).toFixed(2));
+    console.log(parseFloat(valortotal).toFixed(2));
+    
+    $($(this).children()[5]).html(transformN(parseFloat(valor).toFixed(2)-parseFloat(valortotal).toFixed(2)))
+  });
+  
+
+  function transformN(numero){
+    var num=""+parseFloat(numero).toFixed(2);
+    var numeroe=num.split(".")
+    const long= numeroe[0].length;
+    console.log(long)
+    var newnum="";
+    cont=0;
+    for(var i=(long-1);i>=0;i--){
+          if(cont%3==0 && cont!=0){
+            newnum=numeroe[0].charAt(i)+","+newnum;
+            console.log("coma");
+            console.log(i);
+            console.log(numeroe[0].charAt(i));
+            cont+=1;
+          }else{
+            console.log("no coma");
+            console.log(i);
+            console.log(numeroe[0].charAt(i));
+            newnum=numeroe[0].charAt(i)+newnum;
+            cont+=1;
+          }
+    }
+    console.log(newnum+"."+numeroe[1]);
+    return "$"+newnum+"."+numeroe[1];
+    
+  }

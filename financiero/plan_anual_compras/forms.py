@@ -86,6 +86,6 @@ class PartidaForm(forms.ModelForm):
             "egreso": forms.HiddenInput(),
             "producto": forms.HiddenInput(),
             "unidad_medida": forms.TextInput(attrs={'readonly':True}),
-			"subtotal": forms.NumberInput(attrs={'readonly':True,'class':'text-right text-currency'}),
-            "total": forms.NumberInput(attrs={'readonly':True,'class':'text-right text-currency'}),
+			"subtotal": forms.TextInput(attrs={'readonly':True,'class':'pr-3 text-right text-currency'}),
+            "total": forms.TextInput(attrs={'readonly':True,'class':'pr-3 text-right text-currency'}),
         }

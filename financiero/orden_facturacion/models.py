@@ -10,6 +10,7 @@ import ventas.validaciones
 
 
 
+TIPO_EVENTO=[('Abierto','Abierto'),('Corporativo','Corporativo')]
 
 # Create your models here.
 ESTADO_CHOICES = [  
@@ -31,16 +32,18 @@ class OrdenFacturacion(models.Model):
     tipo_cliente=models.CharField(max_length=15, choices=TIPO_CHOICES)
     cod_orden_fact=models.CharField(max_length=15, blank=True)
     n_tramite=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
+    fecha_tramite=models.DateField(blank=True, null=True)
     n_factura=models.CharField(max_length=15,blank=True, null=True, default='No asignado')
-    anexo_factura=models.FileField(upload_to='uploads/facturas/',blank=True, null=True)
-    fecha=models.CharField(max_length=30)
+    fecha_factura=models.DateField(blank=True, null=True)
+    fecha=models.DateField()
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
     contacto=models.CharField(max_length=200,blank=True, null=True)
+    tipo_evento=models.CharField(max_length=15, choices=TIPO_EVENTO)
     #contacto=models.CharField(max_length=200)
     #direccion=models.CharField(max_length=200)
     #telefono=models.CharField(max_length=15)
-    
+    asesor=models.CharField(max_length=200,blank=True, null=True)
 
     centro_costos = models.ForeignKey(Centro_Costos, on_delete=models.SET_NULL, blank=False, null=True)
     n_participantes=models.PositiveIntegerField(blank=True, default=0, null=True)
@@ -53,12 +56,12 @@ class OrdenFacturacion(models.Model):
     descuento_fact=models.FloatField(blank=True, null=True,default=0.0)
     descuento_total=models.FloatField(blank=True, null=True,default=0.0)
 
-    valor_total=models.DecimalField(max_digits=10,decimal_places=2,validators=[val_fin.validate_positivo], blank=True, null=True)
-    valor_pendiente=models.DecimalField(max_digits=10,decimal_places=2,validators=[val_fin.validate_positivo], blank=True, null=True,default=0)
+    valor_total=models.FloatField(blank=True, null=True,default=0.0)
+    valor_pendiente=models.FloatField(blank=True, null=True,default=0.0)
     motivo_anular = models.CharField(max_length=500, blank=True, null=True)
 
     def delete(self, *arg, **kwargs):
-        self.anexo_factura.delete()
+        
         super().delete(*arg,**kwargs)
     def __str__(self):
         return self.cod_orden_fact+" - "+self.razon_nombres
@@ -71,3 +74,12 @@ class OrdenFacturacionParticipante(models.Model):
     descuento=models.IntegerField(default=0)
     valor=models.FloatField(default=0)
     orden=models.ForeignKey(OrdenFacturacion, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+
+
+class OrdenFacturacionFile(models.Model):
+    file = models.FileField(upload_to='uploads/facturas/',blank=True, null=True)
+    #file = models.CharField(max_length=50, blank=True,default=" ")
+    #propuesta = models.ManyToManyField(PropuestaCorporativo, through='PropFileKey')
+    orden=models.ForeignKey(OrdenFacturacion, on_delete=models.CASCADE)

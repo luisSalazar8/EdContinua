@@ -48,7 +48,7 @@ function load_data(estado) {
                 'persona': persona
             },
             success: function (data) {
-                if (persona === "Corporativo") {
+                if (persona === "Jurídica") {
                     if (estado == 0) {
                         $("#id_ruc_ci").attr('disabled', false)
                         $("#id_razon_nombres").attr('disabled', false)
@@ -61,10 +61,10 @@ function load_data(estado) {
                 else {
                     $("#id_ruc_ci").attr('disabled', true)
                     $("#id_razon_nombres").attr('disabled', true)
-                    $('#id_ruc_ci').val('').trigger('change.select2');
-                    $('#id_razon_nombres').val('').trigger('change.select2');
-                    $('input[name="ruc_ci"]').val('');
-                    $('input[name="razon_nombres"]').val('');
+                    $('#id_ruc_ci').val(null).trigger('change.select2');
+                    $('#id_razon_nombres').val(null).trigger('change.select2');
+                    $('input[name="ruc_ci"]').val(null);
+                    $('input[name="razon_nombres"]').val(null);
                 }
             }
         });
@@ -72,10 +72,10 @@ function load_data(estado) {
     else {
         $("#id_ruc_ci").attr('disabled', true)
         $("#id_razon_nombres").attr('disabled', true)
-        $('#id_ruc_ci').val('').trigger('change.select2');
-        $('#id_razon_nombres').val('').trigger('change.select2');
-        $('input[name="ruc_ci"]').val('');
-        $('input[name="razon_nombres"]').val('');
+        $('#id_ruc_ci').val(null).trigger('change.select2');
+        $('#id_razon_nombres').val(null).trigger('change.select2');
+        $('input[name="ruc_ci"]').val(null);
+        $('input[name="razon_nombres"]').val(null);
     }
 };
 
@@ -87,14 +87,16 @@ function load_data_eventos() {
             $("#codigo_evento").html(data.codigo);
             $("#nombre_evento").html(data.nombre);
             $('#codigo_evento').val($('#id_evento').val()).trigger('change.select2');
-            $('#nombre_evento').val($('#nombre_evento option[name='+$('#id_evento').val()+']').val()).trigger('change.select2');
-            $("#modalidad_evento").val($('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-modalidad"));
-            var finicio=$('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-finicio");
-            var ffin=$('#nombre_evento option[name='+$('#id_evento').val()+']').attr("data-ffin");
-            var ymd=finicio.split("/");
-            $("#fecha_inicio_evento").val(ymd[2]+"-"+ymd[1]+"-"+ymd[0]);
-            var ymd=ffin.split("/");
-            $("#fecha_fin_evento").val(ymd[2]+"-"+ymd[1]+"-"+ymd[0]);
+            $('#nombre_evento').val($('#nombre_evento option[name="' + $('#id_evento').val() + '"]').val()).trigger('change.select2');
+            $('#resumen_nombre_evento').val($('#nombre_evento option[name="' + $('#id_evento').val() + '"]').val())
+            $("#modalidad_evento").val($('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-modalidad"));
+            var finicio = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-finicio");
+            var ffin = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-ffin");
+            if(finicio==undefined || ffin==undefined) return;
+            var ymd = finicio.split("/");
+            $("#fecha_inicio_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
+            var ymd = ffin.split("/");
+            $("#fecha_fin_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
         }
     });
 };
@@ -109,9 +111,6 @@ function autocomplete(from, to) {
     }
     else {
         $('#' + to).val(null).trigger('change.select2');
-        $("#modalidad_evento").val($(this).attr("data-modalidad"));
-        $("#fecha_inicio_evento").val($(this).attr("data-finicio"));
-        $("#fecha_fin_evento").val($(this).attr("data-ffin"));
     }
 }
 
@@ -119,29 +118,30 @@ function autocomplete(from, to) {
  * Funcion para calcular los valores de ingresos
  */
 function CalcularIngresos() {
-    var valor_u = $("#id_ingreso_individual_sin_desc").val();
-    var n_participantes = $("#id_n_participantes").val();
+    var valor_u = unformatNumber($("#id_ingreso_individual_sin_desc").val());
+    var n_participantes = +$("#id_n_participantes").val();
     var sin_descuento_total = valor_u * n_participantes;
-    var descuento_individual = $("#id_descuento_maximo").val() / 100 * valor_u;
+    var descuento_individual = +$("#id_descuento_maximo").val() / 100 * valor_u;
     var descuento_total = descuento_individual * n_participantes;
-    var egresos = $('#id_total_egresos').val();
+    var egresos = unformatNumber($('#id_total_egresos').val())
     var ingreso_total = sin_descuento_total - descuento_total;
     var utilidad = ingreso_total - egresos
-    $('#id_utilidad').val(utilidad.toFixed(2));
-    $("#id_margen_contribucion").val((utilidad / ingreso_total * 100).toFixed(2))
-    $('#id_ingreso_total_sin_desc').val(sin_descuento_total.toFixed(2));
-    $('#id_descuento_individual').val(descuento_individual.toFixed(2));
-    $('#id_descuento_total').val(descuento_total.toFixed(2));
-    $('#id_ingreso_neto_individual').val((valor_u - descuento_individual).toFixed(2)).trigger('change');
-    $('#provision_mejoras_unitario').val(ingreso_total.toFixed(2));
-    $('#resumen_precio_evento').val((valor_u - descuento_individual).toFixed(2)).trigger('change');
-    $('#id_ingreso_neto_total').val(ingreso_total.toFixed(2));
+    $('#id_utilidad').val(isNaN(utilidad) ? null : formatNumber(utilidad));
+    var margen = (utilidad / ingreso_total * 100);
+    $("#id_margen_contribucion").val(isNaN(margen) ? null : formatNumber(margen))
+    $('#id_ingreso_total_sin_desc').val(formatNumber(sin_descuento_total));
+    $('#id_descuento_individual').val(formatNumber(descuento_individual));
+    $('#id_descuento_total').val(formatNumber(descuento_total));
+    const ing_neto = valor_u - descuento_individual;
+    $('#id_ingreso_neto_individual').val(formatNumber(ing_neto)).trigger('change');
+    $('#provision_mejoras_unitario').val(formatNumber(ingreso_total));
+    $('#resumen_precio_evento').val(formatNumber(ing_neto)).trigger('change');
+    $('#id_ingreso_neto_total').val(formatNumber(ingreso_total));
     $('.total-impuesto').trigger('change');
-    $('#resumen_ingreso').val(ingreso_total.toFixed(2));
+    $('#resumen_ingreso').val(formatNumber(ingreso_total));
     $('#id_provision_mejoras_porcentaje').trigger('change');
     CalcularHonorarios();
 }
-
 
 /**
  * Funcion que hace un requerimiento ajax al servidor para obtener los valores unitarios del tarifario y calcular
@@ -157,7 +157,7 @@ function CargarInfo(modelo, id) {
             'id': id,
         },
         success: function (data) {
-            $('#id_' + modelo + '_unitario').val(+data.costo).trigger('change');
+            $('#id_' + modelo + '_unitario').val(formatNumber(data.costo)).trigger('change');
         }
     })
 }
@@ -181,16 +181,14 @@ function CargarAportacion(modelo, id) {
 
 
 function CalcularValoresEgresos(valor, id_total, dependodnother, id_field) {
-    var valo1 = valor
-
+    var valo1 = unformatNumber(valor);
     if (valor < 0) valo1 = 0;
-
     var valor2 = 1;
     if (dependodnother == "True") {
-        valor2 = $("#" + id_field).val();
+        valor2 = unformatNumber($("#" + id_field).val());
     }
     var resultado = +valo1 * +valor2;
-    $("#" + id_total).val(resultado.toFixed(2)).trigger('change');
+    $("#" + id_total).val(formatNumber(resultado)).trigger('change');
 }
 
 
@@ -199,7 +197,7 @@ function CalcularEgresos(clase) {
     var total = 0;
     $("." + clase).each(function (index) {
         if ($(this).val() !== "")
-            total += +$(this).val();
+            total += +unformatNumber($(this).val());
     });
     return total;
 }
@@ -208,10 +206,9 @@ function CalcularEgresos(clase) {
 function CalcularHonorarios() {
     var resultado = CalcularEgresos("total-impuesto");
     var resultado2 = CalcularEgresos('total-honorario');
-
-    $("#id_honorario_total_evento").val(resultado.toFixed(2)).trigger('change');
-    $("#id_honorario_total_evento_impuesto").val(resultado2.toFixed(2));
-    var honorario = resultado2 / $("#id_ingreso_neto_total").val() * 100;
+    $("#id_honorario_total_evento").val(formatNumber(resultado)).trigger('change');
+    $("#id_honorario_total_evento_impuesto").val(formatNumber(resultado2));
+    var honorario = resultado2 / +unformatNumber($("#id_ingreso_neto_total").val()) * 100;
     if (isNaN(honorario) || !isFinite(honorario)) {
         honorario = 0;
     }
@@ -225,7 +222,7 @@ function DependenciaCalculo(lista_id) {
 }
 
 $('.otros').change(function (e) {
-    if ($(this).val() == 100) {
+    if (+$(this).val() == 100) {
         $('#' + e.target.dataset.label).attr('readonly', false);
     }
     else {
@@ -239,12 +236,13 @@ function CostoInstructores() {
     var costo_instructores = '';
     $(".costo-hora").each(function (index) {
         if ($(this).val() !== "") {
-            costo_final += +($(this).val());
-            costo_instructores += +$(this).val() + ',';
+            var val = +unformatNumber($(this).val());
+            costo_final += val;
+            costo_instructores += val + ',';
         }
     })
 
-    $('#id_costo_instructores').val(costo_final.toFixed(2));
+    $('#id_costo_instructores').val(formatNumber(costo_final));
     $('#id_costo_hora_instructores').val(costo_instructores);
     CalcularHonorarios();
 }
@@ -265,19 +263,19 @@ function CostoImpuesto() {
 
     $(".total-honorario").each(function (index) {
         if ($(this).val() !== "") {
-            impuesto_unitario += +$(this).val() + ',';
+            impuesto_unitario += unformatNumber($(this).val()) + ',';
         }
     })
 
     $(".total-impuesto").each(function (index) {
         if ($(this).val() !== "") {
-            impuesto_final += +$(this).val() + ',';
+            impuesto_final += unformatNumber($(this).val()) + ',';
         }
     })
 
     $(".horas-honorario").each(function (index) {
         if ($(this).val() !== "") {
-            horas_honorario += +$(this).val() + ',';
+            horas_honorario += unformatNumber($(this).val()) + ',';
         }
     })
 
@@ -313,6 +311,17 @@ function GetCurrentDate() {
     return today;
 }
 
+function CambiarEstado() {
+    if ($("#codigo_evento").val() !== null && $("#codigo_evento").val() !== "" && $("#nombre_evento").val() !== null && $("#nombre_evento").val() !== "") {
+        $("#id_estado").val("Autorizada con evento");
+        $('#id_fecha_aprobada_con').val(GetCurrentDate());
+    }
+    else {
+        $("#id_estado").val("Autorizada sin evento");
+        $('#id_fecha_aprobada_con').val(null);
+    }
+}
+
 $("#id_n_cursos").change(function (e) {
     var depend = ['id_pago_docente_unitario'];
     DependenciaCalculo(depend);
@@ -342,22 +351,22 @@ $("#id_n_participantes").change(function (e) {
     var depend = ['id_ingreso_individual_sin_desc', 'id_certificados_unitario', 'id_carpeta_unitario', 'id_maletin_unitario', 'id_block_unitario', 'id_lapiz_unitario', 'id_pluma_unitario', 'n_dias_participantes',
         'id_cred-textencial_plastico_unitario', 'id_cred-textencial_pvc_unitario', 'id_pendrive_unitario', 'id_otros_materiales_unitario', 'ceremonia_participantes', 'id_break_evento_dias', 'id_almuerzo_evento_dias',
         'id_imprevisto_unitario', 'id_total_egresos'];
-    $('#resumen_n_participantes').val($(this).val());
+    $('#resumen_n_participantes').val(+$(this).val());
     DependenciaCalculo(depend);
 });
 
 $("#id_ingreso_individual_sin_desc").change(CalcularIngresos);
 
 $("#ceremonia_participantes").change(function (event) {
-    var n_participantes = $('#id_n_participantes').val();
+    var n_participantes = +$('#id_n_participantes').val();
     var valor = +(+n_participantes * 2) + 5;
     event.target.value = valor;
     CalcularValoresEgresos(valor, event.target.dataset.total, event.target.dataset.depend, event.target.dataset.field);
 });
 
 $("#n_dias_participantes").change(function (event) {
-    var n_participantes = $('#id_n_participantes').val();
-    var n_dias = $('#id_n_dias').val();
+    var n_participantes = +$('#id_n_participantes').val();
+    var n_dias = +$('#id_n_dias').val();
 
     var valor = n_participantes * n_dias
     event.target.value = valor;
@@ -381,9 +390,9 @@ $(".valor-porcentaje").change(function (event) {
 });
 
 $(".punto").change(function (event) {
-    var egreso_fijo = $('#id_total_egresos_fijos').val();
-    var precio = $('#id_ingreso_neto_individual').val();
-    var egreso_unit = $("#id_egreso_variable_unit").val();
+    var egreso_fijo = unformatNumber($('#id_total_egresos_fijos').val());
+    var precio = unformatNumber($('#id_ingreso_neto_individual').val());
+    var egreso_unit = unformatNumber($("#id_egreso_variable_unit").val());
     var resultado = +egreso_fijo / +(precio - egreso_unit);
     if (+resultado < 0) {
         resultado = 0;
@@ -395,9 +404,9 @@ $(".egreso-fijo").change(function (e) {
     var total1 = CalcularEgresos('egreso-fijo');
     var total2 = CalcularEgresos('egreso-variable');
     var total = total1 + total2;
-    var ingreso = $('#id_ingreso_neto_total').val();
+    var ingreso = unformatNumber($('#id_ingreso_neto_total').val());
     var utilidad = ingreso - total;
-    
+
     if (isNaN(utilidad) || !isFinite(utilidad))
         utilidad = 0.00
 
@@ -406,11 +415,11 @@ $(".egreso-fijo").change(function (e) {
     if (isNaN(margen) || !isFinite(margen))
         margen = 0.00
 
-    $("#id_total_egresos_fijos").val(total1.toFixed(2));
-    $("#id_total_egresos").val(total.toFixed(2)).trigger('change');
-    $("#resumen_egreso").val(total.toFixed(2));
-    $("#resumen_egreso_fijo").val(total1.toFixed(2));
-    $('#id_utilidad').val(utilidad.toFixed(2));
+    $("#id_total_egresos_fijos").val(formatNumber(total1));
+    $("#id_total_egresos").val(formatNumber(total)).trigger('change');
+    $("#resumen_egreso").val(formatNumber(total));
+    $("#resumen_egreso_fijo").val(formatNumber(total1));
+    $('#id_utilidad').val(formatNumber(utilidad));
 
     if (+utilidad < 0) {
         $('#id_utilidad').addClass('border border-danger red-text');
@@ -432,18 +441,18 @@ $(".egreso-variable").change(function (e) {
     var total1 = CalcularEgresos('egreso-variable');
     var total2 = CalcularEgresos('egreso-fijo');
     var total = total1 + total2;
-    var ingreso = $('#id_ingreso_neto_total').val();
+    var ingreso = unformatNumber($('#id_ingreso_neto_total').val());
     var utilidad = ingreso - total;
     var margen = utilidad / ingreso * 100;
 
-    $("#id_total_egresos_variables").val(total1.toFixed(2));
-    $("#id_total_egresos").val(total.toFixed(2)).trigger('change');
-    $("#resumen_egreso").val(total.toFixed(2));
-    $("#resumen_egreso_variable").val(total1.toFixed(2));
-    $('#id_utilidad').val(utilidad.toFixed(2));
-    $("#id_margen_contribucion").val(margen.toFixed(2))
-    var resultado2 = total1 / $("#id_n_participantes").val();
-    $('#id_egreso_variable_unit').val(resultado2.toFixed(2)).trigger('change');
+    $("#id_total_egresos_variables").val(formatNumber(total1));
+    $("#id_total_egresos").val(formatNumber(total2)).trigger('change');
+    $("#resumen_egreso").val(formatNumber(total));
+    $("#resumen_egreso_variable").val(formatNumber(total1));
+    $('#id_utilidad').val(formatNumber(utilidad));
+    $("#id_margen_contribucion").val(isNaN(margen) ? null : formatNumber(margen));
+    var resultado2 = total1 / +$("#id_n_participantes").val();
+    $('#id_egreso_variable_unit').val(isNaN(resultado2) ? null : formatNumber(resultado2)).trigger('change');
 
     if (+utilidad < 0) {
         $('#id_utilidad').addClass('border border-danger red-text');
@@ -452,7 +461,7 @@ $(".egreso-variable").change(function (e) {
         $('#id_utilidad').removeClass('border border-danger red-text');
     }
 
-    $("#id_margen_contribucion").val(margen.toFixed(2))
+    $("#id_margen_contribucion").val(isNaN(margen) ? null : margen.toFixed(2))
     if (+margen < 0) {
         $('#id_margen_contribucion').addClass('border border-danger red-text');
     }
@@ -463,10 +472,10 @@ $(".egreso-variable").change(function (e) {
 
 
 $('.impuesto-select').change(function (event) {
-    var valor = (+$("#" + event.target.dataset.depend).val() / 100);
+    var valor = (unformatNumber($("#" + event.target.dataset.depend).val()) / 100);
     if ($(this).prop('checked')) {
         $("#" + event.target.dataset.field).val(valor);
-        if($("#id_estado").val()==="Grabado")
+        if ($("#id_estado").val() === "Grabado")
             $("#" + event.target.dataset.depend).attr("readonly", false);
     }
     else {
@@ -482,9 +491,9 @@ $('.porcentaje-impuesto').change(function (event) {
 })
 
 $(".total-honorario").change(function (e) {
-    var total = $(this).val();
-    var ingresos = $('#id_ingreso_neto_total').val();
-    var resultado = total / ingresos * 100;
+    var total = +$(this).val();
+    var ingresos = unformatNumber($('#id_ingreso_neto_total').val());
+    var resultado = total / +ingresos * 100;
     if (isNaN(resultado) || !isFinite(resultado)) {
         $('#' + e.target.dataset.porc).val(0);
     }
@@ -497,13 +506,13 @@ $(".total-honorario").change(function (e) {
 });
 
 $('#id_hospedaje_alimentacion_personal_total').change(function (e) {
-    if ($(this).val() > 96) {
+    if (+$(this).val() > 96) {
         alert("Máximo 96 diarios si pernota fuera de la ciudad");
     }
 })
 
 $('#id_movilizacion_personal_total').change(function (e) {
-    if ($(this).val() > 96) {
+    if (+$(this).val() > 96) {
         alert("Máximo 96 diarios si pernota fuera de la ciudad");
     }
 })
@@ -514,7 +523,7 @@ $(document).on('click', "#pnuevo", function () {
 })
 
 $(document).on('change', '#id_tipo', function (e) {
-    load_data($(this).val() == "Corporativo" ? 0 : 1);
+    load_data($(this).val() == "Jurídica" ? 0 : 1);
 });
 
 $(document).on('change', '#id_razon_nombres', function () {
@@ -538,10 +547,38 @@ $(document).on('click', "#div_id_razon_nombres span.selection", function (e) {
 
 $(document).on('change', '#nombre_evento', function () {
     autocomplete($(this), 'codigo_evento');
+    CambiarEstado();
+
     $("#id_evento").val($('#codigo_evento').val());
+    $("#modalidad_evento").val($('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-modalidad"));
+    var finicio = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-finicio");
+    var ffin = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-ffin");
+    if(finicio==undefined || ffin==undefined){
+        $("#fecha_inicio_evento").val(null);
+        $("#fecha_fin_evento").val(null);
+        return;
+    }
+    var ymd = finicio.split("/");
+    $("#fecha_inicio_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
+    var ymd = ffin.split("/");
+    $("#fecha_fin_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
 });
 
 $(document).on('change', '#codigo_evento', function () {
     autocomplete($(this), 'nombre_evento');
+    CambiarEstado();
+
     $("#id_evento").val($('#codigo_evento').val());
+    $("#modalidad_evento").val($('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-modalidad"));
+    var finicio = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-finicio");
+    var ffin = $('#nombre_evento option[name="' + $('#id_evento').val() + '"]').attr("data-ffin");
+    if(finicio==undefined || ffin==undefined){
+        $("#fecha_inicio_evento").val(null);
+        $("#fecha_fin_evento").val(null);
+        return;
+    }
+    var ymd = finicio.split("/");
+    $("#fecha_inicio_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
+    var ymd = ffin.split("/");
+    $("#fecha_fin_evento").val(ymd[2] + "-" + ymd[1] + "-" + ymd[0]);
 });

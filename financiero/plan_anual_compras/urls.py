@@ -8,7 +8,6 @@ urlpatterns = [
 	path("editar/<pk>/", views.PACUpdate.as_view(), name="pac_editar"),
 	path('ajax/load-elminar-pac',views.pac_conf_elim,name='pac_confirmar_eliminar'),
     path('eliminar/<pk>/', views.PACDelete.as_view(), name='pac_eliminar'),
-	path('partida/nuevo/<pk>/',views.PartidaCreate.as_view(),name='partida_nuevo'),
 	path('ajax/partida-update/',views.partida_update,name='partida_editar'),
 	path('partida/editar/<pk>/<fk>',views.PartidaUpdate.as_view(),name='partida_editar'),
 	path('ajax/partida-eliminar',views.partida_eliminar,name='partida_eliminar'),

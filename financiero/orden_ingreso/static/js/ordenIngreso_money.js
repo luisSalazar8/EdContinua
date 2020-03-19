@@ -18,6 +18,7 @@ valor.append(dollar);
 function formatNumber(num) {
   return num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
+
 function Transform(input){
   var numero = $(input).val();
   $(input).attr("type","text");
@@ -30,9 +31,9 @@ function Transform(input){
     numero_transformado+=".00";
   }
   $(input).val(numero_transformado);
- 
-
 }
+
+
 $(document).ready(function () {
   var entrada = $("input#id_valor");
   var estado = $('input#id_estado');

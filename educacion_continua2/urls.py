@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('administrativo/proveedores/', include("administrativo.proveedores.urls")),
 	path('ventas/personas_juridicas/', include("ventas.personas_juridicas.urls")),
 	path('ventas/reporte_contacto/', include("ventas.reporte_contacto.urls")),
     path('ventas/personas_naturales/', include("ventas.personas_naturales.urls")),

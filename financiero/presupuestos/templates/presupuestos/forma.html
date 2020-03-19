@@ -141,7 +141,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap money">
+								<div class="currency-wrap">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_individual |as_crispy_field}}
 								</div>
@@ -149,7 +149,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap money">
+								<div class="currency-wrap">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_total |as_crispy_field}}
 								</div>
@@ -879,7 +879,7 @@
 									<div class="col-3">
 										<div class="currency-wrap"><span class="currency-code">$</span>
 											<input type="text" id="provision_mejoras_unitario"
-												class="form-control text-currency" readonly placeholder="Total egresos"
+												class="pr-3 form-control text-currency" readonly placeholder="Total egresos"
 												value="{{form.ingreso_neto_total.value}}">
 										</div>
 									</div>

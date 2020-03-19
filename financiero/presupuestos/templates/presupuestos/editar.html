@@ -198,7 +198,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap money">
+								<div class="currency-wrap">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_individual |as_crispy_field}}
 								</div>
@@ -206,7 +206,7 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<div class="currency-wrap money">
+								<div class="currency-wrap">
 									<span class="currency-code">$</span>
 									{{ form.ingreso_neto_total |as_crispy_field}}
 								</div>
@@ -943,7 +943,7 @@
 									<div class="col-3">
 										<div class="currency-wrap"><span class="currency-code">$</span>
 											<input type="text" id="provision_mejoras_unitario"
-												class="form-control text-currency" readonly placeholder="Total egresos"
+												class="pr-3 form-control text-currency" readonly placeholder="Total egresos"
 												value="{{form.ingreso_neto_total.value}}">
 										</div>
 									</div>
@@ -1630,8 +1630,8 @@
 									<div class="col-3 v-align">Aportación Facultades</div>
 									<div class="col-xl-2 col">
 										<input type="hidden" name="aportacion_facultad" value="{{form.aportacion_facultad.value}}">
-										{{form.aportacion_facultad}
-									}</div>
+										{{form.aportacion_facultad}}
+									</div>
 									<div class="col-xl-1 col">
 										<div class="form-group">
 											<div class="currency-wrap"><span
@@ -2147,7 +2147,6 @@
 		if ("{{form.estado.value}}" === "Autorizada con evento") {
 			$("#codigo_evento").attr("disabled", true);
 			$("#nombre_evento").attr("disabled", true);
-			codigo_propuesta
 		}
 		if ("{{form.estado.value}}" === "Anulada" || "{{form.estado.value}}"== "Solicitud Enviada") {
 			$("#id_codigo_propuesta").attr("readonly", true);

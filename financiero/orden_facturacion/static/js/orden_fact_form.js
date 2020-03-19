@@ -3,6 +3,7 @@ console.log("valor de la wea "+$('#cont').val())
 
 $('.select2').select2({
   minimumInputLength: 2,
+  width: '100%',
   language: {
 
     noResults: function () {
@@ -22,6 +23,7 @@ $('.select2').select2({
 
 $('.select3').select2({
   minimumInputLength: 0,
+  width: '100%',
   language: {
 
     noResults: function () {

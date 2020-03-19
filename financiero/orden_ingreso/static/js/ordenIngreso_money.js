@@ -35,9 +35,12 @@ function Transform(input){
 }
 $(document).ready(function () {
   var entrada = $("input#id_valor");
+  var estado = $('input#id_estado');
   $(entrada).focus(function (e) { 
-    $(entrada).attr("type","number");
-    $(entrada).val(numero_final);
+    if ($(estado).val()!="ANLD"){
+      $(entrada).attr("type","number");
+      $(entrada).val(numero_final);
+    }
   });
 
   $(entrada).focusout(function (e) { 

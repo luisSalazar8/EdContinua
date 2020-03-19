@@ -58,6 +58,9 @@
             <div class="col-4">
                     {{ filter.form.fecha_anulacion|as_crispy_field }}
             </div>
+            <div class="col-4">
+                    {{ filter.form.centro_costos|as_crispy_field }}
+            </div>
                 {% comment %} <div class="col-4">
                     {{ filter.form.razon_nombres|as_crispy_field }}
                 </div>
@@ -117,6 +120,7 @@
                      <th scope="col">Estado Orden Facturación</th>
                      <th scope="col">Estado Orden Ingreso</th>
                      <th scope="col">Fecha de anulación</th>
+                     <th scope="col">Centro de costos</th>
                      <th scope="col" >
                         <div class="mr-3">
                             Acciones
@@ -162,6 +166,7 @@
                     <td scope="row" >{{ordenIngreso.orden_facturacion.get_estado_display}}</td>
                     <td scope="row" >{{ordenIngreso.get_estado_display}}</td>
                     <td scope="row" >{{ordenIngreso.fecha_anulacion}}</td>
+                    <td scope="row" >{{ordenIngreso.centro_costos}}</td>
                     
                     <td scope ="row">
                         <a class="btn btn-secondary btn-sm " href="{% url 'ordenIngreso_editar' ordenIngreso.id %}">

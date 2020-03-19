@@ -1,4 +1,5 @@
-from .models import OrdenIngreso,OrdenFacturacion
+from .models import OrdenIngreso,OrdenFacturacion;
+from financiero.orden_facturacion.models import Centro_Costos;
 import django_filters
 from django import forms
 
@@ -26,6 +27,7 @@ class OrdenIngresoFilter(django_filters.FilterSet):
     formaPago = django_filters.ChoiceFilter(label="", empty_label="Forma de pago",choices = OrdenIngreso.FORMAS_PAGO)
     estado = django_filters.ChoiceFilter(label="", empty_label="Estado Orden Ingreso",choices = OrdenIngreso.ESTADO_CHOICES)
     fecha_anulacion = django_filters.DateFilter(widget=forms.DateInput(attrs={'placeholder':'Fecha anulación',"class":"textbox-n", "onfocus":"(this.type='date')"}))
+    centro_costos = django_filters.ModelChoiceFilter(label="", empty_label="Centro de costos", queryset=Centro_Costos.objects.all())
 
     orden_facturacion__cod_orden_fact = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Código Orden Facturación '}))
 

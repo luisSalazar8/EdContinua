@@ -51,6 +51,7 @@ function load_ordenes_facturas(){
 
 $('.select2').select2({
   minimumInputLength: 2,
+  width: '100%' ,
   language: {
 
     noResults: function () {

@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'multiselectfield',
     'djmoney',
     'rest_framework',
+    #ADMINISTRATIVO
+    'administrativo.proveedores',
     #VENTAS
     'ventas.reporte_contacto',
     'ventas.personas_juridicas',

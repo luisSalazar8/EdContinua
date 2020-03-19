@@ -98,6 +98,9 @@
 {% endblock %}
 
 {% block extrafooter %}
+<script src="{% static 'js/date-filter.js' %}"></script>
+<script src="{% static 'js/table.js' %}"></script>
+
 <script>
 
     function eliminar(id) {
@@ -111,16 +114,21 @@
             }
         });
     };
-</script>
-<script>
-    $(document).on("change",'#id_motivo_anular', function(){
+
+	$(document).on("change",'#id_motivo_anular', function(){
         if ($(this).val().length>20){
             $('#anular').attr('disabled',false);
         }
         else{
             $('#anular').attr('disabled',true);
         }
-    })
+	})
+	
+	$(document).ready(function(e){
+		$(".fecha").each(function(e){
+			TextToDate($(this));
+			console.log($(this).val());
+		})
+	});
 </script>
-<script src="{% static 'js/table.js' %}"></script>
 {% endblock %}

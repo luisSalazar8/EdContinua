@@ -10,9 +10,9 @@ class PresupuestoEventoFilter(django_filters.FilterSet):
     codigo_propuesta = django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'Código Propuesta'}))
     evento__nombre=django_filters.CharFilter(lookup_expr='icontains', label="",widget=forms.TextInput(attrs={'placeholder':'Nombre evento'}))
     evento__codigo_evento=django_filters.CharFilter(lookup_expr='icontains', label="",widget=forms.TextInput(attrs={'placeholder':'Código evento'}))
-    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Elaboración','onfocus':"(this.type='date')"}))
-    evento__fecha_inicio=django_filters.DateFilter(label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Inicio Evento','onfocus':"(this.type='date')"}))
-    evento__fecha_fin=django_filters.DateFilter(label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Fin Evento','onfocus':"(this.type='date')"}))
+    fecha=django_filters.DateFilter(field_name='fecha', label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Elaboración','onfocus':"(this.type='date')",'onfocusout':"DateToText(this)",'class':'fecha'}))
+    evento__fecha_inicio=django_filters.DateFilter(label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Inicio Evento','onfocus':"(this.type='date')",'onfocusout':"DateToText(this)",'class':'fecha'}))
+    evento__fecha_fin=django_filters.DateFilter(label='',widget=forms.DateInput(attrs={'placeholder':'Fecha Fin Evento','onfocus':"(this.type='date')",'onfocusout':"DateToText(this)",'class':'fecha'}))
     evento__modalidad=django_filters.CharFilter(lookup_expr='icontains', label="",widget=forms.TextInput(attrs={'placeholder':'Modalidad'}))
 
     centro_costos=django_filters.ChoiceFilter(

@@ -11,11 +11,9 @@ function sumtr(table_id) {
     var s = [];
     var r = 0;
     $(table_id + " tbody tr").each(function (index) {
-        console.log($(this));
         var col = 0;
         $(this).children("td").each(function () {
             if ($(this).is(".sum")) {
-                console.log($(this));
                 if (s.length < col + 1) s[col] = 0;
                 
                 var val = parseFloat($(this).html().replace(/,/g, '').replace('$', '').replace('%', ''));
@@ -32,7 +30,7 @@ function sumtr(table_id) {
     return s;
 }
 
-$('.select2').trigger('change.select2')
+$('.select2').trigger('change.select2');
 
 $('#env-sol').click(function (e) {
     e.preventDefault();
@@ -46,18 +44,18 @@ if ($('#participantes-table tbody tr').length > 0) {
     s = sumtr("#participantes-table");
     console.log(s)
     $("#id_subtotal").val(s[3]);
-    $("#id_valor_total").val(s[5]);
-    $("#id_descuento_total").val((s[3] - s[5]).toFixed(2));
-    $("#id_descuento_fact").val(roundToTwo(((s[3] - s[5]) / s[3]) * 100));
+    $("#id_valor_total").val(s[6]);
+    $("#id_descuento_total").val((s[3] - s[6]).toFixed(2));
+    $("#id_descuento_fact").val(roundToTwo(((s[3] - s[6]) / s[3]) * 100));
 
     // $("#subtotal").val("$ "+s[3].toFixed(2));
     // $("#valor_total").val('$ '+s[5].toFixed(2));
     // $("#descuento_total").val('$ '+(s[3] - s[5]).toFixed(2));
-    $("#descuento_fact").val(roundToTwo(((s[3] - s[5]) / s[3]) * 100)+' %');
+    $("#descuento_fact").val(roundToTwo(((s[3] - s[6]) / s[3]) * 100)+' %');
 
     $("#subtotal").val(s[3].toFixed(2));
-    $("#valor_total").val(s[5].toFixed(2));
-    $("#descuento_total").val(+(s[3] - s[5]).toFixed(2));
+    $("#valor_total").val(s[6].toFixed(2));
+    $("#descuento_total").val(+(s[3] - s[6]).toFixed(2));
     back("#subtotal");
     transform("#subtotal");
     back("#valor_total");
@@ -86,8 +84,44 @@ function transform(input){
     if($(input).val()!=""){
       $(input).val(parseFloat($(input).val()).toFixed(2));
     $(input).attr("type","text");
-    console.log($(input).val())
+   
     var numeroe=$(input).val().split(".")
+    const long= numeroe[0].length;
+   
+    var newnum="";
+    cont=0;
+    for(var i=(long-1);i>=0;i--){
+          if(cont%3==0 && cont!=0){
+            newnum=numeroe[0].charAt(i)+","+newnum;
+            
+            cont+=1;
+          }else{
+            
+            newnum=numeroe[0].charAt(i)+newnum;
+            cont+=1;
+          }
+    }
+    
+    $(input).val("$"+newnum+"."+numeroe[1]);
+    }
+    
+  }
+
+  //calcular descuentos
+  $("#descmeme").children().each(function(){
+    console.log("la wea funka chucha");
+    var valor=$($(this).children()[3]).html().replace("$","").replace(/,/,"");
+    var valortotal=$($(this).children()[6]).html().replace("$","").replace(/,/,"");
+    console.log(parseFloat(valor).toFixed(2));
+    console.log(parseFloat(valortotal).toFixed(2));
+    
+    $($(this).children()[5]).html(transformN(parseFloat(valor).toFixed(2)-parseFloat(valortotal).toFixed(2)))
+  });
+  
+
+  function transformN(numero){
+    var num=""+parseFloat(numero).toFixed(2);
+    var numeroe=num.split(".")
     const long= numeroe[0].length;
     console.log(long)
     var newnum="";
@@ -108,7 +142,6 @@ function transform(input){
           }
     }
     console.log(newnum+"."+numeroe[1]);
-    $(input).val("$"+newnum+"."+numeroe[1]);
-    }
+    return "$"+newnum+"."+numeroe[1];
     
   }

@@ -18,20 +18,38 @@ function change_state_btn() {
 }
 
 function verificar() {
+
+    $("#tablefile tr").each(function(){
+        var h=$(this).children();
+        var a =$(h[0]).find("a");
+        console.log($(a).attr("href"));
+        if($(a).attr("href")!=undefined){
+           has_anexo=true;
+        }
+    });
+
     $(".ordenfactf").each(function(){
             if($(this).val()!=""){
                 has_anexo=true;
             }
 
     });
+    console.log($("#id_fecha_tramite").val())
+    console.log($("#id_fecha_factura").val())
 
-    has_f_tra = $("#id_fecha_tramite").val()!=undefined;
+    has_f_tra = $("#id_fecha_tramite").val()!="";
 
-    has_f_tra = $("#id_fecha_factura").val()!=undefined;
+    has_f_fact = $("#id_fecha_factura").val()!="";
 
     has_n_fact = isInteger($("#id_n_factura").val());
 
     has_n_tra = isInteger($("#id_n_tramite").val());
+
+    console.log(has_f_tra)
+    console.log(has_n_tra)
+    console.log(has_anexo)
+    console.log(has_f_fact)
+    console.log(has_n_fact)
 
     change_state_btn()
 }

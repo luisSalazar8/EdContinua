@@ -354,3 +354,17 @@ def anular_orden_facturacion(request, pk):
         form = OrdenFacturacionFinalForm(instance=p)
         participantes=OrdenFacturacionParticipante.objects.filter(orden_id=pk)
         return render(request, 'orden_facturacion_aprobar.html', {'form': form, 'participantes':participantes, "orden":p})
+
+def anular_orden_facturacionMenu(request, pk):
+    if(request.method == 'POST'):
+        p = get_object_or_404(OrdenFacturacion, pk=pk)
+        p.estado="ANLD"
+        motivo=dict(request.POST).get("motivo_anular")[0]
+        p.motivo_anular=motivo
+        p.save()
+        return redirect('orden_facturacion')
+    else:
+        p = get_object_or_404(OrdenFacturacion, pk=pk)
+        form = OrdenFacturacionFinalForm(instance=p)
+        participantes=OrdenFacturacionParticipante.objects.filter(orden_id=pk)
+        return render(request, 'orden_facturacion_aprobar.html', {'form': form, 'participantes':participantes, "orden":p})

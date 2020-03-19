@@ -11,7 +11,7 @@
 </div>
 {% if form.estado.value == "ACPF" or form.estado.value == "PNDP" or form.estado.value == "ANLD" %}
 <div class="form-row darkwhite-bg py-2">
-    <div class="col-6 col-md-3 mb-0">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_tramite" class="form-group">
             <label for="id_n_tramite" class="col-form-label requiredField">
                 N° de trámite<span class="asteriskField">*</span>
@@ -20,11 +20,14 @@
                 {{form.n_tramite}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_tramite|as_crispy_field}}
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_tramite|as_crispy_field}}
     </div>
-    <div class="col-6 col-md-3 mb-0">
+    <!-- <div class="col-6 col-md-3 mb-0">
         <div id="div_id_n_factura" class="form-group">
             <label for="id_n_factura" class="col-form-label requiredField">
                 N° de factura<span class="asteriskField">*</span>
@@ -33,6 +36,10 @@
                 {{form.n_factura}}
             </div>
         </div>
+    </div> -->
+    <div class="col-6 col-md-3 mb-0">
+        {{form.n_factura|as_crispy_field}}
+    
     </div>
     <div class="col-6 col-md-3 mb-0">
                 {{form.fecha_factura|as_crispy_field}}
@@ -40,7 +47,7 @@
     </div>
     
     <div class="col-12 col-md-12 mb-0">
-    <table class="table table-responsive-md border-bottom">
+    <table id="tablefile" class="table table-responsive-md border-bottom">
         {{ formset.management_form|crispy }}
         
             {% for form in formset.forms %}
@@ -108,24 +115,28 @@
                             <th>Código del evento</th>
                             <th>Nombre del evento</th>
                             <th>Valor Evento</th>
-                            <th>Descuento</th>
+                            <th>%Descuento</th>
+                            <th>$Descuento</th>
                             <th>Valor total</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     {% if participantes %}
 
-                    <tbody>
+                    <tbody id="descmeme">
 
                         {% for p in participantes %}
-                        <tr class="text-center">
-                            <td>{{ p.participante }}</td>
-                            <td>{{ p.cod_evento }}</td>
-                            <td>{{ p.nombre_evento }}</td>
-                            <td class="sum">{{ p.valor_evento|currency}}</td>
-                            <td>{{ p.descuento|porcentaje }}</td>
-                            <td class="sum">{{ p.valor|currency }}</td>
-                            <td>
+                        <tr>
+                            <td class="text-center">{{ p.participante }}</td>
+                            <td class="text-center">{{ p.cod_evento }}</td>
+                            <td class="text-center">{{ p.nombre_evento }}</td>
+                            <td class="sum text-right">
+                                {{ p.valor_evento|currency}}
+                            </td>
+                            <td class="text-center">{{ p.descuento|porcentaje }}</td>
+                            <td class="text-right desc"></td>
+                            <td class="sum text-right">{{ p.valor|currency }}</td>
+                            <td class="text-center">
                                 {% if form.estado.value == "ACTV" %}
 
                                 <a class="btn btn-secondary btn-sm" href="{% url 'participante_editar' p.id orden_id %}"><i

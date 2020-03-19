@@ -47,7 +47,8 @@ class OrdenIngreso(models.Model):
 	razon_nombres=models.CharField(max_length=50)
 	descripcion=models.CharField(max_length=150)
 	formaPago=models.CharField(max_length=30, choices=FORMAS_PAGO,default='cheque')
-	valor=models.DecimalField(max_digits=15,decimal_places=2,validators=[val_fin.validate_positivo])
+	# valor=models.DecimalField(max_digits=15,decimal_places=2,validators=[val_fin.validate_positivo])
+	valor=models.FloatField(blank=True, null=True,default=0.0,validators=[val_fin.validate_positivo])
 	
 	fechaPago=models.CharField(max_length=12)
 	numeroDocumento=models.PositiveIntegerField()

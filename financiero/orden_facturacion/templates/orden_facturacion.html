@@ -51,6 +51,9 @@
                 <div class="col-6 col-md-3">
                     {{ filter.form.tipo_evento|as_crispy_field}}
                 </div>
+                <div class="col-6 col-md-3">
+                    {{ filter.form.centro_costos|as_crispy_field}}
+                </div>
 
             </div>
             <button type="submit" class="btn btn-secondary green-bg float-right">
@@ -61,13 +64,13 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-12 col-xl-12 table-responsive">
+    <div class="col-12 col-xl-12">
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-pdf" data-toggle="tooltip"
                 data-placement="top" title="Exportar a pdf"></i></a>
         <a class="btn btn-lg float-right btn-light" href="#"><i class="fas fa-file-excel" data-toggle="tooltip"
                 data-placement="top" title="Exportar a excel"></i></a>
-        <table id="dtBasicExample" class="table border-bottom">
-            <thead class="white-text darkgreen-bg">
+        <table id="dtBasicExample" class="table border-bottom table-responsive">
+            <thead class="white-text darkgreen-bg ">
                 <!--
                     <tr>
                         <form action="" method="get">
@@ -105,6 +108,7 @@
                     <th scope="col">N° factura</th>
                     <th scope="col">Asesor</th>
                     <th scope="col">Fecha factura</th>
+                    <th scope="col">Centro Costos</th>
                     <th scope="col">Acciones</th>
                     
                 </tr>
@@ -145,7 +149,7 @@
                     </td>
                     <td class="text-center" scope="row">
                     </td>
-                    <td class="text-right" scope="row">
+                    <td class="text-center" scope="row">
                     </td>
                     <td class="text-right" scope="row">
                         {% for p in orden.ordenfacturacionparticipante_set.all%}
@@ -158,6 +162,7 @@
                     <td class="text-center" scope="row">{{orden.n_factura}}</td>
                     <td class="text-center" scope="row">{{orden.asesor}}</td>
                     <td class="text-center" scope="row">{{orden.fecha_factura}}</td>
+                    <td class="text-center" scope="row">{{orden.centro_costos}}</td>
                     <!-- {% if orden.estado == 'ANLD' %}
                     <td class="tdmotivo" scope="row">{{orden.motivo_anular}}</td>
                     {%endif%} -->

@@ -2,7 +2,7 @@ from .models import OrdenFacturacion
 from financiero.orden_facturacion.models import OrdenFacturacion, ESTADO_CHOICES, TIPO_EVENTO
 import django_filters
 from django import forms
-
+from financiero.orden_pago.models import Centro_Costos
 
 class OrdenFacturacionFilter(django_filters.FilterSet):
     cod_orden_fact = django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'Código orden'}))
@@ -22,6 +22,7 @@ class OrdenFacturacionFilter(django_filters.FilterSet):
     asesor=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'Asesor'}))
     n_tramite=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'# Trámite'}))
     n_factura=django_filters.CharFilter(lookup_expr='icontains', label="", widget=forms.TextInput(attrs={'placeholder':'# Factura'}))
+    centro_costos=django_filters.ModelChoiceFilter(label="", empty_label="Centro de Costos",queryset=Centro_Costos.objects.all())
     class Meta:
         model = OrdenFacturacion
         
@@ -35,5 +36,6 @@ class OrdenFacturacionFilter(django_filters.FilterSet):
             'n_tramite',
             'n_factura',
             'tipo_evento',
+            'centro_costos',
             
         ]

@@ -157,26 +157,28 @@
 				<button id ="guardar_orden_ingreso" type="submit" class="btn btn-secondary green-bg ml-3 ">Guardar</button>
 				<a class="btn btn-secondary ml-sm-2" href="{% url 'ordenIngreso' %}"> Cancelar </a>	
 		</div>
-		<div class="col-4 offset-sm-2 col-sm-3 offset-md-6 col-md-3 offset-lg-6 col-lg-3 offset-xl-8 col-xl-2 ml-auto">
+		 <div class="offset-5 offset-sm-6 offset-xl-9 text-center ml-auto mr-3">
+			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn  btn-secondary"
+					data-toggle='modal' data-target="#ordenEliminarCenter" href='#'> Anular
+				</a> 
+			
+		</div> 
+		 {% comment %} <div class="col-4 offset-sm-2 col-sm-3 offset-md-10 col-md-2 offset-lg-10 col-lg-2 offset-xl-7  col-xl-3">
 			<div class="container-fluid">
 				<div class = "row">
 					<div class="col-12">
-						<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn  btn-secondary d-block"
+						<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn  btn-secondary "
 						data-toggle='modal' data-target="#ordenEliminarCenter" href='#'> Anular
 						</a> 
 					</div>
 					
 				</div>
-			</div>
+			</div> 
+		 </div> {% endcomment %}
 			
 			
-		<div>
-		{% comment %} <div class="offset-5 offset-sm-8 offset-xl-9 text-center ">
-			<a id = "anular_orden_ingreso" onclick='eliminar({{ pk }});' class="btn  btn-secondary"
-					data-toggle='modal' data-target="#ordenEliminarCenter" href='#'> Anular
-				</a> 
-			
-		<div> {% endcomment %}
+		
+		
 	</div>
 
 </div>

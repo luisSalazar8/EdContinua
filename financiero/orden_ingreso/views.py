@@ -68,6 +68,7 @@ class OrdenIngresoCreate(CreateView):
         
 
 class OrdenIngresoUpdate(UpdateView):
+    
     model=OrdenIngreso
     form_class=OrdenIngresoUpdateForm
     template_name='ordenIngreso_editar.html'
@@ -77,6 +78,7 @@ class OrdenIngresoUpdate(UpdateView):
         context['pk'] = self.kwargs['pk']
         if self.request.POST:
             context['formset'] = FileFormset(self.request.POST,self.request.FILES, instance=self.object)
+            print("No hiciste el anular, entraste a actualizar")
         else:
             context['formset'] =FileFormset(instance=self.object)
         return context
@@ -113,7 +115,11 @@ class OrdenIngresoDelete(DeleteView):
 
 def orden_ing_conf_elim(request):
     orden_id=request.GET.get('pk')
+
+    print(orden_id)
     orden=OrdenIngreso.objects.get(id=orden_id)
+
+    print(orden)
     return render(request,"ordenIngreso_eliminar.html",{"ordenIngreso":orden})
 
 def load_orden_facturacion(request):

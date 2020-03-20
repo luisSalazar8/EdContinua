@@ -11,9 +11,7 @@ class ProveedorForm(forms.ModelForm):
 	class Meta:
 		model = models.Proveedor
 		fields = [
-					"nombre",
 					"ruc",
-					"ci",
 					"razon",
 					"tipo_empresa",
 					"sector",
@@ -58,9 +56,7 @@ class ProveedorForm(forms.ModelForm):
 
 
 		labels = {
-					"nombre":"Nombre",
 					"ruc": "RUC",
-					"ci": "CI",
 					"razon": "Razón social",
 					"tipo_empresa": "Tipo de empresa",
 					"sector": "Sector",
@@ -123,9 +119,7 @@ class ProveedorForm(forms.ModelForm):
 
                     
 		widgets = {
-				"nombre":forms.TextInput(attrs={"class":"form-control"}),
 				"ruc":forms.TextInput(attrs={"class":"form-control","type":"number"}),
-				"ci":forms.TextInput(attrs={"class":"form-control","type":"number"}),
 				"razon":forms.TextInput(attrs={"class":"form-control"}),
 				"tipo_empresa":forms.Select(attrs={"class":"form-control"}),
 				"sector":forms.Select(attrs={"class":"form-control"}),
@@ -239,9 +233,7 @@ class ProveedorFilter(django_filters.FilterSet):
 	TIPO_PROVEEDOR_CHOICES = [("Natural","Natural"), ("Jurídica","Jurídica")]
 
 	
-	nombre = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Nombre'}))
 	ruc = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'RUC'}))
-	ci = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control","type":"number",'placeholder': 'CI'}))
 	razon = django_filters.CharFilter(label="", widget=forms.TextInput(attrs={"class":"form-control",'placeholder': 'Razón Social'}))
 
 	tipo_empresa = django_filters.ModelChoiceFilter(label="", empty_label="Tipo de Empresa", queryset=models.TipoEmpresa.objects.all())
@@ -268,9 +260,7 @@ class ProveedorFilter(django_filters.FilterSet):
 	class Meta:
 		model = models.Proveedor
 		fields = [
-					"nombre",
 					"ruc",
-					"ci",
 					"razon",
 					"tipo_empresa",
 					"sector",

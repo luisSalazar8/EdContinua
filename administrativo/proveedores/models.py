@@ -26,15 +26,13 @@ class Sector(models.Model):
 class Proveedor(models.Model):
 	TIPO_RUBRO_CHOICES = [("Bienes","Bienes"), ("Servicios","Servicios"), ("Ambos","Ambos")]
 	TIPO_PROVEEDOR_CHOICES = [("Natural","Natural"), ("Jurídica","Jurídica")]
-	nombre = models.CharField(max_length=200)
 	ruc = models.CharField(max_length=13,primary_key=True, validators=[administrativo.validaciones.validate_ruc] )
-	ci = models.CharField(max_length=13, validators=[administrativo.validaciones.validate_cedula])
 	razon = models.CharField(max_length=200)
 	tipo_empresa = models.ForeignKey(TipoEmpresa,on_delete=models.SET_NULL, null=True)
 	sector = models.ForeignKey(Sector,on_delete=models.SET_NULL, null=True)
 	direccion = models.CharField(max_length=200)
 	provincia = models.ForeignKey(Provincia, on_delete=models.SET_NULL, null=True)
-	ciudad = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, null=True, blank=True)
+	ciudad = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, null=True)
 
 	telefono = models.CharField(max_length=20, validators=[administrativo.validaciones.validate_fono_convencional])
 	celular = models.CharField(max_length=20, validators=[administrativo.validaciones.validate_celular])

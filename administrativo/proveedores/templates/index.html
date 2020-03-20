@@ -32,13 +32,10 @@
 					{{ filter.form.ruc|as_crispy_field }}
 				</div>
 				<div class="col-8 col-xl-8">
-					{{ filter.form.nombre|as_crispy_field }}
+					{{ filter.form.razon|as_crispy_field }}
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-3 col-xl-3">
-					{{ filter.form.tipo_empresa|as_crispy_field }}
-				</div>
 				<div class="col-3 col-xl-3">
 					{{ filter.form.sector|as_crispy_field }}
 				</div>
@@ -95,10 +92,10 @@
 				{% for j in proveedores %}
 				<tr class="text-center">
 					<td scope="row">{{j.ruc}}</td>
-					<td scope="row">{{j.nombre}}</td>
+					<td scope="row">{{j.razon}}</td>
 					<td scope="row">{{j.tipo_proveedor}}</td>
 					<td scope="row">{{j.sector}}</td>
-					<td scope="row">{{j.tipo_empresa}}</td>
+					<td scope="row">{{j.tipo_rubro}}</td>
 					<td scope="row">{{j.provincia}}</td>
 					<td scope="row">{{j.ciudad}}</td>
 					<td scope="row">{{j.telefono}}</td>

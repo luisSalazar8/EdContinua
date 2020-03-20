@@ -33,8 +33,6 @@ data-info-url="{% url 'ajax_info_id' %}">
 	<div class="row darkwhite-bg py-2">
 		<div class="col-12">
 			<div class=" form-row">
-				<input type="hidden" id='rc' value="{{form.ruc_ci.value}}">
-				<input type="hidden" id='rn' value="{{form.razon_nombres.value}}">
 				<div class="col-6 col-xl-3">
 					{{form.tipo_proveedor|as_crispy_field}}
 					<small class="form-text text-muted">Seleccione el tipo de proveedor</small>

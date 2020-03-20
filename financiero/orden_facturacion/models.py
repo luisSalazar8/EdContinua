@@ -39,7 +39,7 @@ class OrdenFacturacion(models.Model):
     ruc_ci=models.CharField(max_length=13)
     razon_nombres=models.CharField(max_length=200)
     contacto=models.CharField(max_length=200,blank=True, null=True)
-    tipo_evento=models.CharField(max_length=15, choices=TIPO_EVENTO)
+    tipo_evento=models.CharField(max_length=15, choices=TIPO_EVENTO, null=True)
     #contacto=models.CharField(max_length=200)
     #direccion=models.CharField(max_length=200)
     #telefono=models.CharField(max_length=15)

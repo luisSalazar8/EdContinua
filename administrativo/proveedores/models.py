@@ -28,7 +28,6 @@ class Proveedor(models.Model):
 	TIPO_PROVEEDOR_CHOICES = [("Natural","Natural"), ("Jurídica","Jurídica")]
 	ruc = models.CharField(max_length=13,primary_key=True, validators=[administrativo.validaciones.validate_ruc] )
 	razon = models.CharField(max_length=200)
-	tipo_empresa = models.ForeignKey(TipoEmpresa,on_delete=models.SET_NULL, null=True)
 	sector = models.ForeignKey(Sector,on_delete=models.SET_NULL, null=True)
 	direccion = models.CharField(max_length=200)
 	provincia = models.ForeignKey(Provincia, on_delete=models.SET_NULL, null=True)

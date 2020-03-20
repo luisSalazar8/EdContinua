@@ -75,7 +75,7 @@ def proveedores_editar(request,pk):
 					pase = False
 					if(pase):
 						form.save()
-						return HttpResponseRedirect(reverse_lazy("index_proveedores"))
+						return HttpResponseRedirect(reverse_lazy("proveedores_editar"))
 				else:
 					url = reverse_lazy('proveedores_editar', kwargs={'pk': pk})
 					return HttpResponseRedirect(url)

@@ -26,7 +26,7 @@ class Sector(models.Model):
 class Proveedor(models.Model):
 	TIPO_RUBRO_CHOICES = [("Bienes","Bienes"), ("Servicios","Servicios"), ("Ambos","Ambos")]
 	TIPO_PROVEEDOR_CHOICES = [("Natural","Natural"), ("Jurídica","Jurídica")]
-	ruc = models.CharField(max_length=13,primary_key=True, validators=[administrativo.validaciones.validate_ruc] )
+	ruc = models.CharField(max_length=13,primary_key=True)
 	razon = models.CharField(max_length=200)
 	sector = models.ForeignKey(Sector,on_delete=models.SET_NULL, null=True)
 	direccion = models.CharField(max_length=200)

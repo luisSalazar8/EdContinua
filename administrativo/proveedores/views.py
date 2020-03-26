@@ -75,15 +75,15 @@ def proveedores_editar(request,pk):
 					pase = False
 					if(pase):
 						form.save()
-						return HttpResponseRedirect(reverse_lazy("proveedores_editar"))
+						return HttpResponseRedirect(reverse_lazy("index_proveedores"))
 				else:
-					url = reverse_lazy('proveedores_editar', kwargs={'pk': pk})
+					url = reverse_lazy('proveedores_view', kwargs={'pk': pk})
 					return HttpResponseRedirect(url)
 			
 	else:
 		p = get_object_or_404(Proveedor, pk=pk)
 		form = ProveedorForm(instance=p)
-	return render(request, 'proveedores/editar_forma.html')
+	return render(request, 'proveedores/index.html')
 
 
 
